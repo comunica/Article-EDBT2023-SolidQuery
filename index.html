@@ -2,20 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta charset="utf-8" />
-  <title property="foaf:name schema:name">Optimizing Link Traversal Query Execution via Structural Axioms</title>
+  <title property="foaf:name schema:name">Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</title>
   <link rel="stylesheet" media="screen" href="styles/screen.css" />
   <link rel="stylesheet" media="print"  href="styles/print.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <meta name="citation_title" content="Optimizing Link Traversal Query Execution via Structural Axioms">
+  <meta name="citation_title" content="Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/07/28" />
+  <meta name="citation_publication_date" content="2022/08/17" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
   <header>
-  <h1 id="optimizing-link-traversal-query-execution-via-structural-axioms">Optimizing Link Traversal Query Execution via Structural Axioms</h1>
+  <h1 id="evaluation-of-guided-link-traversal-query-execution-over-decentralized-environments-with-structural-assumptions">Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</h1>
 
   <!--
 {:#authors}
@@ -91,9 +91,28 @@ DOI: http://dx.doi.org/1.2/111.222
 
         <p class="todo">Write me.</p>
 
+        <ul>
+          <li>Query research mainly focused on centralization or federation over a small number of sources, but query research over a large number of sources remains limited (cite link traversal)</li>
+          <li>Due to various reasons, decentralization efforts (solid, mastodon) are gaining popularity, where centralization is impossible due to various reasons</li>
+          <li>With data being spread over a huge number document-based sources, querying becomes difficult</li>
+          <li>While federated querying techniques don’t scale to the number of required sources, and depend on SPARQL endpoints, they are not suitable</li>
+          <li>In this work, we investigate how link traversal can be used for querying within decentralized environments
+            <ul>
+              <li>The goal of this work is to evaluate the effectiveness of link traversal decentralized environments, since centralization is not possible.</li>
+            </ul>
+          </li>
+          <li>For this, link traversal can make use of assumptions within decentralized environments for optimizing query execution</li>
+          <li>We introduce and evaluate algorithms for guided link traversal over decentralized environments
+            <ul>
+              <li>We apply our research to Solid use case, but the concepts are generalizable to other decentralization initiatives (mastodon, nanopubs, …)</li>
+            </ul>
+          </li>
+        </ul>
+
         <p class="todo">Contributions:
 - SolidBench: Benchmark to simulate a Web of data with configurable structural axioms
 - Guided link traversal algorithms for querying over Solid data vaults
+- Implementation of existing (all?) and new algorithms
 - An evaluation of link traversal algorithms within a simulated Web of Solid data vaults</p>
 
       </div>
@@ -104,6 +123,14 @@ DOI: http://dx.doi.org/1.2/111.222
         <h2 property="schema:name">Related Work</h2>
 
         <p class="todo">Write me.</p>
+
+        <h3 id="link-traversal-query-processing">Link Traversal Query Processing</h3>
+
+        <p class="todo">Write me.</p>
+
+        <p>Relevant paragraph from Olaf’s databankenspectrum paper:
+&gt; We notice that live-exploration-based query execution
+is similar to focused crawling as studied in the context of search engines for the WWW [6,2]. However, in focused crawling a discovered URI qualifies for lookup because of a high relevance for a specific topic; in live-exploration-based query execution, the relevance is more closely related to the task of answering the query at hand. Furthermore, the pur- pose of retrieving Web content is slightly different in both cases: Focused crawling, or Web crawling in general, is a pre-runtime (or background) process during which a system populates a search index or a local database; then, the run- time component of such a system provides query access to the populated data structure. Live exploration approaches, in contrast, retrieve data to answer a particular query; in these approaches, link-traversal-based data retrieval is an essen- tial part of the query execution process itself. Nonetheless, implementation techniques used for focused crawling, such as context graphs [8], might be applied in a live exploration approach for Linked Data query execution.</p>
 
         <h3 id="link-traversal-benchmarks">Link Traversal Benchmarks</h3>
 
@@ -137,6 +164,18 @@ Furthermore, it ships with a standard dataset for more convenient usage.</p>
         <p>Aside from these approaches, evaluation of link traversal engines
 is usually done via hand crafted queries <span class="references">[<a href="#ref-6">6</a>, <a href="#ref-7">7</a>, <a href="#ref-8">8</a>, <a href="#ref-9">9</a>]</span>.</p>
 
+        <h3 id="analysis-of-decentralized-environments">Analysis of Decentralized Environments</h3>
+
+        <p class="todo">Some Solid papers and Mastodon if I can find any, and if space left.</p>
+      </div>
+</section>
+
+  <section id="solid" inlist="" rel="schema:hasPart" resource="#solid">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Solid</h2>
+
+        <p class="todo">Write about background of Solid, and details on structural properties (with a figure?).</p>
+
       </div>
 </section>
 
@@ -144,8 +183,28 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Benchmark</h2>
 
-        <p class="todo">Write me.</p>
+        <p class="todo">Write me.
+Goal: Simulate and analyze structural properies of solid ecosystem.</p>
 
+        <p>Benchmark aspects:
+- Generator: SNB+fragmenter: schema and generator for creating datasets at different scales
+- 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
+- Tools to execute experiment and measurement of metrics</p>
+
+        <p>LDBC SNB interactive <span class="references">[<a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span></p>
+
+        <h3 id="design-considerations">Design considerations</h3>
+
+        <h3 id="fragmentation">Fragmentation</h3>
+
+        <p class="todo">List the fragmentation strategies</p>
+
+        <h3 id="choke-points">Choke Points</h3>
+
+        <p class="todo">Refer to interactive choke points from SNB
+https://arxiv.org/pdf/2001.02299.pdf</p>
+
+        <p class="todo">A table with choke points and queries</p>
       </div>
 </section>
 
@@ -163,7 +222,30 @@ Cite linktraversalcaching</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Evaluation</h2>
 
-        <p class="todo">Write me.</p>
+        <p class="todo">Separate sections with smaller exps with different findings</p>
+
+        <p>Research question: How well does link traversal query processing perform</p>
+
+        <h3 id="live-exploration-is-required-for-heterogeneous-fragmentations">Live exploration is required for heterogeneous fragmentations</h3>
+
+        <p class="todo">Show that hardcoded data access to specific files is not good, because different vaults have different frag strategies.
+Any findings by comparing different frag strategies?</p>
+
+        <h3 id="structural-properties-move-bottleneck-from-number-of-links-to-query-plan">Structural properties move bottleneck from number of links to query plan</h3>
+
+        <p class="todo">Compare duration of planning with query exec for discover queries and link following</p>
+
+        <h3 id="structural-properties-and-cmatch-are-both-necessary">Structural properties and cMatch are both necessary</h3>
+
+        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+LDP:contains</p>
+
+        <h3 id="some-structural-properties-are-preferred-over-others">Some structural properties are preferred over others</h3>
+
+        <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)</p>
+
+        <h3 id="intra--versus-intra-vault-querying">Intra- versus intra-vault querying</h3>
+
+        <p class="todo">Type index and other struct props are good for intra-pod querying, but for inter-vault querying, we also need cMatch, as we don’t have cross-vault indexes (yet!).</p>
 
       </div>
 </section>
@@ -200,6 +282,10 @@ Cite linktraversalcaching</p>
   <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
   <dt id="ref-9">[9]</dt>
   <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
+  <dt id="ref-10">[10]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-11">[11]</dt>
+  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
 </dl>
 </section>
 </footer>
