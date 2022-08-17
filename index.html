@@ -128,7 +128,9 @@ DOI: http://dx.doi.org/1.2/111.222
 
         <p class="todo">Write me.</p>
 
-        <p>Relevant paragraph from Olaf’s databankenspectrum paper:
+        <p class="todo">Cite Alberto Mendelez papers? And focused crawling?</p>
+
+        <p class="todo">Relevant paragraph from Olaf’s databankenspectrum paper:
 &gt; We notice that live-exploration-based query execution
 is similar to focused crawling as studied in the context of search engines for the WWW [6,2]. However, in focused crawling a discovered URI qualifies for lookup because of a high relevance for a specific topic; in live-exploration-based query execution, the relevance is more closely related to the task of answering the query at hand. Furthermore, the pur- pose of retrieving Web content is slightly different in both cases: Focused crawling, or Web crawling in general, is a pre-runtime (or background) process during which a system populates a search index or a local database; then, the run- time component of such a system provides query access to the populated data structure. Live exploration approaches, in contrast, retrieve data to answer a particular query; in these approaches, link-traversal-based data retrieval is an essen- tial part of the query execution process itself. Nonetheless, implementation techniques used for focused crawling, such as context graphs [8], might be applied in a live exploration approach for Linked Data query execution.</p>
 
@@ -172,9 +174,10 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
 
   <section id="solid" inlist="" rel="schema:hasPart" resource="#solid">
 <div datatype="rdf:HTML" property="schema:description">
-        <h2 property="schema:name">Solid</h2>
+        <h2 property="schema:name">The Solid Ecosystem</h2>
 
-        <p class="todo">Write about background of Solid, and details on structural properties (with a figure?).</p>
+        <p class="todo">Write about background of Solid, and details on structural properties (with a figure?).
+Solid type index and webid and seeAlso: https://solid.github.io/webid-profile/</p>
 
       </div>
 </section>
@@ -184,7 +187,8 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
         <h2 property="schema:name">Benchmark</h2>
 
         <p class="todo">Write me.
-Goal: Simulate and analyze structural properies of solid ecosystem.</p>
+Goal: Simulate and analyze structural properies of solid ecosystem.
+Derive motivation from benchmark from ldbc snb paper</p>
 
         <p>Benchmark aspects:
 - Generator: SNB+fragmenter: schema and generator for creating datasets at different scales
@@ -212,8 +216,12 @@ https://arxiv.org/pdf/2001.02299.pdf</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Approach</h2>
 
-        <p class="todo">Write me.
-Cite linktraversalcaching</p>
+        <ul class="todo">
+          <li>Cite linktraversalcaching</li>
+          <li>We extended cMatch to also work with property paths (define formally?), and extended zero-knowledge planner.</li>
+          <li>LDP-based actors</li>
+          <li>Type index actor</li>
+        </ul>
 
       </div>
 </section>
@@ -224,7 +232,7 @@ Cite linktraversalcaching</p>
 
         <p class="todo">Separate sections with smaller exps with different findings</p>
 
-        <p>Research question: How well does link traversal query processing perform</p>
+        <p>Research question: How well does link traversal query processing perform over decentralized environments with structural properties</p>
 
         <h3 id="live-exploration-is-required-for-heterogeneous-fragmentations">Live exploration is required for heterogeneous fragmentations</h3>
 
@@ -247,6 +255,16 @@ Any findings by comparing different frag strategies?</p>
 
         <p class="todo">Type index and other struct props are good for intra-pod querying, but for inter-vault querying, we also need cMatch, as we don’t have cross-vault indexes (yet!).</p>
 
+        <h3 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h3>
+
+        <ul class="todo">
+          <li>To measure query plan perf: comp with a query that first indexes data locally via construct, and than proper query planning =&gt; downside: delays time until first result!
+            <ul>
+              <li>Implement a link traversal actor that first traverses to find all triples, and then queries afterwards? Or just a simple hacked exp?</li>
+            </ul>
+          </li>
+        </ul>
+
       </div>
 </section>
 
@@ -254,7 +272,14 @@ Any findings by comparing different frag strategies?</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Conclusions</h2>
 
-        <p class="todo">Write me.</p>
+        <ul class="todo">
+          <li>Our results show that link traversal behaves quite different under these assumptions</li>
+          <li>Say termination and completeness problems are solved!(?)</li>
+          <li>The ability to close the world around solid pods create query opt opoortunities</li>
+          <li>Best termination condition is a LIMIT in the query? (but incompat with ORDER BY…)</li>
+          <li>Mention need for new datastructures (see ideas note)</li>
+          <li>Need for adaptive query planning!</li>
+        </ul>
 
       </div>
 </section>
