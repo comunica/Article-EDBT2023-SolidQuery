@@ -131,7 +131,8 @@ but that it is an effective paradigm for handling querying execution within larg
 We do this by making use of specific structural properties within decentralized environments
 that can be used for more effective source discovery and optimization of query execution.
 We apply our research to the Solid ecosystem,
-but these concepts are generalizable to other decentralization initiatives <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.</p>
+but these concepts are generalizable to other decentralization initiatives <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.
+To the best of our knowledge, this is the first in-depth analysis of query execution within the Solid ecosystem.</p>
 
         <p>This article is structured as follows.
 In the next section (<a href="#related-work">Section 2</a>), we discuss the related work,
@@ -158,38 +159,83 @@ Contributions:
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Related Work</h2>
 
-        <p class="todo">Write me.</p>
+        <p>In this section, we discuss the related work around Link Traversal Query Processing,
+and related benchmarks for this paradigm.</p>
 
         <h3 id="link-traversal-query-processing">Link Traversal Query Processing</h3>
 
-        <p class="todo">Write me.</p>
+        <p>The Link Traversal Query Processing (LTQP) was introduced more than a decade ago <span class="references">[<a href="#ref-13">13</a>]</span>
+as a way to query over the Web of Linked Data as if it was a single globally distributed dataspace,
+without having to first indexing it in a single location.
+LTQP does this by employing the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html"><em>follow-your-nose</em> principle of Linked Data</a> <span class="references">[<a href="#ref-6">6</a>]</span> during query execution,
+where new RDF triples are continuously added to a local dataset by discovering new sources by following links between documents.
+For this, an iterator-based pipeline <span class="references">[<a href="#ref-13">13</a>]</span> was introduced
+that allows query execution to take place without having to wait until all links have been followed.</p>
 
-        <p class="todo">Cite Alberto Mendelez papers? And focused crawling?</p>
+        <p>Since query execution happens in parallel with source discovery in LTQP,
+traditional query optimization algorithms that happen before query execution using statistics of the dataset can not be used,
+as those statistics are not known yet.
+To cope with this problem, a zero-knowledge query planning technique <span class="references">[<a href="#ref-14">14</a>]</span>
+was introduced that orders triple patterns in a query based on several link traversal-specific heuristics.</p>
 
-        <p class="todo">Relevant paragraph from Olaf’s databankenspectrum paper:
-&gt; We notice that live-exploration-based query execution
-is similar to focused crawling as studied in the context of search engines for the WWW [6,2]. However, in focused crawling a discovered URI qualifies for lookup because of a high relevance for a specific topic; in live-exploration-based query execution, the relevance is more closely related to the task of answering the query at hand. Furthermore, the pur- pose of retrieving Web content is slightly different in both cases: Focused crawling, or Web crawling in general, is a pre-runtime (or background) process during which a system populates a search index or a local database; then, the run- time component of such a system provides query access to the populated data structure. Live exploration approaches, in contrast, retrieve data to answer a particular query; in these approaches, link-traversal-based data retrieval is an essen- tial part of the query execution process itself. Nonetheless, implementation techniques used for focused crawling, such as context graphs [8], might be applied in a live exploration approach for Linked Data query execution.</p>
+        <p>In practise, the number of links that could be followed within the Web of Linked Data can become very large.
+In the worst case, a single query could require traversing the whole Web, which is not feasible.
+Therefore, the formal LTQP model <span class="references">[<a href="#ref-12">12</a>]</span> has the option to configure different reachability criteria,
+which are different strategies for deciding which links to follow, each leading to different semantics of query result completeness.
+These reachability criteria are the following:</p>
+
+        <dl>
+          <dt>cNone</dt>
+          <dd>No links are followed</dd>
+          <dt>cMatch</dt>
+          <dd>Only those links in discovered triples are followed if those triples match with a triple pattern within the query.</dd>
+          <dt>cAll</dt>
+          <dd>All links are followed</dd>
+        </dl>
+
+        <p>Context-based semantics <span class="references">[<a href="#ref-15">15</a>]</span> is an extension of these reachability semantics
+that was introduced to be able to cope with property path expressions in the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL 1.1 language</a> <span class="references">[<a href="#ref-16">16</a>]</span>.
+Furthermore, next to query-driven reachability, <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.bartbogaerts.eu/articles/2021/005-RuleML-GuidedLink-SubwebSpec/SubwebSpecifications.pdf">another extension</a> <span class="references">[<a href="#ref-17">17</a>]</span> of the LTQP model introduces
+the ability for data publishers to express which links should be followed.</p>
+
+        <p>Next to filtering links via different reachability semantics,
+a second methodology for improving query result arrival times is through <em>link prioritization</em> <span class="references">[<a href="#ref-18">18</a>]</span>.
+However, existing techniques are based on heuristics, which only sometimes result in faster query results compared to no prioritization.</p>
+
+        <p>Even though multiple query languages <span class="references">[<a href="#ref-19">19</a>, <a href="#ref-20">20</a>, <a href="#ref-21">21</a>]</span> have been introduced specifically for LTQP,
+its SPARQL-based execution model <span class="references">[<a href="#ref-22">22</a>]</span> is still the most widely used.
+Since SPARQL is the only language among these that is a standard, and the fact that it is more widely known and supported by different tools,
+we make use of it within this work.
+Nevertheless, the concepts within this work can be applied to other languages as well.</p>
+
+        <p>LTQP is related to the idea of SQL-based query execution over the Web <span class="references">[<a href="#ref-23">23</a>, <a href="#ref-24">24</a>]</span>.
+However, while LTQP considers the Web of Linked Data a large database using the RDF data model,
+these SQL-based approaches over the Web focus on querying attributes or content within Web pages.
+Furthermore, LTQP is also related to the concept of focused crawling <span class="references">[<a href="#ref-25">25</a>, <a href="#ref-26">26</a>]</span>,
+where crawlers search for Web pages of specific topics to populate a local database or index.
+Focus crawling techniques are however designed to run as a preprocessing step <em>before</em> query execution,
+while LTQP traverses documents <em>during</em> query execution.</p>
 
         <h3 id="link-traversal-benchmarks">Link Traversal Benchmarks</h3>
 
         <p>Aside from the lack of reusable link traversal query engines,
 there is also a lack of easily reusable benchmarks for evaluation the performance of link traversal query engines.
-According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-13">13</a>]</span>,
+According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-27">27</a>]</span>,
 <em>“there are no well-defined and well-understood benchmarks to test Linked Data query processing systems”</em>.
 Nevertheless, there has been work that provide a foundation onto which benchmarks may be built.</p>
 
-        <p>QWalk <span class="references">[<a href="#ref-14">14</a>]</span> is a methodology for building a large set of queries based on random walks through an existing dataset.
+        <p>QWalk <span class="references">[<a href="#ref-28">28</a>]</span> is a methodology for building a large set of queries based on random walks through an existing dataset.
 The output of this methodology is a set of Basic Graph Patterns that crosses through various documents through dereferenceable links.
 QWalk has been designed to be executed on the actual Web, to evaluate uncontrolled environments.
 Due this this, most of the queries generated by the authors make use of links that have gone dead by now,
 which makes these queries unsuitable for a reliable and reusable benchmark.
 Furthermore, the authors propose making use of queries from existing benchmarks
-such as FedBench <span class="references">[<a href="#ref-15">15</a>]</span> and DBpedia SPARQL Benchmark <span class="references">[<a href="#ref-16">16</a>]</span> for execution over the actual Web.
+such as FedBench <span class="references">[<a href="#ref-29">29</a>]</span> and DBpedia SPARQL Benchmark <span class="references">[<a href="#ref-30">30</a>]</span> for execution over the actual Web.
 Unfortunately, these also lead to inconsistent and non-reproducible experimental results,
 which makes them unsuitable for reliable link traversal benchmarking.
 In contrast, the benchmark we propose makes use of a closed environment that is in full control of the experimenter.</p>
 
-        <p>WODSim <span class="references">[<a href="#ref-17">17</a>]</span> is an tool that accepts an RDF dataset as input,
+        <p>WODSim <span class="references">[<a href="#ref-31">31</a>]</span> is an tool that accepts an RDF dataset as input,
 and is able to simulate a Web of Linked Data documents.
 For each triple in the dataset, it can either place the triple inside the Linked Data document(s)
 identified by the triple’s subject, object, or both.
@@ -200,11 +246,8 @@ and also provides more advanced fragmentation strategies.
 Furthermore, it ships with a standard dataset for more convenient usage.</p>
 
         <p>Aside from these approaches, evaluation of link traversal engines
-is usually done via hand crafted queries <span class="references">[<a href="#ref-18">18</a>, <a href="#ref-19">19</a>, <a href="#ref-20">20</a>, <a href="#ref-21">21</a>]</span>.</p>
+is usually done via hand crafted queries <span class="references">[<a href="#ref-22">22</a>, <a href="#ref-32">32</a>, <a href="#ref-14">14</a>, <a href="#ref-33">33</a>]</span>.</p>
 
-        <h3 id="analysis-of-decentralized-environments">Analysis of Decentralized Environments</h3>
-
-        <p class="todo">Some Solid papers and Mastodon if I can find any, and if space left.</p>
       </div>
 </section>
 
@@ -221,11 +264,11 @@ Finally, we list requirements for enabling query execution within the Solid ecos
 
         <h3 id="data-vault">Data Vault</h3>
 
-        <p>The primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-22">22</a>]</span> is
+        <p>The primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-34">34</a>]</span> is
 the data vault (also known as <em>data pod</em>), is a user-owned space in which any kind of data can be stored.
 Users can choose where and how their vault is stored,
-by either <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-23">23</a>]</span>,
-or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-24">24</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-25">25</a>]</span>.
+by either <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-35">35</a>]</span>,
+or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-36">36</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-37">37</a>]</span>.
 Data vaults are loosely coupled to applications,
 where applications must request explicit access to the user for interacting with specific data.
 This loose coupling enables different applications to make use of the same data in an interoperable manner.</p>
@@ -256,18 +299,18 @@ If the vault supports this, resources can be modified or created using HTTP PATC
 
         <p>Data vaults are meant to contain not only public data, but also private data.
 Therefore, users can configure who can access or modify files within their vault in a fine-grained manner
-using techniques such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-26">26</a>]</span> and <a href="spec:acp">ACP</a>.
+using techniques such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-38">38</a>]</span> and <a href="spec:acp">ACP</a>.
 This configuration is usually done by referring to the <em>WebID</em> of users,
 which will be elaborated upon in the next section.</p>
 
         <h3 id="webid-profile">WebID Profile</h3>
 
         <p>Any agent (person or organization) within the Solid ecosystem can establish their identity by a URI, called a WebID.
-These agents can authenticate themselves using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-27">27</a>]</span>,
+These agents can authenticate themselves using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-39">39</a>]</span>,
 which is required for authorization during reading and writing of resources behind access control.
 The Solid OIDC protocol is fully decentralized, which means that anyone is free to choose or set up their own identity provider.</p>
 
-        <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-28">28</a>]</span>,
+        <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-40">40</a>]</span>,
 each WebID URI should be dereferenceable, and return a WebID profile document.
 Next to basic information of the agent such as its name and contact details,
 this document should contain several links:</p>
@@ -301,7 +344,7 @@ such as the link to the preferences file and notifications inbox.
 
         <h3 id="type-index">Type Index</h3>
 
-        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">Type Index</a> <span class="references">[<a href="#ref-28">28</a>]</span> is a document that enables type-based resource discovery within a vault.
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">Type Index</a> <span class="references">[<a href="#ref-40">40</a>]</span> is a document that enables type-based resource discovery within a vault.
 Users may have public or private type indexes, which respectively refer to data that are and are not publicly discoverable.
 A type index can contain type registration entries for different classes,
 where each registration has a link to resources containing instances of the corresponding class.
@@ -340,7 +383,7 @@ This also makes applications robust against changes or additions within the Soli
 where this only requires changes within the underlying query engine,
 as the application’s declarative query can remain unchanged.</p>
 
-        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-22">22</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-34">34</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
 Below, we list the requirements that query agents have if they want to provide query execution over one or more data vaults.</p>
 
         <p class="todo">Figure of all relevant Solid elements and query as abstraction layer?</p>
@@ -371,7 +414,7 @@ To enable queries over private resources, the agent SHOULD be able to authentica
         <p>While these requirements apply to both read and write queries,
 we will focus on read-only queries for the remainder of this article.
 Furthermore, given the Linked Data nature of Solid,
-we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-29">29</a>]</span> for the remainder of this article.
+we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-16">16</a>]</span> for the remainder of this article.
 Nevertheless, these concepts can also be applied to write queries and other query languages.</p>
 
       </div>
@@ -390,7 +433,7 @@ Derive motivation from benchmark from ldbc snb paper</p>
 - 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
 - Tools to execute experiment and measurement of metrics</p>
 
-        <p>LDBC SNB interactive <span class="references">[<a href="#ref-30">30</a>, <a href="#ref-31">31</a>]</span></p>
+        <p>LDBC SNB interactive <span class="references">[<a href="#ref-41">41</a>, <a href="#ref-42">42</a>]</span></p>
 
         <h3 id="design-considerations">Design considerations</h3>
 
@@ -479,6 +522,7 @@ Any findings by comparing different frag strategies?</p>
           <li>Best termination condition is a LIMIT in the query? (but incompat with ORDER BY…)</li>
           <li>Mention need for new datastructures (see ideas note)</li>
           <li>Need for adaptive query planning!</li>
+          <li>LDQL not needed, because type idx and ldp give us navigational things (this is not something the developer should have to express, because this is different in different pods!)</li>
         </ul>
 
       </div>
@@ -514,42 +558,64 @@ Any findings by comparing different frag strategies?</p>
   <dt id="ref-12">[12]</dt>
   <dd resource="#linktraversalfoundations" typeof="schema:Article">Hartig, O., Freytag, J.-C.: Foundations of Traversal based Query Execution over Linked Data. In: Proceedings of the 23rd ACM conference on Hypertext and social media. pp. 43–52. ACM (2012).</dd>
   <dt id="ref-13">[13]</dt>
-  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
+  <dd resource="#linktraversalpipeline" typeof="schema:Article">Hartig, O., Bizer, C., Freytag, J.-C.: Executing SPARQL queries over the web of linked data. In: International semantic web conference. pp. 293–309. Springer (2009).</dd>
   <dt id="ref-14">[14]</dt>
-  <dd resource="#linktraversaldiverse" typeof="schema:Article">Umbrich, J., Hogan, A., Polleres, A., Decker, S.: Link Traversal Querying for a diverse Web of Data. Semantic Web. 6, 585–624 (2015).</dd>
-  <dt id="ref-15">[15]</dt>
-  <dd resource="#fedbench" typeof="schema:Article">Schmidt, M., Görlitz, O., Haase, P., Ladwig, G., Schwarte, A., Tran, T.: Fedbench: A benchmark suite for federated semantic data query processing. In: International Semantic Web Conference. pp. 585–600. Springer (2011).</dd>
-  <dt id="ref-16">[16]</dt>
-  <dd resource="#dbpediasparqlbenchmark" typeof="schema:Article">Morsey, M., Lehmann, J., Auer, S., Ngonga Ngomo, A.-C.: DBpedia SPARQL benchmark–performance assessment with real queries on real data. In: International semantic web conference. pp. 454–469. Springer (2011).</dd>
-  <dt id="ref-17">[17]</dt>
-  <dd resource="#walkingwithoutamap" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
-  <dt id="ref-18">[18]</dt>
-  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O., Bizer, C., Freytag, J.-C.: Executing SPARQL queries over the Web of Linked Data. In: International Semantic Web Conference. pp. 293–309. Springer (2009).</dd>
-  <dt id="ref-19">[19]</dt>
-  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
-  <dt id="ref-20">[20]</dt>
   <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
-  <dt id="ref-21">[21]</dt>
-  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
-  <dt id="ref-22">[22]</dt>
-  <dd resource="https://solidproject.org/TR/protocol" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T., Verborgh, R., Kjernsmo, K.: Solid Protocol. Solid, <a href="https://solidproject.org/TR/protocol">https:/​/​solidproject.org/TR/protocol</a> (2020).</dd>
-  <dt id="ref-23">[23]</dt>
-  <dd resource="https://github.com/CommunitySolidServer/CommunitySolidServer" typeof="schema:CreativeWork">Van Herwegen, J., Verborgh, R., Taelman, R., Bosquet, M.: Community Solid Server. <a href="https://github.com/CommunitySolidServer/CommunitySolidServer">https:/​/​github.com/CommunitySolidServer/CommunitySolidServer</a> (2022).</dd>
-  <dt id="ref-24">[24]</dt>
-  <dd resource="https://docs.inrupt.com/pod-spaces/" typeof="schema:CreativeWork">Inrupt: PodSpaces. <a href="https://docs.inrupt.com/pod-spaces/">https:/​/​docs.inrupt.com/pod-spaces/</a> (2022).</dd>
-  <dt id="ref-25">[25]</dt>
-  <dd resource="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company" typeof="schema:CreativeWork">Flanders, D.: The Flemish Data Utility Company. <a href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">https:/​/​www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company</a> (2022).</dd>
-  <dt id="ref-26">[26]</dt>
-  <dd resource="https://solid.github.io/web-access-control-spec/" typeof="schema:CreativeWork">Capadisli, S.: Web Access Control. Solid, <a href="https://solid.github.io/web-access-control-spec/">https:/​/​solid.github.io/web-access-control-spec/</a> (2022).</dd>
-  <dt id="ref-27">[27]</dt>
-  <dd resource="https://solid.github.io/solid-oidc/" typeof="schema:CreativeWork">Coburn, A., Pavlik, elf, Zagidulin, D.: Solid-OIDC. Solid, <a href="https://solid.github.io/solid-oidc/">https:/​/​solid.github.io/solid-oidc/</a> (2022).</dd>
-  <dt id="ref-28">[28]</dt>
-  <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
-  <dt id="ref-29">[29]</dt>
+  <dt id="ref-15">[15]</dt>
+  <dd resource="#linktraversalpropertypaths" typeof="schema:Article">Hartig, O., Pirrò, G.: SPARQL with Property Paths on the Web. Semantic Web. 8, 773–795 (2017).</dd>
+  <dt id="ref-16">[16]</dt>
   <dd resource="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: SPARQL 1.1 Query Language. W3C, <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">https:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
+  <dt id="ref-17">[17]</dt>
+  <dd resource="https://www.bartbogaerts.eu/articles/2021/005-RuleML-GuidedLink-SubwebSpec/SubwebSpecifications.pdf" typeof="schema:Article">Bogaerts, B., Ketsman, B., Zeboudj, Y., Aamer, H., Taelman, R., Verborgh, R.: Link Traversal with Distributed Subweb Specifications. In: Rules and Reasoning: 5th International Joint Conference, RuleML+RR 2021, Leuven, Belgium, September 8 – September 15, 2021, Proceedings (2021).</dd>
+  <dt id="ref-18">[18]</dt>
+  <dd resource="#linktraversaloptimization" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
+  <dt id="ref-19">[19]</dt>
+  <dd resource="#ldql" typeof="schema:Article">Hartig, O., Pérez, J.: LDQL: A query language for the web of linked data. Journal of Web Semantics. 41, 9–29 (2016).</dd>
+  <dt id="ref-20">[20]</dt>
+  <dd resource="#nautilod" typeof="schema:Article">Fionda, V., Pirrò, G., Gutierrez, C.: NautiLOD: A formal language for the web of data graph. ACM Transactions on the Web (TWEB). 9, 1–43 (2015).</dd>
+  <dt id="ref-21">[21]</dt>
+  <dd resource="#ldpath" typeof="schema:Article">Schaffert, S., Bauer, C., Kurz, T., Dorschel, F., Glachs, D., Fernandez, M.: The linked media framework: Integrating and interlinking enterprise media content and data. In: Proceedings of the 8th International Conference on Semantic Systems. pp. 25–32 (2012).</dd>
+  <dt id="ref-22">[22]</dt>
+  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O.: SPARQL for a Web of Linked Data: Semantics and computability. In: Extended Semantic Web Conference. pp. 8–23. Springer (2012).</dd>
+  <dt id="ref-23">[23]</dt>
+  <dd resource="#queryingwwwsql" typeof="schema:Article">Mendelzon, A.O., Mihaila, G.A., Milo, T.: Querying the world wide web. In: Fourth International Conference on Parallel and Distributed Information Systems. pp. 80–91. IEEE (1996).</dd>
+  <dt id="ref-24">[24]</dt>
+  <dd resource="#infogatheringwwww3ql" typeof="schema:Article">Konopnicki, D., Shmueli, O.: Information gathering in the World-Wide Web: the W3QL query language and the W3QS system. ACM Transactions on Database Systems (TODS). 23, 369–410 (1998).</dd>
+  <dt id="ref-25">[25]</dt>
+  <dd resource="#focusedcrawling" typeof="schema:Article">Chakrabarti, S., Van den Berg, M., Dom, B.: Focused crawling: a new approach to topic-specific Web resource discovery. Computer networks. 31, 1623–1640 (1999).</dd>
+  <dt id="ref-26">[26]</dt>
+  <dd resource="#focusedcrawlingimproving" typeof="schema:Article">Batsakis, S., Petrakis, E.G.M., Milios, E.: Improving the performance of focused web crawlers. Data &amp; Knowledge Engineering. 68, 1001–1013 (2009).</dd>
+  <dt id="ref-27">[27]</dt>
+  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
+  <dt id="ref-28">[28]</dt>
+  <dd resource="#linktraversaldiverse" typeof="schema:Article">Umbrich, J., Hogan, A., Polleres, A., Decker, S.: Link Traversal Querying for a diverse Web of Data. Semantic Web. 6, 585–624 (2015).</dd>
+  <dt id="ref-29">[29]</dt>
+  <dd resource="#fedbench" typeof="schema:Article">Schmidt, M., Görlitz, O., Haase, P., Ladwig, G., Schwarte, A., Tran, T.: Fedbench: A benchmark suite for federated semantic data query processing. In: International Semantic Web Conference. pp. 585–600. Springer (2011).</dd>
   <dt id="ref-30">[30]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="#dbpediasparqlbenchmark" typeof="schema:Article">Morsey, M., Lehmann, J., Auer, S., Ngonga Ngomo, A.-C.: DBpedia SPARQL benchmark–performance assessment with real queries on real data. In: International semantic web conference. pp. 454–469. Springer (2011).</dd>
   <dt id="ref-31">[31]</dt>
+  <dd resource="#walkingwithoutamap" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
+  <dt id="ref-32">[32]</dt>
+  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
+  <dt id="ref-33">[33]</dt>
+  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
+  <dt id="ref-34">[34]</dt>
+  <dd resource="https://solidproject.org/TR/protocol" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T., Verborgh, R., Kjernsmo, K.: Solid Protocol. Solid, <a href="https://solidproject.org/TR/protocol">https:/​/​solidproject.org/TR/protocol</a> (2020).</dd>
+  <dt id="ref-35">[35]</dt>
+  <dd resource="https://github.com/CommunitySolidServer/CommunitySolidServer" typeof="schema:CreativeWork">Van Herwegen, J., Verborgh, R., Taelman, R., Bosquet, M.: Community Solid Server. <a href="https://github.com/CommunitySolidServer/CommunitySolidServer">https:/​/​github.com/CommunitySolidServer/CommunitySolidServer</a> (2022).</dd>
+  <dt id="ref-36">[36]</dt>
+  <dd resource="https://docs.inrupt.com/pod-spaces/" typeof="schema:CreativeWork">Inrupt: PodSpaces. <a href="https://docs.inrupt.com/pod-spaces/">https:/​/​docs.inrupt.com/pod-spaces/</a> (2022).</dd>
+  <dt id="ref-37">[37]</dt>
+  <dd resource="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company" typeof="schema:CreativeWork">Flanders, D.: The Flemish Data Utility Company. <a href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">https:/​/​www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company</a> (2022).</dd>
+  <dt id="ref-38">[38]</dt>
+  <dd resource="https://solid.github.io/web-access-control-spec/" typeof="schema:CreativeWork">Capadisli, S.: Web Access Control. Solid, <a href="https://solid.github.io/web-access-control-spec/">https:/​/​solid.github.io/web-access-control-spec/</a> (2022).</dd>
+  <dt id="ref-39">[39]</dt>
+  <dd resource="https://solid.github.io/solid-oidc/" typeof="schema:CreativeWork">Coburn, A., Pavlik, elf, Zagidulin, D.: Solid-OIDC. Solid, <a href="https://solid.github.io/solid-oidc/">https:/​/​solid.github.io/solid-oidc/</a> (2022).</dd>
+  <dt id="ref-40">[40]</dt>
+  <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
+  <dt id="ref-41">[41]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-42">[42]</dt>
   <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
 </dl>
 </section>
