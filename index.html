@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/08/17" />
+  <meta name="citation_publication_date" content="2022/08/23" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -89,31 +89,67 @@ DOI: http://dx.doi.org/1.2/111.222
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Introduction</h2>
 
-        <p class="todo">Write me.</p>
+        <p>Even though the Web has transformed our world to become more interconnected than before,
+the Web is becoming increasingly centralized in recent years, contrary to its original vision <span class="references">[<a href="#ref-1">1</a>]</span>.
+Today, the majority of data on the Web is flowing towards isolated <em>data silos</em>,
+which are in the hands of large companies.
+This siloization of data leads to a variety of problems,
+ranging from issues with cross-silo interoperability and vendor lock-in
+to privacy issues and the fact that data is in control by companies instead of users.</p>
 
-        <ul>
-          <li>Query research mainly focused on centralization or federation over a small number of sources, but query research over a large number of sources remains limited (cite link traversal)</li>
-          <li>Due to various reasons, decentralization efforts (solid, mastodon) are gaining popularity, where centralization is impossible due to various reasons</li>
-          <li>With data being spread over a huge number document-based sources, querying becomes difficult</li>
-          <li>While federated querying techniques don’t scale to the number of required sources, and depend on SPARQL endpoints, they are not suitable</li>
-          <li>In this work, we investigate how link traversal can be used for querying within decentralized environments
-            <ul>
-              <li>The goal of this work is to evaluate the effectiveness of link traversal decentralized environments, since centralization is not possible.</li>
-            </ul>
-          </li>
-          <li>For this, link traversal can make use of assumptions within decentralized environments for optimizing query execution</li>
-          <li>We introduce and evaluate algorithms for guided link traversal over decentralized environments
-            <ul>
-              <li>We apply our research to Solid use case, but the concepts are generalizable to other decentralization initiatives (mastodon, nanopubs, …)</li>
-            </ul>
-          </li>
-        </ul>
+        <p>Because of these reasons, and the introduction of user-empowering legislature such as GDPR and CCPA,
+decentralization initiatives <span class="references">[<a href="#ref-2">2</a>, <a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span> are gaining popularity.
+The common goal of these initiatives is
+to give people back control over their own data
+by decentralizing data on the Web instead of making use of centralized data silos.
+Initiatives such as Solid <span class="references">[<a href="#ref-2">2</a>]</span> do this by allowing users to store any kind of data in their own personal data vault,
+which are in full control by the users.
+These data vaults form personal Knowledge Graphs <span class="references">[<a href="#ref-5">5</a>]</span>, which are represented as collections of <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html">Linked Data documents</a> <span class="references">[<a href="#ref-6">6</a>]</span>.
+The presence of such data vaults results in a massive distribution of data,
+where practical cases such as social networking applications could require accessing thousands or even millions of documents
+across different data vaults across the Web.
+However, these applications can not yet be built today,
+due to the lack of effective query execution techniques that are capable of handling the requirements of decentralized environments such as Solid.</p>
 
-        <p class="todo">Contributions:
+        <p>The majority of research in the domain of query execution over Knowledge Graphs has been focused on centralized use cases,
+where all data is captured in just one or a small number of federated sources, usually exposed as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL endpoints</a> <span class="references">[<a href="#ref-7">7</a>]</span>.
+Even though several federated query execution approaches have been introduced <span class="references">[<a href="#ref-8">8</a>, <a href="#ref-9">9</a>, <a href="#ref-10">10</a>]</span>,
+they have been designed for federating over <em>a few (~10) large sources</em>,
+while decentralized environments such as Solid are identified by <em>a large number (~millions) of small sources</em>.
+Furthermore, federated query execution techniques assume all sources to be known prior to query execution,
+which is not feasible in decentralized environments due to the lack of a centralized index.
+Therefore, these federated querying techniques are currently not suitable for decentralized environments.</p>
+
+        <p><em>Link Traversal Query Processing (LTQP)</em> <span class="references">[<a href="#ref-11">11</a>, <a href="#ref-12">12</a>]</span>
+is an alternative query execution paradigm that is more promising for handling querying over large decentralized environments.
+It is identified by its ability to query over a continuously growing range of documents which are discovered during query execution
+by following hyperlinks between Linked Data documents using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html"><em>follow-your-nose</em> principle</a> <span class="references">[<a href="#ref-6">6</a>]</span>.
+While LTQP has mainly been a theoretically interesting technique, it has not seen any practical use cases so far.</p>
+
+        <p>In this work, we prove that LTQP is not only interesting in theory,
+but that it is an effective paradigm for handling querying execution within large decentralized environments.
+We do this by making use of specific structural properties within decentralized environments
+that can be used for more effective source discovery and optimization of query execution.
+We apply our research to the Solid ecosystem,
+but these concepts are generalizable to other decentralization initiatives <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.</p>
+
+        <p>This article is structured as follows.
+In the next section (<a href="#related-work">Section 2</a>), we discuss the related work,
+after which we provide an analysis of the structural properties of Solid data vaults in <a href="#solid">Section 3</a>.
+Next, in <a href="#benchmark">Section 4</a> we provide a benchmark that simulates a decentralized Solid environments based on this analysis.
+In <a href="#approach">Section 5</a>, we introduce and explain LTQP algorithms that make use of these structural properties,
+which are evaluated in <a href="#evaluation">Section 6</a>.
+Finally, we conclude in <a href="#conclusions">Section 7</a>.</p>
+
+        <!--
+Contributions:
+- Analysis of structural properties in solid pods
 - SolidBench: Benchmark to simulate a Web of data with configurable structural axioms
 - Guided link traversal algorithms for querying over Solid data vaults
 - Implementation of existing (all?) and new algorithms
-- An evaluation of link traversal algorithms within a simulated Web of Solid data vaults</p>
+- An evaluation of link traversal algorithms within a simulated Web of Solid data vaults
+{:.todo}
+-->
 
       </div>
 </section>
@@ -138,22 +174,22 @@ is similar to focused crawling as studied in the context of search engines for t
 
         <p>Aside from the lack of reusable link traversal query engines,
 there is also a lack of easily reusable benchmarks for evaluation the performance of link traversal query engines.
-According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-1">1</a>]</span>,
+According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-13">13</a>]</span>,
 <em>“there are no well-defined and well-understood benchmarks to test Linked Data query processing systems”</em>.
 Nevertheless, there has been work that provide a foundation onto which benchmarks may be built.</p>
 
-        <p>QWalk <span class="references">[<a href="#ref-2">2</a>]</span> is a methodology for building a large set of queries based on random walks through an existing dataset.
+        <p>QWalk <span class="references">[<a href="#ref-14">14</a>]</span> is a methodology for building a large set of queries based on random walks through an existing dataset.
 The output of this methodology is a set of Basic Graph Patterns that crosses through various documents through dereferenceable links.
 QWalk has been designed to be executed on the actual Web, to evaluate uncontrolled environments.
 Due this this, most of the queries generated by the authors make use of links that have gone dead by now,
 which makes these queries unsuitable for a reliable and reusable benchmark.
 Furthermore, the authors propose making use of queries from existing benchmarks
-such as FedBench <span class="references">[<a href="#ref-3">3</a>]</span> and DBpedia SPARQL Benchmark <span class="references">[<a href="#ref-4">4</a>]</span> for execution over the actual Web.
+such as FedBench <span class="references">[<a href="#ref-15">15</a>]</span> and DBpedia SPARQL Benchmark <span class="references">[<a href="#ref-16">16</a>]</span> for execution over the actual Web.
 Unfortunately, these also lead to inconsistent and non-reproducible experimental results,
 which makes them unsuitable for reliable link traversal benchmarking.
 In contrast, the benchmark we propose makes use of a closed environment that is in full control of the experimenter.</p>
 
-        <p>WODSim <span class="references">[<a href="#ref-5">5</a>]</span> is an tool that accepts an RDF dataset as input,
+        <p>WODSim <span class="references">[<a href="#ref-17">17</a>]</span> is an tool that accepts an RDF dataset as input,
 and is able to simulate a Web of Linked Data documents.
 For each triple in the dataset, it can either place the triple inside the Linked Data document(s)
 identified by the triple’s subject, object, or both.
@@ -164,7 +200,7 @@ and also provides more advanced fragmentation strategies.
 Furthermore, it ships with a standard dataset for more convenient usage.</p>
 
         <p>Aside from these approaches, evaluation of link traversal engines
-is usually done via hand crafted queries <span class="references">[<a href="#ref-6">6</a>, <a href="#ref-7">7</a>, <a href="#ref-8">8</a>, <a href="#ref-9">9</a>]</span>.</p>
+is usually done via hand crafted queries <span class="references">[<a href="#ref-18">18</a>, <a href="#ref-19">19</a>, <a href="#ref-20">20</a>, <a href="#ref-21">21</a>]</span>.</p>
 
         <h3 id="analysis-of-decentralized-environments">Analysis of Decentralized Environments</h3>
 
@@ -178,6 +214,8 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
 
         <p class="todo">Write about background of Solid, and details on structural properties (with a figure?).
 Solid type index and webid and seeAlso: https://solid.github.io/webid-profile/</p>
+
+        <p class="todo">List requirements for query execution over solid vaults (and then prove that link traversal meets these reqs)</p>
 
       </div>
 </section>
@@ -195,7 +233,7 @@ Derive motivation from benchmark from ldbc snb paper</p>
 - 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
 - Tools to execute experiment and measurement of metrics</p>
 
-        <p>LDBC SNB interactive <span class="references">[<a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span></p>
+        <p>LDBC SNB interactive <span class="references">[<a href="#ref-22">22</a>, <a href="#ref-23">23</a>]</span></p>
 
         <h3 id="design-considerations">Design considerations</h3>
 
@@ -209,6 +247,10 @@ Derive motivation from benchmark from ldbc snb paper</p>
 https://arxiv.org/pdf/2001.02299.pdf</p>
 
         <p class="todo">A table with choke points and queries</p>
+
+        <h3 id="statistics">Statistics</h3>
+
+        <p class="todo">Number of vaults, triples per vault, total number of docs, docs per vault, …</p>
       </div>
 </section>
 
@@ -221,6 +263,7 @@ https://arxiv.org/pdf/2001.02299.pdf</p>
           <li>We extended cMatch to also work with property paths (define formally?), and extended zero-knowledge planner.</li>
           <li>LDP-based actors</li>
           <li>Type index actor</li>
+          <li>Make use of subweb specification formalization to capture LDP and type idx</li>
         </ul>
 
       </div>
@@ -290,26 +333,50 @@ Any findings by comparing different frag strategies?</p>
 <h2 id="references">References</h2>
 <dl class="references">
   <dt id="ref-1">[1]</dt>
-  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
+  <dd resource="#webproposal" typeof="schema:CreativeWork">Berners-Lee, T.J.: Information management: A proposal. (1989).</dd>
   <dt id="ref-2">[2]</dt>
-  <dd resource="#linktraversaldiverse" typeof="schema:Article">Umbrich, J., Hogan, A., Polleres, A., Decker, S.: Link Traversal Querying for a diverse Web of Data. Semantic Web. 6, 585–624 (2015).</dd>
+  <dd resource="#solid" typeof="schema:Article">Mansour, E., Sambra, A.V., Hawke, S., Zereba, M., Capadisli, S., Ghanem, A., Aboulnaga, A., Berners-Lee, T.: A Demonstration of the Solid platform for Social Web Applications. In: Proceedings of the 25th International Conference Companion on World Wide Web. pp. 223–226 (2016).</dd>
   <dt id="ref-3">[3]</dt>
-  <dd resource="#fedbench" typeof="schema:Article">Schmidt, M., Görlitz, O., Haase, P., Ladwig, G., Schwarte, A., Tran, T.: Fedbench: A benchmark suite for federated semantic data query processing. In: International Semantic Web Conference. pp. 585–600. Springer (2011).</dd>
+  <dd resource="#mastodon" typeof="schema:Article">Zignani, M., Gaito, S., Rossi, G.P.: Follow the \enquoteMastodon: Structure and Evolution of a Decentralized Online Social Network. In: Twelfth International AAAI Conference on Web and Social Media (2018).</dd>
   <dt id="ref-4">[4]</dt>
-  <dd resource="#dbpediasparqlbenchmark" typeof="schema:Article">Morsey, M., Lehmann, J., Auer, S., Ngonga Ngomo, A.-C.: DBpedia SPARQL benchmark–performance assessment with real queries on real data. In: International semantic web conference. pp. 454–469. Springer (2011).</dd>
+  <dd resource="https://dx.doi.org/10.7717/peerj-cs.387" typeof="schema:Article">Kuhn, T., Taelman, R., Emonet, V., Antonatos, H., Soiland-Reyes, S., Dumontier, M.: Semantic micro-contributions with decentralized nanopublication services. PeerJ Computer Science. (2021). doi:10.7717/peerj-cs.387</dd>
   <dt id="ref-5">[5]</dt>
-  <dd resource="#walkingwithoutamap" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
+  <dd resource="#knowledgegraphs" typeof="schema:Article">Hogan, A., Blomqvist, E., Cochez, M., d’Amato, C., Melo, G.de, Gutierrez, C., Kirrane, S., Gayo, J.E.L., Navigli, R., Neumaier, S., others: Knowledge graphs. Synthesis Lectures on Data, Semantics, and Knowledge. 12, 1–257 (2021).</dd>
   <dt id="ref-6">[6]</dt>
-  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O., Bizer, C., Freytag, J.-C.: Executing SPARQL queries over the Web of Linked Data. In: International Semantic Web Conference. pp. 293–309. Springer (2009).</dd>
+  <dd resource="https://www.w3.org/DesignIssues/LinkedData.html" typeof="schema:CreativeWork">Berners-Lee, T.: Linked Data. <a href="https://www.w3.org/DesignIssues/LinkedData.html">https:/​/​www.w3.org/DesignIssues/LinkedData.html</a> (2009).</dd>
   <dt id="ref-7">[7]</dt>
-  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
+  <dd resource="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/" typeof="schema:CreativeWork">Feigenbaum, L., Todd Williams, G., Grant Clark, K., Torres, E.: SPARQL 1.1 Protocol. W3C, <a href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">https:/​/​www.w3.org/TR/2013/REC-sparql11-protocol-20130321/</a> (2013).</dd>
   <dt id="ref-8">[8]</dt>
-  <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
+  <dd resource="#fedx" typeof="schema:Article">Schwarte, A., Haase, P., Hose, K., Schenkel, R., Schmidt, M.: Fedx: Optimization Techniques for Federated Query Processing on Linked Data. In: International semantic web conference. Springer (2011).</dd>
   <dt id="ref-9">[9]</dt>
-  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
+  <dd resource="#tpf" typeof="schema:Article">Verborgh, R., Vander Sande, M., Hartig, O., Van Herwegen, J., De Vocht, L., De Meester, B., Haesendonck, G., Colpaert, P.: Triple Pattern Fragments: a low-cost Knowledge Graph Interface for the Web. Journal of Web Semantics. 37, 184–206 (2016).</dd>
   <dt id="ref-10">[10]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="#hibiscus" typeof="schema:Article">Saleem, M., Ngomo, A.-C.N.: Hibiscus: Hypergraph-based Source Selection for SPARQL Endpoint Federation. In: European semantic web conference. pp. 176–191. Springer (2014).</dd>
   <dt id="ref-11">[11]</dt>
+  <dd resource="#linktraversal" typeof="schema:Article">Hartig, O.: An Overview on Execution Strategies for Linked Data Queries. Datenbank-Spektrum. 13, 89–99 (2013).</dd>
+  <dt id="ref-12">[12]</dt>
+  <dd resource="#linktraversalfoundations" typeof="schema:Article">Hartig, O., Freytag, J.-C.: Foundations of Traversal based Query Execution over Linked Data. In: Proceedings of the 23rd ACM conference on Hypertext and social media. pp. 43–52. ACM (2012).</dd>
+  <dt id="ref-13">[13]</dt>
+  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
+  <dt id="ref-14">[14]</dt>
+  <dd resource="#linktraversaldiverse" typeof="schema:Article">Umbrich, J., Hogan, A., Polleres, A., Decker, S.: Link Traversal Querying for a diverse Web of Data. Semantic Web. 6, 585–624 (2015).</dd>
+  <dt id="ref-15">[15]</dt>
+  <dd resource="#fedbench" typeof="schema:Article">Schmidt, M., Görlitz, O., Haase, P., Ladwig, G., Schwarte, A., Tran, T.: Fedbench: A benchmark suite for federated semantic data query processing. In: International Semantic Web Conference. pp. 585–600. Springer (2011).</dd>
+  <dt id="ref-16">[16]</dt>
+  <dd resource="#dbpediasparqlbenchmark" typeof="schema:Article">Morsey, M., Lehmann, J., Auer, S., Ngonga Ngomo, A.-C.: DBpedia SPARQL benchmark–performance assessment with real queries on real data. In: International semantic web conference. pp. 454–469. Springer (2011).</dd>
+  <dt id="ref-17">[17]</dt>
+  <dd resource="#walkingwithoutamap" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
+  <dt id="ref-18">[18]</dt>
+  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O., Bizer, C., Freytag, J.-C.: Executing SPARQL queries over the Web of Linked Data. In: International Semantic Web Conference. pp. 293–309. Springer (2009).</dd>
+  <dt id="ref-19">[19]</dt>
+  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
+  <dt id="ref-20">[20]</dt>
+  <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
+  <dt id="ref-21">[21]</dt>
+  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
+  <dt id="ref-22">[22]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-23">[23]</dt>
   <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
 </dl>
 </section>
