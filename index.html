@@ -212,10 +212,167 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">The Solid Ecosystem</h2>
 
-        <p class="todo">Write about background of Solid, and details on structural properties (with a figure?).
-Solid type index and webid and seeAlso: https://solid.github.io/webid-profile/</p>
+        <p>In this section, we provide an analysis of the structural properties within the Solid ecosystem
+that are relevant for query execution.
+We first start by explaining the concept of data vaults and its implications on applications.
+Next, we explain the WebID, which is used for identifying users.
+Then, we discuss the Solid type index that improves data discovery.
+Finally, we list requirements for enabling query execution within the Solid ecosystem.</p>
 
-        <p class="todo">List requirements for query execution over solid vaults (and then prove that link traversal meets these reqs)</p>
+        <h3 id="data-vault">Data Vault</h3>
+
+        <p>The primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-22">22</a>]</span> is
+the data vault (also known as <em>data pod</em>), is a user-owned space in which any kind of data can be stored.
+Users can choose where and how their vault is stored,
+by either <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-23">23</a>]</span>,
+or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-24">24</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-25">25</a>]</span>.
+Data vaults are loosely coupled to applications,
+where applications must request explicit access to the user for interacting with specific data.
+This loose coupling enables different applications to make use of the same data in an interoperable manner.</p>
+
+        <p>Currently, data vaults are primarily file-based, and are exposed on the Web as a REST API
+using elements of the <a href="spec:ldp">Linked Data Platform (LDP) specification</a>.
+Directories are represented using <em>LDP Basic Containers</em>,
+which can contain any number of resources that correspond to RDF or non-RDF documents,
+or other nested basic containers.
+For the rest of this article, we will only consider the processing RDF documents within vaults.
+Resources within vaults can be read by sending HTTP GET requests to their URLs,
+with optional content negotiation to return the documents in different RDF serializations.
+If the vault supports this, resources can be modified or created using HTTP PATCH and POST requests.
+<a href="#example-ldpcontainer">Listing 1</a> shows an example of such a basic container in a data vault that contains one file and two directories.</p>
+
+        <figure id="example-ldpcontainer" class="listing">
+<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
+</code><code>
+</code><code>&lt;&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource;
+</code><code>   ldp:contains &lt;file.ttl&gt;, &lt;posts/&gt;, &lt;profile/&gt;.
+</code><code>&lt;file.ttl&gt; a ldp:Resource.
+</code><code>&lt;posts/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.
+</code><code>&lt;profile/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.</code></pre>
+<figcaption>
+            <p><span class="label">Listing 1:</span> Example in the Turtle serialization of a LDP container in a Solid data vault containing one file and two directories.</p>
+          </figcaption>
+</figure>
+
+        <p>Data vaults are meant to contain not only public data, but also private data.
+Therefore, users can configure who can access or modify files within their vault in a fine-grained manner
+using techniques such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-26">26</a>]</span> and <a href="spec:acp">ACP</a>.
+This configuration is usually done by referring to the <em>WebID</em> of users,
+which will be elaborated upon in the next section.</p>
+
+        <h3 id="webid-profile">WebID Profile</h3>
+
+        <p>Any agent (person or organization) within the Solid ecosystem can establish their identity by a URI, called a WebID.
+These agents can authenticate themselves using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-27">27</a>]</span>,
+which is required for authorization during reading and writing of resources behind access control.
+The Solid OIDC protocol is fully decentralized, which means that anyone is free to choose or set up their own identity provider.</p>
+
+        <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-28">28</a>]</span>,
+each WebID URI should be dereferenceable, and return a WebID profile document.
+Next to basic information of the agent such as its name and contact details,
+this document should contain several links:</p>
+
+        <ul>
+          <li>Identity provider to authenticate the WebID.</li>
+          <li>Root LDP container of its data vault.</li>
+          <li>Public and private type indexes.</li>
+        </ul>
+
+        <p>A WebID profile is allowed to be split up into multiple document,
+which are referred to each other using the <code>rdfs:seeAlso</code> predicate.
+There are more WebID profiles elements, but we omit these due to their irrelevance in this work,
+such as the link to the preferences file and notifications inbox.
+<a href="#example-webidprofile">Listing 2</a> contains a simplified example of such a WebID profile.</p>
+
+        <figure id="example-webidprofile" class="listing">
+<pre><code>@prefix pim: &lt;http://www.w3.org/ns/pim/space#&gt;.
+</code><code>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
+</code><code>@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt; .
+</code><code>
+</code><code>&lt;#me&gt; foaf:name &quot;Zulma&quot;;
+</code><code>      pim:storage &lt;/&gt;;
+</code><code>      solid:oidcIssuer &lt;https://solidcommunity.net/&gt;;
+</code><code>      solid:publicTypeIndex &lt;/publicTypeIndex.ttl&gt;.
+</code></pre>
+<figcaption>
+            <p><span class="label">Listing 2:</span> Simplified example of a WebID profile in the Turtle serialization.</p>
+          </figcaption>
+</figure>
+
+        <h3 id="type-index">Type Index</h3>
+
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">Type Index</a> <span class="references">[<a href="#ref-28">28</a>]</span> is a document that enables type-based resource discovery within a vault.
+Users may have public or private type indexes, which respectively refer to data that are and are not publicly discoverable.
+A type index can contain type registration entries for different classes,
+where each registration has a link to resources containing instances of the corresponding class.
+For example, <a href="#example-typeindex">Listing 3</a> shows a type index with type registrations for posts and comments,
+where the posts entry refers to a single posts file,
+and the comments entry refers to a container with multiple comments files.
+If an application wants to obtain all posts of a user,
+it can do so by finding this type index and following the link within the type index entry that corresponds to the post class.</p>
+
+        <figure id="example-typeindex" class="listing">
+<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
+</code><code>@prefix ex: &lt;http://example.org/&gt;.
+</code><code>
+</code><code>&lt;&gt;
+</code><code>  a solid:TypeIndex ;
+</code><code>  a solid:ListedDocument.
+</code><code>
+</code><code>&lt;#ab09fd&gt; a solid:TypeRegistration;
+</code><code>  solid:forClass ex:Post;
+</code><code>  solid:instance &lt;/public/posts.ttl&gt;.
+</code><code>
+</code><code>&lt;#bq1r5e&gt; a solid:TypeRegistration;
+</code><code>  solid:forClass ex:Comment;
+</code><code>  solid:instanceContainer &lt;/public/comments/&gt;.
+</code></pre>
+<figcaption>
+            <p><span class="label">Listing 3:</span> Example of a type index with entries for posts and comments in the Turtle serialization.</p>
+          </figcaption>
+</figure>
+
+        <h3 id="requirements-for-query-engines">Requirements for query engines</h3>
+
+        <p>Instead of requiring all application developers to reinvent the wheel by manually discovering application-relevant elements within data vaults,
+this can be abstracted away behind declarative queries that are to be executed by reusable query engines.
+This also makes applications robust against changes or additions within the Solid protocol,
+where this only requires changes within the underlying query engine,
+as the application’s declarative query can remain unchanged.</p>
+
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-22">22</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
+Below, we list the requirements that query agents have if they want to provide query execution over one or more data vaults.</p>
+
+        <p class="todo">Figure of all relevant Solid elements and query as abstraction layer?</p>
+
+        <ol>
+          <li>
+            <p><strong>Mapping query to a sequence of HTTP requests</strong>:
+The query engine MUST have the ability to convert a declarative query into a sequence of one or more HTTP requests within or across data vaults.</p>
+          </li>
+          <li>
+            <p><strong>Discover root storage of a WebD</strong>:
+When given a link to a WebID profile, the query engine MUST be able discover and follow the <code>pim:storage</code> link to the storage root of the vault.</p>
+          </li>
+          <li>
+            <p><strong>Traversal of LDP containers</strong>:
+The query engine MUST be able to identify an LDP basic container, and follow (a subset of) links towards the resources within this container.</p>
+          </li>
+          <li>
+            <p><strong>Discovery and usage of type indexes</strong>:
+The query engine MUST be able to discover and follow type index links from the WebID profile, and handle (a subset of) the type registration links.</p>
+          </li>
+          <li>
+            <p><strong>Authenticated requests</strong>:
+To enable queries over private resources, the agent SHOULD be able to authenticate itself to the query engine using its WebID. The query engine can then use the authenticated session on behalf of the user to perform authorized HTTP requests over private resources.</p>
+          </li>
+        </ol>
+
+        <p>While these requirements apply to both read and write queries,
+we will focus on read-only queries for the remainder of this article.
+Furthermore, given the Linked Data nature of Solid,
+we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-29">29</a>]</span> for the remainder of this article.
+Nevertheless, these concepts can also be applied to write queries and other query languages.</p>
 
       </div>
 </section>
@@ -233,7 +390,7 @@ Derive motivation from benchmark from ldbc snb paper</p>
 - 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
 - Tools to execute experiment and measurement of metrics</p>
 
-        <p>LDBC SNB interactive <span class="references">[<a href="#ref-22">22</a>, <a href="#ref-23">23</a>]</span></p>
+        <p>LDBC SNB interactive <span class="references">[<a href="#ref-30">30</a>, <a href="#ref-31">31</a>]</span></p>
 
         <h3 id="design-considerations">Design considerations</h3>
 
@@ -375,8 +532,24 @@ Any findings by comparing different frag strategies?</p>
   <dt id="ref-21">[21]</dt>
   <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
   <dt id="ref-22">[22]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="https://solidproject.org/TR/protocol" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T., Verborgh, R., Kjernsmo, K.: Solid Protocol. Solid, <a href="https://solidproject.org/TR/protocol">https:/​/​solidproject.org/TR/protocol</a> (2020).</dd>
   <dt id="ref-23">[23]</dt>
+  <dd resource="https://github.com/CommunitySolidServer/CommunitySolidServer" typeof="schema:CreativeWork">Van Herwegen, J., Verborgh, R., Taelman, R., Bosquet, M.: Community Solid Server. <a href="https://github.com/CommunitySolidServer/CommunitySolidServer">https:/​/​github.com/CommunitySolidServer/CommunitySolidServer</a> (2022).</dd>
+  <dt id="ref-24">[24]</dt>
+  <dd resource="https://docs.inrupt.com/pod-spaces/" typeof="schema:CreativeWork">Inrupt: PodSpaces. <a href="https://docs.inrupt.com/pod-spaces/">https:/​/​docs.inrupt.com/pod-spaces/</a> (2022).</dd>
+  <dt id="ref-25">[25]</dt>
+  <dd resource="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company" typeof="schema:CreativeWork">Flanders, D.: The Flemish Data Utility Company. <a href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">https:/​/​www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company</a> (2022).</dd>
+  <dt id="ref-26">[26]</dt>
+  <dd resource="https://solid.github.io/web-access-control-spec/" typeof="schema:CreativeWork">Capadisli, S.: Web Access Control. Solid, <a href="https://solid.github.io/web-access-control-spec/">https:/​/​solid.github.io/web-access-control-spec/</a> (2022).</dd>
+  <dt id="ref-27">[27]</dt>
+  <dd resource="https://solid.github.io/solid-oidc/" typeof="schema:CreativeWork">Coburn, A., Pavlik, elf, Zagidulin, D.: Solid-OIDC. Solid, <a href="https://solid.github.io/solid-oidc/">https:/​/​solid.github.io/solid-oidc/</a> (2022).</dd>
+  <dt id="ref-28">[28]</dt>
+  <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
+  <dt id="ref-29">[29]</dt>
+  <dd resource="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: SPARQL 1.1 Query Language. W3C, <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">https:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
+  <dt id="ref-30">[30]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-31">[31]</dt>
   <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
 </dl>
 </section>
