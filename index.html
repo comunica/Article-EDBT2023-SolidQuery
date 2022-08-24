@@ -2,20 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta charset="utf-8" />
-  <title property="foaf:name schema:name">Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</title>
+  <title property="foaf:name schema:name">Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</title>
   <link rel="stylesheet" media="screen" href="styles/screen.css" />
   <link rel="stylesheet" media="print"  href="styles/print.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <meta name="citation_title" content="Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
+  <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/08/23" />
+  <meta name="citation_publication_date" content="2022/08/24" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
   <header>
-  <h1 id="evaluation-of-guided-link-traversal-query-execution-over-decentralized-environments-with-structural-assumptions">Evaluation of Guided Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</h1>
+  <h1 id="evaluation-of-link-traversal-query-execution-over-decentralized-environments-with-structural-assumptions">Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</h1>
 
   <!--
 {:#authors}
@@ -405,16 +405,18 @@ Below, we list the requirements that query agents have if they want to provide q
 The query engine MUST have the ability to convert a declarative query into a sequence of one or more HTTP requests within or across data vaults.</p>
           </li>
           <li>
-            <p><strong>Discover root storage of a WebD</strong>:
-When given a link to a WebID profile, the query engine MUST be able discover and follow the <code>pim:storage</code> link to the storage root of the vault.</p>
-          </li>
-          <li>
-            <p><strong>Traversal of LDP containers</strong>:
-The query engine MUST be able to identify an LDP basic container, and follow (a subset of) links towards the resources within this container.</p>
+            <p><strong>Discovery and usage of LDP storage</strong>:
+When given a link to a WebID profile, the query engine MUST be able discover and follow the <code>pim:storage</code> link to the storage root of the vault.
+Additionally, the query engine MUST be able to identify an LDP basic container, and follow (a subset of) links towards the resources within this container.</p>
           </li>
           <li>
             <p><strong>Discovery and usage of type indexes</strong>:
 The query engine MUST be able to discover and follow type index links from the WebID profile, and handle (a subset of) the type registration links.</p>
+          </li>
+          <li>
+            <p><strong>Variability of vault structures</strong>:
+The query engine SHOULD NOT make assumptions about the location of certain data within specific vaults
+without having an explicit and discoverable link path to it, e.g. via LDP storage or type indexes.</p>
           </li>
           <li>
             <p><strong>Authenticated requests</strong>:
@@ -435,33 +437,344 @@ Nevertheless, these concepts can also be applied to write queries and other quer
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Benchmark</h2>
 
-        <p class="todo">Write me.
-Goal: Simulate and analyze structural properies of solid ecosystem.
-Derive motivation from benchmark from ldbc snb paper</p>
-
-        <p>Benchmark aspects:
-- Generator: SNB+fragmenter: schema and generator for creating datasets at different scales
-- 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
-- Tools to execute experiment and measurement of metrics</p>
-
-        <p>LDBC SNB interactive <span class="references">[<a href="#ref-41">41</a>, <a href="#ref-42">42</a>]</span></p>
+        <p>In this section, we introduce <em>SolidBench</em>, a benchmark that enables reproducible performance measurements
+of different query execution approaches within a decentralized environment.
+For this, SolidBench simulates a decentralized Solid environment with corresponding workload.
+Hereafter, we start by explaining the design considerations of the benchmark and our use case scenario, after which we introduce an overview of SolidBench.
+Next, we zoom in on important details of the benchmark, such as fragmentation of the data and the query workload.</p>
 
         <h3 id="design-considerations">Design considerations</h3>
 
+        <p>The goal of our benchmark is to simulate a realistic decentralized environment based on the Solid ecosystem,
+and provide a realistic workload that simulates a Solid application that reads data from one or more vaults.
+To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-41">41</a>]</span>.</p>
+
+        <p>Based on our analysis of the Solid ecosystem in <a href="#solid">Section 3</a>,
+and requirements from similar benchmarks <span class="references">[<a href="#ref-41">41</a>, <a href="#ref-42">42</a>, <a href="#ref-43">43</a>]</span>,
+we introduce the following requirements for our benchmark:</p>
+
+        <ol>
+          <li><strong>WebIDs</strong>: The dataset should consist of a collection of simulated WebIDs corresponding to people or other entities. Each WebID should refer to one LDP-based storage vault. Each WebID should be represented using a standard RDF serialization.</li>
+          <li><strong>Data vaults</strong>: The dataset should consist of a collection of data vaults, each owned by a WebIDs. Each vault should consist of RDF files in any standard RDF serialization, and should be exposed according to the LDP specification.</li>
+          <li><strong>Type indexes</strong>: Each WebID should have a link to one or more type indexes, containing type registrations for data contained in the agent’s vault.</li>
+          <li><strong>Variability of vaults</strong>: Data should be organized in different ways in different vaults, to simulate different user preferences in how data is organized.</li>
+          <li><strong>Scalable dataset</strong>: The dataset should be configurable in size, which should enable an increase in the number of vaults and vault sizes.</li>
+          <li><strong>Workload</strong>: The benchmark should provide a workload of queries that evaluate different query operations and data linking structures.</li>
+          <li><strong>Metrics</strong>: The benchmark must be able to metrics such as total query execution time, separate query result arrival times, number of HTTP requests, and correctness.</li>
+          <li><strong>Configuration</strong>: The benchmark should be configurable in terms of queries and dataset properties, and provide default values for all of these.</li>
+        </ol>
+
+        <h3 id="social-network-scenario">Social Network Scenario</h3>
+
+        <p>Since the original purpose of the Solid project was to enable social interactions in a decentralized manner,
+the use case scenario our benchmark tackles is that of a social network.
+Concretely, different users each have their own data vault, and each user can provide personal details about themselves in their WebID document such as name, city of residence, and birthday.
+Next to that, users can express unidirectional knowledge relationships to other users.
+Furthermore, users can create posts, or leave comments on other posts.
+To stay in line with the ownership model of Solid, each post or comment a user creates, is stored within that user’s data vault.
+This means that chains of comments can span across different data vaults.</p>
+
+        <h3 id="solidbench-overview">SolidBench Overview</h3>
+
+        <p>To avoid reinventing the wheel, we build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>,
+which models a social network akin to Facebook, and meets the requirements of our desired use case scenario.</p>
+
+        <p>However, since SNB was designed to evaluate the performance of centralized query engine,
+its dataset generator outputs its dataset in a single large file, e.g. serialized as RDF Turtle.
+Since our aim is to simulate a decentralized social network,
+we introduce a fragmentation layer on top of this generator.
+This fragmenter is able to take in any dataset as input,
+and provide a fragmented version of this dataset that simulates an interlinked set of Linked Data documents,
+inspired by WODSim <span class="references">[<a href="#ref-31">31</a>]</span>.
+To simplify evaluation and testing,
+we also provide a built-in Web server that can serve the generated data vaults over HTTP using a single command,
+which is done using a slimmed-down version of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">Community Solid Server</a> <span class="references">[<a href="#ref-35">35</a>]</span>.
+This server disables authentication and authorization by default,
+so that evaluations can focus on the performance of query execution.</p>
+
+        <p>For the query workload, we build upon the <em>interactive</em> workload of SNB,
+and extend it with additional queries to cover link-related choke points.
+Since the query templates that are produced by the generator of SNB assume a centralized dataset,
+we also add a layer on top of these query templates that can transform the queries to correspond to the decentralized dataset.
+Related to this, we also provide a tool that can produce validation queries and results to measure the correctness of a system.
+Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
+
+        <p>All aspects of this benchmark are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-45">45</a>]</span>,
+ranging from fragmentation strategies to properties of query templates.
+Furthermore, we incorporate our benchmark into an existing benchmarking system (<em>name omitted due to double-blind review process</em>),
+which enables convenient creation and execution of this benchmark with query engines in reproducible manner.</p>
+
+        <p>By default, SolidBench sets the scale factor of the SNB generator to 0.1,
+which results in 157.210 files over 1.529 data vaults using the default fragmentation strategy.
+In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
+Even though this scale can be increased arbitrarily high,
+we notice that this default scale can already stress existing LTQP approaches beyond their capabilities.
+For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>.</p>
+
+        <!--
+157210 files
+1529 pods
+3556159 triples
+3556159/157210=22,62
+
+Counted using:
+- find . type -f | wc -l
+- ll | wc -l
+- find . -type f -exec wc -l {} \; | awk '{total += $1} END{print total}'
+
+Benchmark aspects:
+- Generator: SNB+fragmenter: schema and generator for creating datasets at different scales
+- 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
+- Tools to execute experiment and measurement of metrics
+-->
+
+        <p class="todo">figure with overview of benchmark components</p>
+
+        <p class="todo">Link to anonimized source code</p>
+
+        <p class="todo">Table with all config options? Maybe just in appendix?</p>
+
         <h3 id="fragmentation">Fragmentation</h3>
 
-        <p class="todo">List the fragmentation strategies</p>
+        <p>In order to convert the centralized dataset produced by SNB into a decentralized environment,
+we provide a tool that can fragment datasets using different fragmentation strategies.
+While this tool provides is highly configurable in terms of its strategies using a declarative JSON-LD-based configuration files,
+we only summarize its functionality in terms of two fragmentation dimensions.
+Finally, we illustrate its functionality by discussing different fragmentation strategies for handling posts and comments within the SNB dataset.
+All strategies within this tool are implemented in a streaming manner,
+which means that it can handle input datasets of any size,
+and the dataset does not have to be loaded fully in memory before it can be processed.</p>
 
-        <h3 id="choke-points">Choke Points</h3>
+        <p><strong>Fragmentation dimensions</strong></p>
 
-        <p class="todo">Refer to interactive choke points from SNB
-https://arxiv.org/pdf/2001.02299.pdf</p>
+        <p><em>Triple document assignment</em> is the first dimension of fragmentation,
+which concerns the task of deciding which triples are placed in what files.
+Inspired by WODSim <span class="references">[<a href="#ref-31">31</a>]</span>, we provide subject and object-based approaches,
+which respectively place each triple in the file referred to by their subject or object.
+These approaches can also be combined to place triples in both files referred to by subject and object.
+Additionally, we provide composition-based approaches, using which triples matching certain triple patterns can be assigned to a different approach.</p>
 
-        <p class="todo">A table with choke points and queries</p>
+        <p>The second dimension of fragmentation is that of <em>URI rewriting</em>,
+in which URIs can be modified to eventually end up in different documents according to the first dimension.
+For example, this allows URIs matching a regex to be modified partially,
+or certain triples to be appended upon matching with a certain triple pattern.</p>
 
-        <h3 id="statistics">Statistics</h3>
+        <p><strong>Strategies for fragmenting posts and comments</strong></p>
 
-        <p class="todo">Number of vaults, triples per vault, total number of docs, docs per vault, …</p>
+        <p>Based on the two fragmentation dimension discussed above,
+our fragmenter can be configured to manage different fragmentation strategies
+for posts and comments in the SNB data schema.
+While these strategies can be applied to both posts and comments,
+we only explain them hereafter in terms of posts:</p>
+
+        <ol>
+          <li><strong>Separate</strong>: Each post created by a person is placed in a separate RDF file within that person’s vault.</li>
+          <li><strong>Single</strong>: Posts created by a person are placed in a single RDF file within that person’s vault.</li>
+          <li><strong>Location-based</strong>: Posts created by a person are placed in files in that person’s vault corresponding to the location at which the post was created.</li>
+          <li><strong>Time-based</strong>: Posts created by a person are placed in files in that person’s vault corresponding to the day at which the post was created.</li>
+          <li><strong>Composite</strong>: The strategies above are assigned randomly to all persons in the dataset.</li>
+        </ol>
+
+        <p>By default, SolidBench makes use of the composite strategy,
+which results in fragmentation variance across the different vaults,
+which is realistic for the Solid ecosystem.</p>
+
+        <p class="todo">Mention noise</p>
+
+        <p class="todo">Figure with data model (fragmented)?</p>
+
+        <h3 id="workload">Workload</h3>
+
+        <p>As mentioned above, we make use of the <em>interactive</em> workload of SNB,
+since these correspond to the workload that social network applications would produce.
+We consider other SNB workloads (such as the business intelligence workload) out of scope,
+since these perform dataset analytics, which requires access to the whole dataset,
+which is not feasible in decentralization environments such as Solid where data can reside behind access control.
+Furthermore, we also focus solely on the class of read-only queries due to the scope of this article,
+but the concepts can easily be extended towards write queries.</p>
+
+        <p>The SNB interactive workload consists of two classes of query templates: <em>short</em> and <em>complex</em> read queries.
+Since these queries cover the choke points related to linking structures only partially,
+we add <em>discover</em> query templates as third class.</p>
+
+        <p><strong>Choke points</strong></p>
+
+        <!-- https://arxiv.org/pdf/2001.02299.pdf -->
+
+        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-41">41</a>]</span>,
+the short and complex SNB interactive workloads already cover the majority of the 33 choke points introduced by SNB.
+We refer to the SNB specification <span class="references">[<a href="#ref-44">44</a>]</span> for more details
+on the correlation of short and complex query templates to these choke points.</p>
+
+        <p>For this work, we introduce an additional category of choke points that are related to the <em>linking structures</em> within data vaults.
+These choke points within this category are the following:</p>
+
+        <ul>
+          <li><strong>CP L.1: Traversal of 1 hop (1)</strong>: Following one link to one other document.</li>
+          <li><strong>CP L.2: Traversal of 1 hop (n)</strong>: Following one link to multiple other document.</li>
+          <li><strong>CP L.3: Traversal of 2 hops (1:1)</strong>: Following one link to another document, and one link to another documents.</li>
+          <li><strong>CP L.4: Traversal of 2 hops (1:n)</strong>: Following one link to another document, and multiple links to other documents.</li>
+          <li><strong>CP L.5: Traversal of 3 hops (n:1:1)</strong>: Following multiple links to other documents, one link from the next document, and one other link.</li>
+          <li><strong>CP L.6: Traversal of 3 hops (n:1:n)</strong>: Following multiple links to other documents, one link from the next document, and multiple other link.</li>
+          <li><strong>CP L.7: Fragmentation variability in vaults</strong>: Handling the variability of data fragmentation across different data vaults.</li>
+          <li><strong>CP L.8: Index delegation</strong>: The potential of deferring subqueries to an index (such as the type index).</li>
+          <li><strong>CP L.9: Noise</strong>: The ability to filter out HTTP requests that are irrelevant to the query.</li>
+        </ul>
+
+        <p>Since the short and complex query classes only cover these choke points partially,
+we introduce the following <em>discover</em> queries dedicated for covering these choke points on linking structures:</p>
+
+        <ul>
+          <li>D1: All posts of a person</li>
+          <li>D2: All messages of a person</li>
+          <li>D3: Top tags in messages from a person</li>
+          <li>D4: Top locations in comments from a person</li>
+          <li>D5: All IPs a person has messaged from</li>
+          <li>D6: All fora a person messaged on</li>
+          <li>D7: All moderators in fora a person messaged on</li>
+          <li>D8: Other messages created by people that a person likes messages from</li>
+        </ul>
+
+        <p class="todo">Add anon link to templates</p>
+
+        <p>The correlation of these discover queries to choke points is summarized in …TODO…</p>
+
+        <figure id="chokepoints-discover" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Choke Point</th>
+                <th>D1</th>
+                <th>D2</th>
+                <th>D3</th>
+                <th>D4</th>
+                <th>D5</th>
+                <th>D6</th>
+                <th>D7</th>
+                <th>D8</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L.1</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.2</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.3</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.4</td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.5</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.6</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.7</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.8</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.9</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 1:</span> Coverage of choke points on linking structures for discover queries.</p>
+          </figcaption>
+        </figure>
+
+        <p class="todo">Existing queries in terms of choke points on linking structures?</p>
+
+        <p class="todo">discover queries in terms of 33 existing choke points?</p>
+
+        <p><strong>Query template instantiation</strong></p>
+
+        <p class="todo">Write me</p>
+
+        <p><strong>Metrics</strong></p>
+
+        <p class="todo">Metrics</p>
+
       </div>
 </section>
 
@@ -474,7 +787,7 @@ https://arxiv.org/pdf/2001.02299.pdf</p>
           <li>We extended cMatch to also work with property paths (define formally?), and extended zero-knowledge planner.</li>
           <li>LDP-based actors</li>
           <li>Type index actor</li>
-          <li>Make use of subweb specification formalization to capture LDP and type idx</li>
+          <li>Make use of subweb specification formalization to capture LDP and type idx, and make sure to also include formal basis of link traversal</li>
         </ul>
 
       </div>
@@ -501,9 +814,10 @@ Any findings by comparing different frag strategies?</p>
 
         <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+LDP:contains</p>
 
-        <h3 id="some-structural-properties-are-preferred-over-others">Some structural properties are preferred over others</h3>
+        <h3 id="some-discovery-methods-are-preferred-over-others">Some discovery methods are preferred over others</h3>
 
-        <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)</p>
+        <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)
+This requires us to make an experiment with pim:storage disabled but type idx not</p>
 
         <h3 id="intra--versus-intra-vault-querying">Intra- versus intra-vault querying</h3>
 
@@ -534,6 +848,7 @@ Any findings by comparing different frag strategies?</p>
           <li>Mention need for new datastructures (see ideas note)</li>
           <li>Need for adaptive query planning!</li>
           <li>LDQL not needed, because type idx and ldp give us navigational things (this is not something the developer should have to express, because this is different in different pods!)</li>
+          <li>Query containment</li>
         </ul>
 
       </div>
@@ -625,9 +940,15 @@ Any findings by comparing different frag strategies?</p>
   <dt id="ref-40">[40]</dt>
   <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
   <dt id="ref-41">[41]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
   <dt id="ref-42">[42]</dt>
+  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
+  <dt id="ref-43">[43]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-44">[44]</dt>
   <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
+  <dt id="ref-45">[45]</dt>
+  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
 </dl>
 </section>
 </footer>
