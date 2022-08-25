@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/08/24" />
+  <meta name="citation_publication_date" content="2022/08/25" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -801,38 +801,34 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
 
         <p>Research question: How well does link traversal query processing perform over decentralized environments with structural properties</p>
 
-        <h3 id="live-exploration-is-required-for-heterogeneous-fragmentations">Live exploration is required for heterogeneous fragmentations</h3>
+        <h3 id="only-reachability-semantics-are-insufficient">Only reachability semantics are insufficient</h3>
 
-        <p class="todo">Show that hardcoded data access to specific files is not good, because different vaults have different frag strategies.
-Any findings by comparing different frag strategies?</p>
+        <p class="todo">Also show cNone and cAll briefly, but those are either incorrect or too slow, and say we don’t consider them further in this work.</p>
 
-        <h3 id="structural-properties-move-bottleneck-from-number-of-links-to-query-plan">Structural properties move bottleneck from number of links to query plan</h3>
+        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+pim:storage, cMatch+typeidx, cMatch+pim:storage+typeidx</p>
 
-        <p class="todo">Compare duration of planning with query exec for discover queries and link following</p>
+        <p class="todo">But, cMatch is necessary for inter-pod traversal, while LDP and type index can only used for intra-pod querying. (show with a couple of queries and their correctness)</p>
 
-        <h3 id="structural-properties-and-cmatch-are-both-necessary">Structural properties and cMatch are both necessary</h3>
-
-        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+LDP:contains</p>
-
-        <h3 id="some-discovery-methods-are-preferred-over-others">Some discovery methods are preferred over others</h3>
+        <h3 id="type-index-is-more-selective-than-ldp-container-traversal">Type index is more selective than LDP container traversal</h3>
 
         <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)
 This requires us to make an experiment with pim:storage disabled but type idx not</p>
 
-        <h3 id="intra--versus-intra-vault-querying">Intra- versus intra-vault querying</h3>
-
-        <p class="todo">Type index and other struct props are good for intra-pod querying, but for inter-vault querying, we also need cMatch, as we don’t have cross-vault indexes (yet!).</p>
-
         <h3 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h3>
 
         <ul class="todo">
-          <li>To measure query plan perf: comp with a query that first indexes data locally via construct, and than proper query planning =&gt; downside: delays time until first result!
+          <li>To measure query plan perf: comp with a query that first indexes data locally via construct (measure that time), and than proper query planning =&gt; downside: delays time until first result!
             <ul>
               <li>Implement a link traversal actor that first traverses to find all triples, and then queries afterwards? Or just a simple hacked exp?</li>
             </ul>
           </li>
         </ul>
 
+        <h3 id="live-exploration-is-required-for-heterogeneous-fragmentations">Live exploration is required for heterogeneous fragmentations</h3>
+
+        <p class="todo">Optional: if time left. (we could also just discuss this in conclusions if not time left)
+Show that hardcoded data access to specific files is not good, because different vaults have different frag strategies.
+Any findings by comparing different frag strategies?</p>
       </div>
 </section>
 
