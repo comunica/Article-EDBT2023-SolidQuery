@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/08/25" />
+  <meta name="citation_publication_date" content="2022/08/26" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -509,7 +509,18 @@ which results in 157.210 files over 1.529 data vaults using the default fragment
 In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
 Even though this scale can be increased arbitrarily high,
 we notice that this default scale can already stress existing LTQP approaches beyond their capabilities.
+Furthermore, 27 query templates are provided which can be instantiated any number of times to simulate a query workload.
 For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>.</p>
+
+        <p>In summary, we introduce the following tools with SolidBench:</p>
+
+        <ul>
+          <li><strong>Dataset generator</strong>: consisting of SNB’s existing generator, and a new dataset fragmenter.</li>
+          <li><strong>Query generator</strong>: consisting of SNB’s existing generator, and a new fragmentation-aware query template instantiator.</li>
+          <li><strong>Validation generator</strong>: building on top of SNB’s validator, produces fragmentation-aware correctness validation sets containing queries and expected results.</li>
+          <li><strong>Dataset server</strong>: Convenient serving of fragmented datasets over HTTP.</li>
+          <li><strong>Benchmark runner</strong>: incorporation into an existing benchmarking system for execution against query engines via the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL protocol</a> <span class="references">[<a href="#ref-7">7</a>]</span>.</li>
+        </ul>
 
         <!--
 157210 files
@@ -635,7 +646,7 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
           <li>D8: Other messages created by people that a person likes messages from</li>
         </ul>
 
-        <p class="todo">Add anon link to templates</p>
+        <p class="todo">Add anon link to templates (the queries readme file in solidbench)</p>
 
         <p>The correlation of these discover queries to choke points is summarized in …TODO…</p>
 
@@ -769,11 +780,56 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
 
         <p><strong>Query template instantiation</strong></p>
 
-        <p class="todo">Write me</p>
+        <p>This benchmark contains 27 query templates, from which 19 are derived from queries within SNB.
+These query templates can be instantiated multiple times for different resources, based on the dataset scale.
+By default, each template is instantiated five times, so that metrics can be averaged to reduce the effect of outliers.</p>
+
+        <p>Due to the fragmentation and URI rewriting we apply on top of the SNB dataset,
+we were unable to make use of the standard SNB query templates and its method of query instantiation.
+Therefore, we have implemented a custom query template instantiation tool that takes into account these fragmentations.</p>
+
+        <p class="todo">Link to anon version of the tool</p>
+
+        <p><a href="#template-discover-8">Listing 4</a> shows an example of the template for discover query 8,
+which covers the majority of choke points related to linking structures.
+It is instantiated with a person’s WebID URI, and attempts to find all messages
+created by people that this person likes messages from.
+Since it starts from all liked messages of the starting person, then navigates to the creator of those messages,
+and then retrieves the contents of those messages, it covers CP L.6.
+Furthermore, since messages are fragmented in different ways across vaults, and the query spans different vaults, it covers CP L.7.
+Since messages can be captured within the user’s type index, CP L.8 is also covered.
+Finally, since only message-related documents needs to be retrieved from the vaults,
+all other documents could potentially pruned out, covering CP L.9.</p>
+
+        <figure id="template-discover-8" class="listing">
+<pre><code>PREFIX snvoc: &lt;http://localhost:3000/www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/&gt;
+</code><code>SELECT DISTINCT ?creator ?messageContent WHERE {
+</code><code>    $person snvoc:likes [ snvoc:hasPost|snvoc:hasComment ?message ].
+</code><code>    ?message snvoc:hasCreator ?creator.
+</code><code>    ?otherMessage snvoc:hasCreator ?creator;
+</code><code>                  snvoc:content ?messageContent.
+</code><code>} LIMIT 10</code></pre>
+<figcaption>
+            <p><span class="label">Listing 4:</span> SPARQL template for discover query 8.</p>
+          </figcaption>
+</figure>
 
         <p><strong>Metrics</strong></p>
 
-        <p class="todo">Metrics</p>
+        <p>The most relevant performance metrics within SolidBench are the following:</p>
+
+        <ul>
+          <li><strong>Query execution time</strong>: The amount of time (milliseconds) it takes between sending the query to the query engine, and obtaining the final query result.</li>
+          <li><strong>Query result arrival times</strong>: For each separate query result, the amount of time (milliseconds) between sending the query to the query engine, and obtaining that specific result.</li>
+          <li><strong>HTTP requests</strong>: For a given query execution, the number of HTTP requests the engine issued during the execution of that query.</li>
+          <li><strong>Correctness</strong>: A boolean value indicating whether or not the query results conform to the expected query results.</li>
+        </ul>
+
+        <p>For measuring query execution and result arrival times,
+a warmup round with all instantiated query templates must take place first.
+To ensure that we take into account the volatile nature of the Web and the live traversal property of LTQP,
+the HTTP cache of the query engine is flushed before every query execution,
+while this cache can still be used within the span of a single query execution.</p>
 
       </div>
 </section>
@@ -801,7 +857,7 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
 
         <p>Research question: How well does link traversal query processing perform over decentralized environments with structural properties</p>
 
-        <h3 id="only-reachability-semantics-are-insufficient">Only reachability semantics are insufficient</h3>
+        <h3 id="solely-reachability-semantics-are-insufficient">Solely reachability semantics are insufficient</h3>
 
         <p class="todo">Also show cNone and cAll briefly, but those are either incorrect or too slow, and say we don’t consider them further in this work.</p>
 
@@ -822,6 +878,7 @@ This requires us to make an experiment with pim:storage disabled but type idx no
               <li>Implement a link traversal actor that first traverses to find all triples, and then queries afterwards? Or just a simple hacked exp?</li>
             </ul>
           </li>
+          <li>Say that indexed is only theoretical, as collecting all links requires traversal querying. Also show that some queries would produce infinite stream of urls. We just need better planning. Also optimal case follows all links in parallel.</li>
         </ul>
 
         <h3 id="live-exploration-is-required-for-heterogeneous-fragmentations">Live exploration is required for heterogeneous fragmentations</h3>
