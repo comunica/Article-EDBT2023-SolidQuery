@@ -355,7 +355,7 @@ such as the link to the preferences file and notifications inbox.
 
         <h3 id="type-index">Type Index</h3>
 
-        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">Type Index</a> <span class="references">[<a href="#ref-40">40</a>]</span> is a document that enables type-based resource discovery within a vault.
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/type-indexes/">Type Index</a> <span class="references">[<a href="#ref-41">41</a>]</span> is a document that enables type-based resource discovery within a vault.
 Users may have public or private type indexes, which respectively refer to data that are and are not publicly discoverable.
 A type index can contain type registration entries for different classes,
 where each registration has a link to resources containing instances of the corresponding class.
@@ -447,10 +447,10 @@ Next, we zoom in on important details of the benchmark, such as fragmentation of
 
         <p>The goal of our benchmark is to simulate a realistic decentralized environment based on the Solid ecosystem,
 and provide a realistic workload that simulates a Solid application that reads data from one or more vaults.
-To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-41">41</a>]</span>.</p>
+To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-42">42</a>]</span>.</p>
 
         <p>Based on our analysis of the Solid ecosystem in <a href="#solid">Section 3</a>,
-and requirements from similar benchmarks <span class="references">[<a href="#ref-41">41</a>, <a href="#ref-42">42</a>, <a href="#ref-43">43</a>]</span>,
+and requirements from similar benchmarks <span class="references">[<a href="#ref-42">42</a>, <a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>,
 we introduce the following requirements for our benchmark:</p>
 
         <ol>
@@ -476,7 +476,7 @@ This means that chains of comments can span across different data vaults.</p>
 
         <h3 id="solidbench-overview">SolidBench Overview</h3>
 
-        <p>To avoid reinventing the wheel, we build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>,
+        <p>To avoid reinventing the wheel, we build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-44">44</a>, <a href="#ref-45">45</a>]</span>,
 which models a social network akin to Facebook, and meets the requirements of our desired use case scenario.</p>
 
         <p>However, since SNB was designed to evaluate the performance of centralized query engine,
@@ -499,7 +499,7 @@ we also add a layer on top of these query templates that can transform the queri
 Related to this, we also provide a tool that can produce validation queries and results to measure the correctness of a system.
 Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
 
-        <p>All aspects of this benchmark are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-45">45</a>]</span>,
+        <p>All aspects of this benchmark are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-46">46</a>]</span>,
 ranging from fragmentation strategies to properties of query templates.
 Furthermore, we incorporate our benchmark into an existing benchmarking system (<em>name omitted due to double-blind review process</em>),
 which enables convenient creation and execution of this benchmark with query engines in reproducible manner.</p>
@@ -510,7 +510,7 @@ In total, there are 3.556.159 triples across all files, with an average of 22,62
 Even though this scale can be increased arbitrarily high,
 we notice that this default scale can already stress existing LTQP approaches beyond their capabilities.
 Furthermore, 27 query templates are provided which can be instantiated any number of times to simulate a query workload.
-For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-43">43</a>, <a href="#ref-44">44</a>]</span>.</p>
+For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-44">44</a>, <a href="#ref-45">45</a>]</span>.</p>
 
         <p>In summary, we introduce the following tools with SolidBench:</p>
 
@@ -612,9 +612,9 @@ we add <em>discover</em> query templates as third class.</p>
 
         <!-- https://arxiv.org/pdf/2001.02299.pdf -->
 
-        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-41">41</a>]</span>,
+        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-42">42</a>]</span>,
 the short and complex SNB interactive workloads already cover the majority of the 33 choke points introduced by SNB.
-We refer to the SNB specification <span class="references">[<a href="#ref-44">44</a>]</span> for more details
+We refer to the SNB specification <span class="references">[<a href="#ref-45">45</a>]</span> for more details
 on the correlation of short and complex query templates to these choke points.</p>
 
         <p>For this work, we introduce an additional category of choke points that are related to the <em>linking structures</em> within data vaults.
@@ -852,8 +852,8 @@ This resulting plan produces a tree of logical query operators representing in w
 To execute this plan, the logical operators are executed by specific physical operators.</p>
 
         <p>Our physical query execution builds upon the iterator-based pipeline approach <span class="references">[<a href="#ref-13">13</a>]</span>,
-which is the most popular among LTQP implementations <span class="references">[<a href="#ref-46">46</a>, <a href="#ref-33">33</a>, <a href="#ref-47">47</a>]</span>.
-This involves considering the execution plan as a pipeline <span class="references">[<a href="#ref-48">48</a>]</span> of iterator-based physical operators,
+which is the most popular among LTQP implementations <span class="references">[<a href="#ref-47">47</a>, <a href="#ref-33">33</a>, <a href="#ref-48">48</a>]</span>.
+This involves considering the execution plan as a pipeline <span class="references">[<a href="#ref-49">49</a>]</span> of iterator-based physical operators,
 through which intermediary results can flow through these chained operators to produce results in a pull-based manner.</p>
 
         <p>Instead of letting operators trigger the dereferencing of URIs <span class="references">[<a href="#ref-13">13</a>]</span>,
@@ -879,7 +879,7 @@ which may enable implementation of context-based reachability semantics <span c
 All link extractors only consider URIs as links,
 and thereby ignore any matches for blank nodes and literals.</p>
 
-        <p>This queue is then connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-49">49</a>]</span> in the leaves of the query plan,
+        <p>This queue is then connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-50">50</a>]</span> in the leaves of the query plan,
 such as triple patterns and property path operators,
 into which a stream of triples is sent.
 The queue indexes all triples locally, to ensure that a triple pattern operator
@@ -973,7 +973,7 @@ to only follow those links for classes that are of interest to the current query
 Concretely, this involves considering the objects referred to by <code>solid:forClass</code> on each type registration.
 To know whether or not a class is relevant to the current query,
 we explicitly check for the occurrence of this class within the query as object within triples using the <code>rdf:type</code> predicate.
-In future work, more complex approaches for determining the relevance of a class to a query could be devised based on inferencing <span class="references">[<a href="#ref-50">50</a>]</span>.</p>
+In future work, more complex approaches for determining the relevance of a class to a query could be devised based on inferencing <span class="references">[<a href="#ref-51">51</a>]</span>.</p>
 
         <h4 id="formal-description-1">Formal description</h4>
 
@@ -1040,7 +1040,7 @@ we extended these rules in our implementation to be able to join arbitrary opera
 as discused in <a href="#related-work">Section 2</a> as link extraction components.</p>
 
         <p>Our implementation supports users to explicitly pass seed URIs,
-but falls back to query-based seed URIs <span class="references">[<a href="#ref-46">46</a>]</span> if no manual seed URIs have been passed.
+but falls back to query-based seed URIs <span class="references">[<a href="#ref-47">47</a>]</span> if no manual seed URIs have been passed.
 This fallback involves finding all URIs within the query, and adding them as seed URIs to the link queue.</p>
 
         <ul class="todo">
@@ -1202,24 +1202,26 @@ Any findings by comparing different frag strategies?</p>
   <dt id="ref-40">[40]</dt>
   <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
   <dt id="ref-41">[41]</dt>
-  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
+  <dd resource="https://solid.github.io/type-indexes/" typeof="schema:CreativeWork">Turdean, T.: Type Indexes. Solid, <a href="https://solid.github.io/type-indexes/">https:/​/​solid.github.io/type-indexes/</a> (2022).</dd>
   <dt id="ref-42">[42]</dt>
-  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
+  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
   <dt id="ref-43">[43]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
   <dt id="ref-44">[44]</dt>
-  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
   <dt id="ref-45">[45]</dt>
-  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
+  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
   <dt id="ref-46">[46]</dt>
-  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
+  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
   <dt id="ref-47">[47]</dt>
-  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
+  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
   <dt id="ref-48">[48]</dt>
-  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
+  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
   <dt id="ref-49">[49]</dt>
-  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
+  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
   <dt id="ref-50">[50]</dt>
+  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
+  <dt id="ref-51">[51]</dt>
   <dd resource="#rif" typeof="schema:Article">Kifer, M.: Rule interchange format: The framework. In: International Conference on Web Reasoning and Rule Systems. pp. 1–11. Springer (2008).</dd>
 </dl>
 </section>
