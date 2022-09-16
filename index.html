@@ -1047,30 +1047,32 @@ $$
 
         <h3 id="implementation">Implementation</h3>
 
-        <ul class="todo">
-          <li>Focus on extensibility and modularity</li>
-          <li>Full SPARQL 1.1 support (pipelined impl of operators: important because “Since the link queue may virtually become infinitely long, the stream of triples sent to tuple-producing operators may also be infinitely long.”)</li>
-        </ul>
+        <p>We have implemented our system using an open-source SPARQL query engine framework (<em>name omitted due to double-blind review process</em>).
+Concretely, we have implemented the pipeline-based link queue as a separate module,
+and we provide multiple link extractors corresponding to the different source selectors introduced in previous sections.
+Our implementation has full SPARQL 1.1 support, and consists of pipelined implementations of all monotonic SPARQL operators.
+This pipelined implementation is important for iterative tuple processing in a non-blocking manner,
+because since the link queue may virtually become infinitely long,
+and stream of triples sent to tuple-producing operators may also be infinitely long.</p>
 
-        <p>Since the zero-knowledge query planning technique <span class="references">[<a href="#ref-14">14</a>]</span>
-only defines plan selection rules for joining triple patterns in a BGP,
-we extended these rules in our implementation to be able to join arbitrary operators.</p>
+        <p>To provide a stable reference implementation that can be used for the experiments in this work, and a basis for future research,
+our implementation focuses on extensibility and reusability.
+We do this by implementing all logic is configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
+Our implementation will be made available as open-source after the double-blind review process.</p>
 
-        <p>We have implemented the different reachability semantics <span class="references">[<a href="#ref-12">12</a>]</span> (cNone, cMatch, cAll)
-as discused in <a href="#related-work">Section 2</a> as link extraction components.</p>
-
-        <p>Our implementation supports users to explicitly pass seed URIs,
+        <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-48">48</a>]</span> including,
+the use of client-side caching <span class="references">[<a href="#ref-32">32</a>]</span>,
+the different reachability semantics <span class="references">[<a href="#ref-12">12</a>]</span>,
+zero-knowledge query planning <span class="references">[<a href="#ref-14">14</a>]</span> applied to arbitrary join operations instead of only triple patterns in BGPs,
+and more <span class="references">[<a href="#ref-13">13</a>]</span>.
+Furthermore, our implementation supports users to explicitly pass seed URIs,
 but falls back to query-based seed URIs <span class="references">[<a href="#ref-48">48</a>]</span> if no manual seed URIs have been passed.
 This fallback involves finding all URIs within the query, and adding them as seed URIs to the link queue.</p>
 
-        <ul class="todo">
-          <li>taking into account auth and HTTP 403’s</li>
-          <li>Cite linktraversalcaching</li>
-          <li>We extended cMatch to also work with property paths (define formally?), and extended zero-knowledge planner.</li>
-          <li>LDP-based actors</li>
-          <li>Type index actor</li>
-          <li>Make use of subweb specification formalization to capture LDP and type idx, and make sure to also include formal basis of link traversal</li>
-        </ul>
+        <p>Therefore, this implementation meet the requirements for a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
+This also includes the ability to perform authenticated requires to documents within vaults behind access control.
+To ensure that common HTTP errors that may occur during link traversal don’t terminate the query execution process,
+we run enable a default <em>lenient</em> mode, which ignores dereference responses with HTTP status code in ranges 400 and 500.</p>
 
       </div>
 </section>
