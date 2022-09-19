@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/09/16" />
+  <meta name="citation_publication_date" content="2022/09/19" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -1096,7 +1096,7 @@ and a discussion of our results to answer our research question.</p>
         <p>We make use of a full factorial experiment containing the following factors and values:</p>
 
         <ul>
-          <li><strong>Source selector strategy</strong>: LDP, Type Index, Filtered Type Index, LDP and Type Index, LDP and Filtered Type Index</li>
+          <li><strong>Source selector strategy</strong>: None, LDP, Type Index, Filtered Type Index, LDP and Type Index, LDP and Filtered Type Index</li>
           <li><strong>Reachability semantics</strong>: cNone, cMatch, cAll</li>
         </ul>
 
@@ -1107,30 +1107,417 @@ and the Filtered Type Index corresponds to <span class="katex"><span class="kate
         <p>Our experiments were performed on a 64-bit Ubuntu 14.04 machine with a 24-core 2.40 GHz CPU and 128 GB of RAM.
 The Solid vaults and query client were executed in isolated Docker containers on dedicated CPU cores with a simulated network.
 To foster reproducibility,
-the experimental setup, raw results, and scripts to process them will be made available after the double-blind review process.</p>
+the experimental setup, raw results, and scripts to process them will be made available after the double-blind review process.
+All queries were configured with a timeout of two minutes, and were executed three times to average metrics over.
+Each query template in the benchmark was instantiated five times, which resulted in 40 discover queries, 35 short queries, and 60 complex queries.</p>
 
         <h3 id="experimental-results">Experimental Results</h3>
 
-        <p>In this section, we present only those results that offer insights into the research question.</p>
+        <p>In this section, we present only those results that offer insights into the research question.
+<a href="#results-queries-discover">Table 2</a>, <a href="#results-queries-short">Table 3</a>, and <a href="#results-queries-complex">Table 4</a>
+show the aggregated results for the different combinations of our setup
+for the discover, short, and complex queries of the benchmark, respectively.
+Within these tables, the execution time, number of actual results, and correctness are averaged across all executed queries.
+The number of HTTP requests is counted across all query executions that did not time out within each combination.
+The timeout column represents the number of query templates that lead to a timeout for a given combination.
+The correctness of each query execution is calculated as the percentage of expected results that were actually produced.</p>
 
-        <p class="todo">All results (table)
-Say that we omit cNone and cAll (explain with numbers why)</p>
+        <figure id="results-queries-discover" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Experiment</th>
+                <th style="text-align: right">Time</th>
+                <th style="text-align: right">Requests</th>
+                <th style="text-align: right">Results</th>
+                <th style="text-align: right">Correctness</th>
+                <th style="text-align: right">Timeouts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cnone-base</td>
+                <td style="text-align: right">38</td>
+                <td style="text-align: right">8</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-base</td>
+                <td style="text-align: right">4,417</td>
+                <td style="text-align: right">425</td>
+                <td style="text-align: right">1.25</td>
+                <td style="text-align: right">12.50%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>call-base</td>
+                <td style="text-align: right">83,084</td>
+                <td style="text-align: right">450</td>
+                <td style="text-align: right">2.63</td>
+                <td style="text-align: right">19.38%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp</td>
+                <td style="text-align: right">2,361</td>
+                <td style="text-align: right">342</td>
+                <td style="text-align: right">20.50</td>
+                <td style="text-align: right">74.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">19,141</td>
+                <td style="text-align: right">825</td>
+                <td style="text-align: right">39.13</td>
+                <td style="text-align: right">99.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>call-ldp</td>
+                <td style="text-align: right">82,887</td>
+                <td style="text-align: right">449</td>
+                <td style="text-align: right">2.88</td>
+                <td style="text-align: right">20.63%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx</td>
+                <td style="text-align: right">2,814</td>
+                <td style="text-align: right">406</td>
+                <td style="text-align: right">20.50</td>
+                <td style="text-align: right">74.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">17,101</td>
+                <td style="text-align: right">763</td>
+                <td style="text-align: right">39.13</td>
+                <td style="text-align: right">99.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx</td>
+                <td style="text-align: right">79,937</td>
+                <td style="text-align: right">466</td>
+                <td style="text-align: right">3.50</td>
+                <td style="text-align: right">23.75%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx-filt</td>
+                <td style="text-align: right">2,466</td>
+                <td style="text-align: right">400</td>
+                <td style="text-align: right">20.50</td>
+                <td style="text-align: right">74.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">17,199</td>
+                <td style="text-align: right">762</td>
+                <td style="text-align: right">39.13</td>
+                <td style="text-align: right">99.14%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx-filt</td>
+                <td style="text-align: right">80,307</td>
+                <td style="text-align: right">458</td>
+                <td style="text-align: right">3.63</td>
+                <td style="text-align: right">24.38%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 2:</span> Overview of the average execution times (ms), total number of HTTP requests, average number of results, correctness, and number of timeouts across all 8 <strong>discover</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <figure id="results-queries-short" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Experiment</th>
+                <th style="text-align: right">Time</th>
+                <th style="text-align: right">Requests</th>
+                <th style="text-align: right">Results</th>
+                <th style="text-align: right">Correctness</th>
+                <th style="text-align: right">Timeouts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cnone-base</td>
+                <td style="text-align: right">74</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">0.14</td>
+                <td style="text-align: right">14.29%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-base</td>
+                <td style="text-align: right">27,122</td>
+                <td style="text-align: right">596</td>
+                <td style="text-align: right">0.43</td>
+                <td style="text-align: right">42.86%</td>
+                <td style="text-align: right">2</td>
+              </tr>
+              <tr>
+                <td>call-base</td>
+                <td style="text-align: right">119,300</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.29</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp</td>
+                <td style="text-align: right">1,933</td>
+                <td style="text-align: right">126</td>
+                <td style="text-align: right">1.57</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">69,765</td>
+                <td style="text-align: right">291</td>
+                <td style="text-align: right">0.43</td>
+                <td style="text-align: right">42.86%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>call-ldp</td>
+                <td style="text-align: right">119,335</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.29</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx</td>
+                <td style="text-align: right">2,816</td>
+                <td style="text-align: right">164</td>
+                <td style="text-align: right">1.57</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">69,084</td>
+                <td style="text-align: right">307</td>
+                <td style="text-align: right">0.43</td>
+                <td style="text-align: right">42.86%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx</td>
+                <td style="text-align: right">119,419</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.29</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx-filt</td>
+                <td style="text-align: right">2,170</td>
+                <td style="text-align: right">161</td>
+                <td style="text-align: right">1.57</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">69,600</td>
+                <td style="text-align: right">305</td>
+                <td style="text-align: right">0.43</td>
+                <td style="text-align: right">42.86%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx-filt</td>
+                <td style="text-align: right">119,287</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.29</td>
+                <td style="text-align: right">28.57%</td>
+                <td style="text-align: right">7</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 3:</span> Overview of the average execution times (ms), total number of HTTP requests, average number of results, correctness, and number of timeouts across all 7 <strong>short</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <figure id="results-queries-complex" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Experiment</th>
+                <th style="text-align: right">Time</th>
+                <th style="text-align: right">Requests</th>
+                <th style="text-align: right">Results</th>
+                <th style="text-align: right">Correctness</th>
+                <th style="text-align: right">Timeouts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cnone-base</td>
+                <td style="text-align: right">12,876</td>
+                <td style="text-align: right">11</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td>cmatch-base</td>
+                <td style="text-align: right">16,693</td>
+                <td style="text-align: right">1,620</td>
+                <td style="text-align: right">0.50</td>
+                <td style="text-align: right">2.50%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>call-base</td>
+                <td style="text-align: right">39,907</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp</td>
+                <td style="text-align: right">19,072</td>
+                <td style="text-align: right">351</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">38,281</td>
+                <td style="text-align: right">106</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp</td>
+                <td style="text-align: right">40,022</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx</td>
+                <td style="text-align: right">19,890</td>
+                <td style="text-align: right">400</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">37,504</td>
+                <td style="text-align: right">110</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx</td>
+                <td style="text-align: right">39,656</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx-filt</td>
+                <td style="text-align: right">18,903</td>
+                <td style="text-align: right">395</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">37,509</td>
+                <td style="text-align: right">109</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx-filt</td>
+                <td style="text-align: right">39,683</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 4:</span> Overview of the average execution times (ms), total number of HTTP requests, average number of results, correctness, and number of timeouts across all 12 <strong>complex</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <p>These results show that there are combinations of approaches that achieve a very high level of correctness for discover queries,
+and an average level of correctness for short queries.
+However, for complex queries, none of the combinations achieve an acceptable level of correctness.
+Hence, we consider this last query category too complex for current link traversal approaches, and we do not consider them further in this article.</p>
 
         <h3 id="discussion">Discussion</h3>
 
-        <h4 id="solely-reachability-semantics-are-insufficient">Solely reachability semantics are insufficient</h4>
+        <h4 id="intra-vault-and-inter-vault-data-discovery">Intra-vault and inter-vault data discovery</h4>
 
-        <p class="todo">Also show cNone and cAll briefly, but those are either incorrect or too slow, and say we don’t consider them further in this work.</p>
+        <p>The results above show that if we desire correct results,
+that the combination of cMatch semantics together at least one of the data vault discovery methods is required.
+This combination is needed because our workload contains queries that either target data within a single vault (e.g. D1),
+or data spanning multiple data vaults (e.g. D8).
+While the different data vault discovery methods are able to discover data <em>within</em> vaults,
+the reachability of cMatch is required to discover data <em>across</em> multiple vaults.</p>
 
-        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+pim:storage, cMatch+typeidx, cMatch+pim:storage+typeidx</p>
+        <p>Due to this, cNone (follow no links) is an ineffective replacement for cMatch (follow links matching query),
+because link traversal across multiple vaults will not take place, which will lead to too few query results.
+Concretely, for discover queries cNone can only achieve a completeness of 74.14% for discover queries and 28.57% for short queries,
+compared to respectively 99.14% and 42.86% for cMatch.
+However, for those queries that target a single vault, cNone can be used instead of cMatch without a loss of correctness,
+leading to a lower number of HTTP requests and lower query execution times.</p>
 
-        <p class="todo">But, cMatch is necessary for inter-pod traversal, while LDP and type index can only used for intra-pod querying. (show with a couple of queries and their correctness)</p>
+        <p>Since cAll leads to all links being followed, including those followed by cMatch,
+it is theoretically a sufficient replacement for cMatch.
+However, our results show that the number of links that are being followed becomes too high, which leads to timeouts for nearly all queries.</p>
+
+        <p>Our results show that solely using reachability semantics (cMatch or cAll) without a data discovery method is insufficient for discover queries,
+where a completeness of only up to 12.50% or 19.38% can be achieved.
+However, when looking at the short queries category, solely using reachability semantics appears to be sufficient,
+with the number of HTTP requests and query execution time even being lower.
+This difference exists because the discover category contains queries that discover data related to a certain person or resource,
+while the short queries target only details of specific resources. 
+Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.</p>
 
         <h4 id="type-index-is-more-selective-than-ldp-container-traversal">Type index is more selective than LDP container traversal</h4>
 
         <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)
 This requires us to make an experiment with pim:storage disabled but type idx not
 Say that type index is optional, so it can not be used on its own, as completeness can not be guaranteed</p>
+
+        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+pim:storage, cMatch+typeidx, cMatch+pim:storage+typeidx</p>
 
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
