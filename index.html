@@ -896,7 +896,7 @@ through which intermediary results can flow through these chained operators to p
 
         <p>Instead of letting operators trigger the dereferencing of URIs <span class="references">[<a href="#ref-13">13</a>]</span>,
 we follow a link queue-based approach <span class="references">[<a href="#ref-18">18</a>]</span>.
-The architecture of this approach is visualized in <a href="#figure-link-queue">Fig. 1</a>.
+The architecture of this approach is visualized in <a href="#figure-link-queue">Fig. 2</a>.
 Concretely, we consider a continuously growing <em>triple source</em> as the basis of the pipeline tree,
 which is able to produce a (possibly infinite) stream of RDF triples.
 This triple source is fed triples originating from a loop consisting of the <em>link queue</em>, <em>dereferencer</em>, and a set of <em>link extractors</em>.
@@ -927,7 +927,7 @@ that is executed later in the execution process does not miss any triples.</p>
         <figure id="figure-link-queue">
 <img src="img/link-queue.svg" alt="Link queue" />
 <figcaption>
-            <p><span class="label">Fig. 1:</span> Link queue, dereferencer and link extractors feeding triples into a triple source,
+            <p><span class="label">Fig. 2:</span> Link queue, dereferencer and link extractors feeding triples into a triple source,
 which produces a continuous stream of triples to tuple-producing operators
 in a pipelined query execution.</p>
           </figcaption>
@@ -1511,13 +1511,34 @@ This difference exists because the discover category contains queries that disco
 while the short queries target only details of specific resources. 
 Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.</p>
 
-        <h4 id="type-index-is-more-selective-than-ldp-container-traversal">Type index is more selective than LDP container traversal</h4>
+        <h4 id="type-index-discovery-is-highly-selective">Type index discovery is highly selective</h4>
 
-        <p class="todo">Show that for queries where type index filtering applies, pim:storage is not necessary, and less links will have to be followed. Because type index is more selective. (pim:storage is a form of index as well! =&gt; use as fallback)
-This requires us to make an experiment with pim:storage disabled but type idx not
-Say that type index is optional, so it can not be used on its own, as completeness can not be guaranteed</p>
+        <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches in <a href="#results-queries-discover">Table 2</a>,
+we can observe that usage of the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery.
+To explain this behaviour in more detail, <a href="#figure-link-queue">Fig. 2</a> shows the average query execution times of each discover query separately,
+for the different combinations of data vault discovery approaches.</p>
 
-        <p class="todo">Prove this with discover queries comparing just cMatch with cMatch+pim:storage, cMatch+typeidx, cMatch+pim:storage+typeidx</p>
+        <figure id="figure-link-queue">
+<img src="img/experiments/queries_indexvsstorage.svg" alt="Discover queries for index versus storage" />
+<figcaption>
+            <p><span class="label">Fig. 2:</span> Query execution times (logarithmic) for all discover queries with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <p>This figure shows that for all queries, using just the type index is slightly faster or comparable to just LDP-based discovery.
+However, when the filter-enabled type index approach is used, then this becomes orders of magnitude faster for half of the queries.
+This is because those queries target a possibly empty subset of the type index entries,
+which means that a significant range of links can be pruned out,
+which leads to a major reduction in the number of HTTP requests,
+which is a main bottleneck in link traversal.</p>
+
+        <p>These results also show that using the type index together with LDP-based discovery is still slightly faster than just using LDP-based discovery alone,
+but the significant performance benefits from the filter-enabled type index approach are lost in this case.
+The performance benefit is achieved because the type index enables more selective links to be followed first.
+But because no link pruning takes place during LDP-based discovery,
+all of the documents within the vaults still need to be requested over HTTP.</p>
+
+        <p class="todo">Query arrival times for D3? Or another query?</p>
 
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
@@ -1546,6 +1567,8 @@ Any findings by comparing different frag strategies?</p>
           <li>Our results show that link traversal behaves quite different under these assumptions</li>
           <li>Say termination and completeness problems are solved!(?)</li>
           <li>The ability to close the world around solid pods create query opt opoortunities</li>
+          <li>Say that type index is optional, so it can not be used on its own, as completeness can not be guaranteed.</li>
+          <li>Better combination of LDP+idx needed, where pruning of idx can help LDP better.</li>
           <li>Best termination condition is a LIMIT in the query? (but incompat with ORDER BY…)</li>
           <li>Mention need for new datastructures (see ideas note)</li>
           <li>Need for adaptive query planning! (mention eddy-like adaptive operation of the link queue (walking without a map - section 3), but it doesn’t consider adaptivity of the query plan)</li>
