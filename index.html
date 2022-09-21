@@ -896,7 +896,7 @@ through which intermediary results can flow through these chained operators to p
 
         <p>Instead of letting operators trigger the dereferencing of URIs <span class="references">[<a href="#ref-13">13</a>]</span>,
 we follow a link queue-based approach <span class="references">[<a href="#ref-18">18</a>]</span>.
-The architecture of this approach is visualized in <a href="#figure-link-queue">Fig. 2</a>.
+The architecture of this approach is visualized in <a href="#figure-link-queue">Fig. 1</a>.
 Concretely, we consider a continuously growing <em>triple source</em> as the basis of the pipeline tree,
 which is able to produce a (possibly infinite) stream of RDF triples.
 This triple source is fed triples originating from a loop consisting of the <em>link queue</em>, <em>dereferencer</em>, and a set of <em>link extractors</em>.
@@ -927,7 +927,7 @@ that is executed later in the execution process does not miss any triples.</p>
         <figure id="figure-link-queue">
 <img src="img/link-queue.svg" alt="Link queue" />
 <figcaption>
-            <p><span class="label">Fig. 2:</span> Link queue, dereferencer and link extractors feeding triples into a triple source,
+            <p><span class="label">Fig. 1:</span> Link queue, dereferencer and link extractors feeding triples into a triple source,
 which produces a continuous stream of triples to tuple-producing operators
 in a pipelined query execution.</p>
           </figcaption>
@@ -1511,34 +1511,53 @@ This difference exists because the discover category contains queries that disco
 while the short queries target only details of specific resources. 
 Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.</p>
 
-        <h4 id="type-index-discovery-is-highly-selective">Type index discovery is highly selective</h4>
+        <h4 id="type-index-discovery-is-more-selective-than-ldp-based-discovery">Type index discovery is more selective than LDP-based discovery</h4>
+
+        <p><strong>Query execution times</strong></p>
 
         <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Table 2</a>,
 we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery.
-To explain this behaviour in more detail, <a href="#figure-link-queue">Fig. 2</a> shows the average query execution times of each discover query separately,
-for the different combinations of data vault discovery approaches.</p>
+To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows the average query execution times of each discover query separately,
+for the different combinations of data vault discovery approaches.
+To simplify comparability, the execution times within this figure are <a href="#linktraversaloptimization">relative to the maximum query execution time per query</a>.
+The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries.
+Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.</p>
 
-        <figure id="figure-link-queue">
-<img src="img/experiments/queries_indexvsstorage.svg" alt="Discover queries for index versus storage" />
+        <figure id="figure-queries_indexvsstorage_time_relative">
+<img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
 <figcaption>
-            <p><span class="label">Fig. 2:</span> Query execution times (logarithmic) for all discover queries with different combinations of data vault discovery with cMatch.</p>
+            <p><span class="label">Fig. 2:</span> Relative query execution times for all discover queries with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
 
-        <p>This figure shows that for all queries, using just the type index is slightly faster or comparable to just LDP-based discovery.
-However, when the filter-enabled type index approach is used, then this becomes orders of magnitude faster for half of the queries.
+        <figure id="figure-queries_indexvsstorage_http">
+<img src="img/experiments/queries_indexvsstorage_http.svg" alt="HTTP requests of discover queries for index versus storage" />
+<figcaption>
+            <p><span class="label">Fig. 3:</span> Average number of HTTP requests for all discover queries with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <p class="todo">Mention some percentages below?</p>
+
+        <p>This figure shows that for six queries (D1, D2, D5, D6, D7, D8), using just the type index is faster or comparable to just LDP-based discovery.
+When the filter-enabled type index approach is used, three queries (D1, D3, D8) are made even faster compared to the non-filtered type index approach.
 This is because those queries target a possibly empty subset of the type index entries,
 which means that a significant range of links can be pruned out,
 which leads to a major reduction in the number of HTTP requests,
 which is a main bottleneck in link traversal.</p>
 
-        <p>These results also show that using the type index together with LDP-based discovery is still slightly faster than just using LDP-based discovery alone,
-but the significant performance benefits from the filter-enabled type index approach are lost in this case.
-The performance benefit is achieved because the type index enables more selective links to be followed first.
-But because no link pruning takes place during LDP-based discovery,
-all of the documents within the vaults still need to be requested over HTTP.</p>
+        <p>However, for two queries (D4, D5), the filter-enabled becomes slower than the non-filtered type index approach.
+This is because those queries perform relatively fast across all approaches,
+while the processing overhead of type index filtering becomes too high compared to its potential benefit.</p>
 
-        <p class="todo">Query arrival times for D3 or D%? Or another query?</p>
+        <p>These results show that using the type index together with LDP-based discovery is not beneficial in general,
+which is primarily caused by the higher overall number of HTTP requests caused by traversing both the type index and nested LDP containers.
+Query D8 that has a result limit of 10 does however show that this combination deserves further investigation,
+because this query leads to a prioritization of selective links via the type index,
+which allows the query to terminate earlier with fewer HTTP requests.</p>
+
+        <p>The execution times of D4 in <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> are an outlier,
+due to the very low absolute execution times (~1ms).</p>
 
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
@@ -1757,6 +1776,48 @@ Any findings by comparing different frag strategies?</p>
 </dl>
 </section>
 </footer>
+
+<div id="appendix">
+    <h1 id="appendix">Appendix</h1>
+    <section id="appendix-evaluation" inlist="" rel="schema:hasPart" resource="#appendix-evaluation">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Experimental Results</h2>
+
+        <p><a href="#figure-querytimes_d1-3">Fig. 4</a> and <a href="#figure-querytimes_d2-3">Fig. 5</a> show the query result arrival times for D1 and D2 respectively
+with different combinations of data vault discovery with cMatch.
+Since D1 specifically queries for resources of the type Post, it can very selectively make use of the Post entry within the type index,
+which makes the filtered type index approach faster than the non-filtered approach.
+D2 targets both resources of type Comment and Post, which means that it has to make use of both entries within the type index,
+which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.</p>
+
+        <p><a href="#figure-querytimes_d5-4">Fig. 6</a> shows the query result arrival times for D5,
+which is a query that does not specifically target resources of certain types.
+This means that the type index leads to no significant performance benefit.</p>
+
+        <figure id="figure-querytimes_d1-3">
+<img src="img/experiments/querytimes_d1-3.svg" alt="Query result arrival times for D1" />
+<figcaption>
+            <p><span class="label">Fig. 4:</span> Query result arrival times for D1 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <figure id="figure-querytimes_d2-3">
+<img src="img/experiments/querytimes_d2-3.svg" alt="Query result arrival times for D2" />
+<figcaption>
+            <p><span class="label">Fig. 5:</span> Query result arrival times for D2 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <figure id="figure-querytimes_d5-4">
+<img src="img/experiments/querytimes_d5-4.svg" alt="Query result arrival times for D5" />
+<figcaption>
+            <p><span class="label">Fig. 6:</span> Query result arrival times for D5 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+      </div>
+</section>
+
+  </div>
 
 </div>
 
