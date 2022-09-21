@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/09/19" />
+  <meta name="citation_publication_date" content="2022/09/21" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -1513,8 +1513,8 @@ Discover queries therefore depend on an overview of the vault, while short queri
 
         <h4 id="type-index-discovery-is-highly-selective">Type index discovery is highly selective</h4>
 
-        <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches in <a href="#results-queries-discover">Table 2</a>,
-we can observe that usage of the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery.
+        <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Table 2</a>,
+we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery.
 To explain this behaviour in more detail, <a href="#figure-link-queue">Fig. 2</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.</p>
 
@@ -1538,12 +1538,77 @@ The performance benefit is achieved because the type index enables more selectiv
 But because no link pruning takes place during LDP-based discovery,
 all of the documents within the vaults still need to be requested over HTTP.</p>
 
-        <p class="todo">Query arrival times for D3? Or another query?</p>
+        <p class="todo">Query arrival times for D3 or D%? Or another query?</p>
 
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
+        <figure id="results-planning-effectiveness" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th style="text-align: right">Traversal-based</th>
+                <th style="text-align: right">Index-based</th>
+                <th style="text-align: right">Dereferencing</th>
+                <th style="text-align: right">HTTP Requests</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>D1</td>
+                <td style="text-align: right">5,826.83</td>
+                <td style="text-align: right">451.42</td>
+                <td style="text-align: right">88.73%</td>
+                <td style="text-align: right">222</td>
+              </tr>
+              <tr>
+                <td>D2</td>
+                <td style="text-align: right">6,043.50</td>
+                <td style="text-align: right">646.77</td>
+                <td style="text-align: right">61.80%</td>
+                <td style="text-align: right">223</td>
+              </tr>
+              <tr>
+                <td>D3</td>
+                <td style="text-align: right">7,490.17</td>
+                <td style="text-align: right">1,118.69</td>
+                <td style="text-align: right">83.53%</td>
+                <td style="text-align: right">428</td>
+              </tr>
+              <tr>
+                <td>D4</td>
+                <td style="text-align: right">5,734.25</td>
+                <td style="text-align: right">509.56</td>
+                <td style="text-align: right">81.67%</td>
+                <td style="text-align: right">228</td>
+              </tr>
+              <tr>
+                <td>D5</td>
+                <td style="text-align: right">1,499.62</td>
+                <td style="text-align: right">365.76</td>
+                <td style="text-align: right">79.89%</td>
+                <td style="text-align: right">222</td>
+              </tr>
+              <tr>
+                <td>D8</td>
+                <td style="text-align: right">4,739.88</td>
+                <td style="text-align: right">2,292.81</td>
+                <td style="text-align: right">92.51%</td>
+                <td style="text-align: right">217</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 5:</span> TODO</p>
+          </figcaption>
+        </figure>
+
         <ul class="todo">
-          <li>To measure query plan perf: comp with a query that first indexes data locally via construct (measure that time), and than proper query planning =&gt; downside: delays time until first result!
+          <li>As shown above, http reqs reduced but not exec time. Because of query plan! (Go over heuristics planner to show why not works for solid?)</li>
+          <li>Based on oracle emitting all links we need</li>
+          <li>To measure query plan perf: comp with a query that first indexes data locally via construct (measure that time), and than proper query planning =&gt; downside: delays time until first result! (also not always possible for infinite link queues!)
             <ul>
               <li>Implement a link traversal actor that first traverses to find all triples, and then queries afterwards? Or just a simple hacked exp?</li>
             </ul>
@@ -1569,6 +1634,7 @@ Any findings by comparing different frag strategies?</p>
           <li>The ability to close the world around solid pods create query opt opoortunities</li>
           <li>Say that type index is optional, so it can not be used on its own, as completeness can not be guaranteed.</li>
           <li>Better combination of LDP+idx needed, where pruning of idx can help LDP better.</li>
+          <li>Decomposing parts of the query plan for different parts of the type index also requires adaptive query planning</li>
           <li>Best termination condition is a LIMIT in the query? (but incompat with ORDER BY…)</li>
           <li>Mention need for new datastructures (see ideas note)</li>
           <li>Need for adaptive query planning! (mention eddy-like adaptive operation of the link queue (walking without a map - section 3), but it doesn’t consider adaptivity of the query plan)</li>
