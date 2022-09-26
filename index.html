@@ -1877,6 +1877,42 @@ which allows the query to terminate earlier with fewer HTTP requests.</p>
         <p>The execution times of D4 in <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> are an outlier,
 due to the very low absolute execution times (~1ms).</p>
 
+        <figure id="results-queries-cmatch-wins" class="table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right">base</th>
+                <th style="text-align: right">idx</th>
+                <th style="text-align: right">idx-filt</th>
+                <th style="text-align: right">ldp</th>
+                <th style="text-align: right">ldp-idx</th>
+                <th style="text-align: right">ldp-idx-filt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wins</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">10</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">0</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Fig. 7:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+A win for a certain approach is only considered if the results are correct for this query.
+Five queries are missing due to no approaches achieving correct results.</p>
+          </figcaption>
+        </figure>
+
+        <p class="todo">Discuss the table above in text.</p>
+
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
         <figure id="results-planning-effectiveness" class="table">
@@ -2104,35 +2140,35 @@ Any findings by comparing different frag strategies?</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Experimental Results</h2>
 
-        <p><a href="#figure-querytimes_d1-3">Fig. 7</a> and <a href="#figure-querytimes_d2-3">Fig. 8</a> show the query result arrival times for D1 and D2 respectively
+        <p><a href="#figure-querytimes_d1-3">Fig. 8</a> and <a href="#figure-querytimes_d2-3">Fig. 9</a> show the query result arrival times for D1 and D2 respectively
 with different combinations of data vault discovery with cMatch.
 Since D1 specifically queries for resources of the type Post, it can very selectively make use of the Post entry within the type index,
 which makes the filtered type index approach faster than the non-filtered approach.
 D2 targets both resources of type Comment and Post, which means that it has to make use of both entries within the type index,
 which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.</p>
 
-        <p><a href="#figure-querytimes_d5-4">Fig. 9</a> shows the query result arrival times for D5,
+        <p><a href="#figure-querytimes_d5-4">Fig. 10</a> shows the query result arrival times for D5,
 which is a query that does not specifically target resources of certain types.
 This means that the type index leads to no significant performance benefit.</p>
 
         <figure id="figure-querytimes_d1-3">
 <img src="img/experiments/querytimes_d1-3.svg" alt="Query result arrival times for D1" />
 <figcaption>
-            <p><span class="label">Fig. 7:</span> Query result arrival times for D1 with different combinations of data vault discovery with cMatch.</p>
+            <p><span class="label">Fig. 8:</span> Query result arrival times for D1 with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
 
         <figure id="figure-querytimes_d2-3">
 <img src="img/experiments/querytimes_d2-3.svg" alt="Query result arrival times for D2" />
 <figcaption>
-            <p><span class="label">Fig. 8:</span> Query result arrival times for D2 with different combinations of data vault discovery with cMatch.</p>
+            <p><span class="label">Fig. 9:</span> Query result arrival times for D2 with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
 
         <figure id="figure-querytimes_d5-4">
 <img src="img/experiments/querytimes_d5-4.svg" alt="Query result arrival times for D5" />
 <figcaption>
-            <p><span class="label">Fig. 9:</span> Query result arrival times for D5 with different combinations of data vault discovery with cMatch.</p>
+            <p><span class="label">Fig. 10:</span> Query result arrival times for D5 with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
       </div>
