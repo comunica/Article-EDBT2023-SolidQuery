@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/09/26" />
+  <meta name="citation_publication_date" content="2022/09/28" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -1829,15 +1829,16 @@ This difference exists because the discover category contains queries that disco
 while the short queries target only details of specific resources. 
 Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.</p>
 
-        <h4 id="type-index-discovery-is-more-selective-than-ldp-based-discovery">Type index discovery is more selective than LDP-based discovery</h4>
+        <h4 id="type-index-and-ldp-discovery-perform-similarly">Type index and LDP discovery perform similarly</h4>
 
         <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Fig. 2</a>,
-we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery.
+we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery on average.
 To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.
-To simplify comparability, the execution times within this figure are <a href="#linktraversaloptimization">relative to the maximum query execution time per query</a>.
+To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-18">18</a>]</span>.
 The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-52">52</a>]</span>.
-Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 6</a> shows the average number of HTTP requests for each of those discover queries.</p>
+Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 6</a> shows the average number of HTTP requests for each of those discover queries.
+Finally, <a href="#results-queries-cmatch-wins">Fig. 7</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
 <img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
@@ -1855,35 +1856,12 @@ The star marker indicates the average time until first result.</p>
           </figcaption>
 </figure>
 
-        <p class="todo">Mention some percentages below?</p>
-
-        <p>This figure shows that for six queries (D1, D2, D5, D6, D7, D8), using just the type index is faster or comparable to just LDP-based discovery.
-When the filter-enabled type index approach is used, three queries (D1, D3, D8) are made even faster compared to the non-filtered type index approach.
-This is because those queries target a possibly empty subset of the type index entries,
-which means that a significant range of links can be pruned out,
-which leads to a major reduction in the number of HTTP requests,
-which is a main bottleneck in link traversal.</p>
-
-        <p>However, for two queries (D4, D5), the filter-enabled becomes slower than the non-filtered type index approach.
-This is because those queries perform relatively fast across all approaches,
-while the processing overhead of type index filtering becomes too high compared to its potential benefit.</p>
-
-        <p>These results show that using the type index together with LDP-based discovery is not beneficial in general,
-which is primarily caused by the higher overall number of HTTP requests caused by traversing both the type index and nested LDP containers.
-Query D8 that has a result limit of 10 does however show that this combination deserves further investigation,
-because this query leads to a prioritization of selective links via the type index,
-which allows the query to terminate earlier with fewer HTTP requests.</p>
-
-        <p>The execution times of D4 in <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> are an outlier,
-due to the very low absolute execution times (~1ms).</p>
-
         <figure id="results-queries-cmatch-wins" class="table-smaller-font">
 
           <table>
             <thead>
               <tr>
                 <th> </th>
-                <th style="text-align: right">base</th>
                 <th style="text-align: right">idx</th>
                 <th style="text-align: right">idx-filt</th>
                 <th style="text-align: right">ldp</th>
@@ -1894,7 +1872,6 @@ due to the very low absolute execution times (~1ms).</p>
             <tbody>
               <tr>
                 <td>Wins</td>
-                <td style="text-align: right">0</td>
                 <td style="text-align: right">10</td>
                 <td style="text-align: right">15</td>
                 <td style="text-align: right">5</td>
@@ -1911,7 +1888,31 @@ Five queries are missing due to no approaches achieving correct results.</p>
           </figcaption>
         </figure>
 
-        <p class="todo">Discuss the table above in text.</p>
+        <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
+using just the type index is slightly faster or comparable to just LDP-based discovery,
+this difference has no statistical significance (<em>p = 0.55</em>).
+However, <a href="#figure-queries_indexvsstorage_http">Fig. 6</a> shows that the number of HTTP requests with the type index is always slightly lower than LDP-based discovery,
+but this only has a very weak statistical significance (<em>p = 0.12</em>).</p>
+
+        <p>When the filter-enabled type index approach is used, three queries (D1, D3, D8) are made even faster compared to the non-filtered type index approach.
+This is because those queries target a possibly empty subset of the type index entries,
+which means that a significant range of links can be pruned out,
+which leads to a major reduction in the number of HTTP requests,
+which is a main bottleneck in link traversal.
+However, for two queries (D4, D5), the filter-enabled becomes slower than the non-filtered type index approach.
+This is because those queries perform relatively fast across all approaches,
+while the processing overhead of type index filtering becomes too high compared to its potential benefit.
+Statistically, this difference has no significance in terms of execution time (<em>p = 0.81</em>) and number of HTTP requests (<em>p = 0.68</em>).</p>
+
+        <p>These results show that using the type index together with LDP-based discovery is not beneficial in general,
+which is primarily caused by the statistically significantly higher number of HTTP requests (<em>p = 0.03</em>) caused by traversing both the type index and nested LDP containers.
+Query D8 that has a result limit of 10 does however show that this combination deserves further investigation,
+because this query leads to a prioritization of selective links via the type index,
+which allows the query to terminate earlier with fewer HTTP requests.</p>
+
+        <p>In general, these results hint that the filtered type index approach performs better than the other approaches.
+However, due to the minimal difference in terms of execution time and number of HTTP requests,
+the performance of all approaches can be considered equivalent.</p>
 
         <h4 id="zero-knowledge-query-planning-is-ineffective">Zero-knowledge query planning is ineffective</h4>
 
