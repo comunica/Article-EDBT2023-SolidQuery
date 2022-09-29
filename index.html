@@ -40,32 +40,34 @@
 <div datatype="rdf:HTML" property="schema:description">
       <h2 property="schema:name">Abstract</h2>
       <!-- Context      -->
-      <p>To counter societal and economic problems caused by data centralization on the Web,
-decentralization efforts such as Solid lead to data being spread over a massive number of permissioned Linked Data documents across the Web.
-This raises significant technical issues when querying over this data as if it was a global Knowledge Graph,
-since this data can not be centralized due to legal reasons,
-and current (federated) querying techniques have not been designed to handle this large scale of data distribution.
+      <p>To counter societal and economic problems caused by data silos on the Web,
+efforts such as Solid strive to reclaim private data by storing it in permissioned documents across a large number of personal vaults across the Web.
 <!-- Need         -->
-Hence, there is a need for an alternative query execution paradigm that can cope with such decentralized environments.
+Building applications on top of such a decentralized knowledge graph
+involves significant technical challenges:
+centralized aggregation prior to query processing is excluded for legal reasons,
+and current federated querying techniques cannot handle this large scale of distribution
+at the expected performance.
 <!-- Task         -->
-For this, we propose the use of Link Traversal Query Processing (LTQP) for querying over decentralized environments,
-and extend it by making use of structural properties within these environments.
+We propose an extension to Link Traversal Query Processing (LTQP)
+that incorporates structural properties within decentralized environments
+to tackle their unprecedented scale.
 <!-- Object       -->
 In this article,
 we analyze the structural properties of the Solid decentralization ecosystem that are relevant for query execution,
-and provide a benchmark in which Solid environments can be simulated.
-Furthermore, we introduce LTQP algorithms based on these structural properties,
+and provide the <em>SolidBench</em> benchmark to simulate Solid environments representatively.
+We introduce LTQP algorithms leveraging these structural properties,
 and evaluate their effectiveness.
 <!-- Findings     -->
-Our experiments show that these new algorithms are able to achieve correct query results in the order of seconds,
-which was not possible before with existing algorithms.
-We also show their limitations with respect to more complex queries.
+Our experiments indicate that these new algorithms obtain query results in the order of seconds,
+which existing algorithms cannot achieve.
+We discuss limitations with respect to more complex queries.
 <!-- Conclusion   -->
-This works shows that a traversal-based querying method using structural assumptions can be effective for querying over decentralized environments,
-but that more advances are needed in the area of query planning for LTQP to handle more complex queries.
+This work reveals that a traversal-based querying method using structural assumptions can be effective for large-scale decentralization,
+but that advances are needed in the area of query planning for LTQP to handle more complex queries.
 <!-- Perspectives -->
-This work opens the window towards query-driven decentralized applications,
-in which application developers interact with decentralized environments using declarative queries as if they were a single centralized database.</p>
+These insights open the door to query-driven decentralized applications,
+in which declarative queries shield developers from the inherent complexity of a decentralized landscape.</p>
 
       <p><span id="keywords" rel="schema:about"><span class="title">Keywords</span>
 <a href="https://en.wikipedia.org/wiki/Linked_Data" resource="http://dbpedia.org/resource/Linked_Data">Linked Data</a>,
