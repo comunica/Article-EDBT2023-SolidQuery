@@ -824,7 +824,7 @@ all other documents could potentially pruned out, covering CP L.9.</p>
           <li><strong>Query execution time</strong>: The amount of time (milliseconds) it takes between sending the query to the query engine, and obtaining the final query result.</li>
           <li><strong>Query result arrival times</strong>: For each separate query result, the amount of time (milliseconds) between sending the query to the query engine, and obtaining that specific result.</li>
           <li><strong>HTTP requests</strong>: For a given query execution, the number of HTTP requests the engine issued during the execution of that query.</li>
-          <li><strong>Correctness</strong>: A boolean value indicating whether or not the query results conform to the expected query results. (<em>Can be a percentage when aggregating over multiple queries</em>)</li>
+          <li><strong>Correctness</strong>: The percentage of query results conforming to the expected query results.</li>
         </ul>
 
         <p>For measuring query execution and result arrival times,
@@ -1134,7 +1134,7 @@ Each query template in the benchmark was instantiated five times, which resulted
 <a href="#results-queries-discover">Fig. 2</a>, <a href="#results-queries-short">Fig. 3</a>, and <a href="#results-queries-complex">Fig. 4</a>
 show the aggregated results for the different combinations of our setup
 for the discover, short, and complex queries of the benchmark, respectively.
-Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span> execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> time until first result (ms), average number of HTTP requests per query <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>, total number of results (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average correctness (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest correctness value are marked in bold.
+Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average correctness (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest correctness value are marked in bold.
 The number of HTTP requests is counted across all query executions that did not time out within each combination.
 The timeout column represents the number of query templates that lead to a timeout for a given combination.
 The correctness of each query execution is calculated as the percentage of expected results that were actually produced.</p>
@@ -1391,15 +1391,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">0</td>
               </tr>
               <tr>
-                <td>cmatch-base</td>
-                <td style="text-align: right">27,429</td>
-                <td style="text-align: right">197</td>
-                <td style="text-align: right">190</td>
-                <td style="text-align: right">64</td>
-                <td style="text-align: right">596</td>
-                <td style="text-align: right">0.43</td>
-                <td style="text-align: right">42.86%</td>
-                <td style="text-align: right">2</td>
+                <td><strong>cmatch-base</strong></td>
+                <td style="text-align: right"><strong>27,429</strong></td>
+                <td style="text-align: right"><strong>197</strong></td>
+                <td style="text-align: right"><strong>190</strong></td>
+                <td style="text-align: right"><strong>64</strong></td>
+                <td style="text-align: right"><strong>596</strong></td>
+                <td style="text-align: right"><strong>0.43</strong></td>
+                <td style="text-align: right"><strong>42.86%</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
               </tr>
               <tr>
                 <td>call-base</td>
@@ -1614,15 +1614,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">1</td>
               </tr>
               <tr>
-                <td>cmatch-base</td>
-                <td style="text-align: right">16,574</td>
-                <td style="text-align: right">2</td>
-                <td style="text-align: right">3</td>
-                <td style="text-align: right">2</td>
-                <td style="text-align: right">1,619</td>
-                <td style="text-align: right">0.50</td>
-                <td style="text-align: right">2.50%</td>
-                <td style="text-align: right">4</td>
+                <td><strong>cmatch-base</strong></td>
+                <td style="text-align: right"><strong>16,574</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>3</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>1,619</strong></td>
+                <td style="text-align: right"><strong>0.50</strong></td>
+                <td style="text-align: right"><strong>2.50%</strong></td>
+                <td style="text-align: right"><strong>4</strong></td>
               </tr>
               <tr>
                 <td>call-base</td>
@@ -1647,15 +1647,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">4</td>
               </tr>
               <tr>
-                <td><strong>cmatch-idx</strong></td>
-                <td style="text-align: right"><strong>37,182</strong></td>
-                <td style="text-align: right"><strong>0</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>71</strong></td>
-                <td style="text-align: right"><strong>0.00</strong></td>
-                <td style="text-align: right"><strong>0.00%</strong></td>
-                <td style="text-align: right"><strong>11</strong></td>
+                <td>cmatch-idx</td>
+                <td style="text-align: right">37,182</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
               </tr>
               <tr>
                 <td>call-idx</td>
@@ -1680,15 +1680,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">4</td>
               </tr>
               <tr>
-                <td><strong>cmatch-idx-filt</strong></td>
-                <td style="text-align: right"><strong>37,179</strong></td>
-                <td style="text-align: right"><strong>0</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>71</strong></td>
-                <td style="text-align: right"><strong>0.00</strong></td>
-                <td style="text-align: right"><strong>0.00%</strong></td>
-                <td style="text-align: right"><strong>11</strong></td>
+                <td>cmatch-idx-filt</td>
+                <td style="text-align: right">37,179</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
               </tr>
               <tr>
                 <td>call-idx-filt</td>
@@ -1713,15 +1713,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">4</td>
               </tr>
               <tr>
-                <td><strong>cmatch-ldp</strong></td>
-                <td style="text-align: right"><strong>38,911</strong></td>
-                <td style="text-align: right"><strong>0</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>81</strong></td>
-                <td style="text-align: right"><strong>0.00</strong></td>
-                <td style="text-align: right"><strong>0.00%</strong></td>
-                <td style="text-align: right"><strong>11</strong></td>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">38,911</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">81</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
               </tr>
               <tr>
                 <td>call-ldp</td>
@@ -1746,15 +1746,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">4</td>
               </tr>
               <tr>
-                <td><strong>cmatch-ldp-idx</strong></td>
-                <td style="text-align: right"><strong>38,100</strong></td>
-                <td style="text-align: right"><strong>0</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>87</strong></td>
-                <td style="text-align: right"><strong>0.00</strong></td>
-                <td style="text-align: right"><strong>0.00%</strong></td>
-                <td style="text-align: right"><strong>11</strong></td>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">38,100</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">87</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
               </tr>
               <tr>
                 <td>call-ldp-idx</td>
@@ -1779,15 +1779,15 @@ The correctness of each query execution is calculated as the percentage of expec
                 <td style="text-align: right">5</td>
               </tr>
               <tr>
-                <td><strong>cmatch-ldp-idx-filt</strong></td>
-                <td style="text-align: right"><strong>37,676</strong></td>
-                <td style="text-align: right"><strong>0</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>N/A</strong></td>
-                <td style="text-align: right"><strong>110</strong></td>
-                <td style="text-align: right"><strong>0.00</strong></td>
-                <td style="text-align: right"><strong>0.00%</strong></td>
-                <td style="text-align: right"><strong>11</strong></td>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">37,676</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">110</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
               </tr>
               <tr>
                 <td>call-ldp-idx-filt</td>
