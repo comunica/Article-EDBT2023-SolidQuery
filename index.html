@@ -292,7 +292,7 @@ Finally, we list requirements for enabling query execution within the Solid ecos
 
         <p>A primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-35">35</a>]</span> is
 the data vault (also known as <em>data pod</em>), which is a user-owned space in which any kind of data can be stored.
-Users can choose where and how their vault is stored,
+Users can choose where and how their vault is stored on the Web,
 by either <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-36">36</a>]</span>,
 or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-37">37</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-38">38</a>]</span>.
 Data vaults are loosely coupled to applications,
@@ -840,9 +840,13 @@ while this cache can still be used within the span of a single query execution.<
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Approach</h2>
 
-        <p>In this section, we introduce algorithms for handling the structural properties discussed in <a href="#solid">Section 3</a>.
-We start by discussing the preliminaries of the formalities we will introduce.
-Next, we discuss the pipeline-based link queue approach.
+        <p>In this section, we introduce techniques for handling the structural properties discussed in <a href="#solid">Section 3</a>.
+Our goal is not to introduce additional components or structural properties to the Solid ecosystem,
+but instead, we aim to make use of what the Solid ecosystem provides today,
+and investigate how we can handle query execution over this as performant as possible.</p>
+
+        <p>We start by discussing the preliminaries of the formalities we will introduce.
+Next, we discuss our pipeline-based link queue approach.
 Then, we discuss two novel discovery approaches for LTQP.
 Finally, we discuss their implementations.</p>
 
@@ -864,10 +868,11 @@ which are denoted by <span class="katex"><span class="katex-mathml"><math xmlns=
 An RDF triple <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> <em>matches</em> a triple pattern <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">tp</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">tp</span></span></span></span> if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">&#x2203;</mi><mi>&#x3bc;</mi><mo>:</mo><mi>t</mi><mo>=</mo><mi>&#x3bc;</mi><mo stretchy="false">[</mo><mi>t</mi><mi>p</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\exists \mu : t = \mu[tp]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">&#x2203;</span><span class="mord mathnormal">&#x3bc;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">&#x3bc;</span><span class="mopen">[</span><span class="mord mathnormal">tp</span><span class="mclose">]</span></span></span></span>, where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3bc;</mi><mo stretchy="false">[</mo><mi>t</mi><mi>p</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mu[tp]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">&#x3bc;</span><span class="mopen">[</span><span class="mord mathnormal">tp</span><span class="mclose">]</span></span></span></span> is the triple pattern that is obtained by replacing all variables from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3bc;</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">&#x3bc;</span></span></span></span> in <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">tp</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">tp</span></span></span></span>.</p>
 
         <p>Formally, the reachability approaches that were discussed in <a href="#related-work">Section 2</a>
-that define which links should be followed during link traversal are usually captured as <em>reachability criteria</em> <span class="references">[<a href="#ref-12">12</a>]</span>.
+define which links should be followed during link traversal,
+and are usually captured as <em>reachability criteria</em> <span class="references">[<a href="#ref-12">12</a>]</span>.
 However, since this formalization is restricted to considering either all or no URIs within specific data triples,
 it is not expressive enough for only following specific URIs within only subject, predicate, or object in data triples.
-Therefore, we formalize new reachability criteria in this work <em>source selectors</em>
+Therefore, we formalize new reachability criteria in this work as <em>source selectors</em>
 within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.bartbogaerts.eu/articles/2021/005-RuleML-GuidedLink-SubwebSpec/SubwebSpecifications.pdf">subweb specification formalization</a> <span class="references">[<a href="#ref-17">17</a>]</span> that <em>is</em> expressive enough to capture this.
 Within this formalization, a source selector <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3c3;</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span></span></span></span> is defined as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3c3;</mi><mo>:</mo><mi mathvariant="script">W</mi><mo>&#x2192;</mo><msup><mn>2</mn><mi mathvariant="script">I</mi></msup></mrow><annotation encoding="application/x-tex">\sigma : \mathcal{W} \rightarrow 2^{\mathcal{I}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&#x2192;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathcal mtight" style="margin-right:0.07382em;">I</span></span></span></span></span></span></span></span></span></span></span></span>,
 where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">W</mi></mrow><annotation encoding="application/x-tex">\mathcal{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.08222em;">W</span></span></span></span> is a Web of Linked Data.
@@ -915,7 +920,7 @@ for determining and prioritizing links that need to be followed.
 For example, one link extractor may extract all objects of each RDF triple matching the <code>rdfs:seeAlso</code> predicate,
 while another link extractor may extract all components of each triple that matches with a triple pattern within the query.
 Optionally, operators within the query pipeline may also push links directly into the link queue,
-which may enable implementation of context-based reachability semantics <span class="references">[<a href="#ref-15">15</a>]</span>.
+which enables implementation of context-based reachability semantics <span class="references">[<a href="#ref-15">15</a>]</span>.
 Link extractors only consider URIs as links,
 and thereby ignore any matches for blank nodes and literals.</p>
 
@@ -989,12 +994,12 @@ This discovery method contains an optional filter component that is able to only
 
         <h4 id="intuitive-description-1">Intuitive description</h4>
 
-        <p>As before, we consider a WebID document as a starting point.
+        <p>As before, we consider a WebID document as the starting point.
 From this document, we follow the <code>solid:publicTypeIndex</code> and <code>solid:privateTypeIndex</code> links.
 For each discovered type index, we consider all <code>solid:TypeRegistration</code> resources,
 and follow their <code>solid:instance</code> and <code>solid:instanceContainer</code> links.</p>
 
-        <p>As an optimization, we can also take into the type information within the type registrations within the type index,
+        <p>As an optimization, we can also take into account the type information within the registrations of the type index,
 to only follow those links for classes that are of interest to the current query.
 Concretely, this involves considering the objects referred to by <code>solid:forClass</code> on each type registration.
 To know whether or not a class is relevant to the current query,
@@ -1005,7 +1010,7 @@ In future work, more complex approaches for determining the relevance of a class
         <h4 id="formal-description-1">Formal description</h4>
 
         <p>To discover type indexes and follow links within them,
-we formalize the following source selector from a given WebID with URI <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> and a BGP <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span>:</p>
+we formalize the following source selector from a given WebID with URI <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> when querying a BGP <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span>:</p>
 
         <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub><mo stretchy="false">(</mo><mi>W</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>o</mi><mo>&#x2223;</mo><mi mathvariant="normal">&#x2200;</mi><mi>t</mi><mo separator="true">,</mo><mi>r</mi><mo separator="true">,</mo><mi>c</mi><mo>:</mo><mi>&#x3d5;</mi><mo stretchy="false">(</mo><mi>B</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mtable rowspacing="0.16em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mo lspace="0em" rspace="0em">&#x2227;</mo></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo stretchy="false">(</mo><mo stretchy="false">&#x27e8;</mo><mi>s</mi><mtext>&#xa0;solid:publicTypeIndex&#xa0;</mtext><mi>t</mi><mo stretchy="false">&#x27e9;</mo><mo>&#x2228;</mo><mo stretchy="false">&#x27e8;</mo><mi>s</mi><mtext>&#xa0;solid:privateTypeIndex&#xa0;</mtext><mi>t</mi><mo stretchy="false">&#x27e9;</mo><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>&#x2208;</mo><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi><mo stretchy="false">(</mo><mi>a</mi><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mo lspace="0em" rspace="0em">&#x2227;</mo></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo stretchy="false">(</mo><mo stretchy="false">&#x27e8;</mo><mi>r</mi><mtext>&#xa0;rdf:type&#xa0;solid:TypeRegistration</mtext><mo stretchy="false">&#x27e9;</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>&#x2227;</mo><mo stretchy="false">&#x27e8;</mo><mi>r</mi><mtext>&#xa0;solid:forClass&#xa0;</mtext><mi>c</mi><mo stretchy="false">&#x27e9;</mo><mo stretchy="false">)</mo><mo>&#x2208;</mo><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi><mo stretchy="false">(</mo><mi>a</mi><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mo lspace="0em" rspace="0em">&#x2227;</mo></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo stretchy="false">(</mo><mo stretchy="false">&#x27e8;</mo><mi>r</mi><mtext>&#xa0;solid:instance&#xa0;</mtext><mi>o</mi><mo stretchy="false">&#x27e9;</mo><mo>&#x2228;</mo><mo stretchy="false">&#x27e8;</mo><mi>r</mi><mtext>&#xa0;solid:instanceContainer&#xa0;</mtext><mi>o</mi><mo stretchy="false">&#x27e9;</mo><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>&#x2208;</mo><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi><mo stretchy="false">(</mo><mi>a</mi><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo stretchy="false">}</mo></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}(W) = \{ o \mid \forall t,r,c : \phi(B, c) \\
 \begin{array}{ll}
@@ -1056,12 +1061,20 @@ Concretely, we have implemented the pipeline-based link queue as a separate modu
 and we provide multiple link extractors corresponding to the different source selectors introduced in previous sections.
 Our implementation has full SPARQL 1.1 support, and consists of pipelined implementations of all monotonic SPARQL operators.
 This pipelined implementation is important for iterative tuple processing in a non-blocking manner,
-because since the link queue may virtually become infinitely long,
-and stream of triples sent to tuple-producing operators may also be infinitely long.</p>
+because the link queue may virtually become infinitely long,
+and the stream of triples sent to tuple-producing operators may also be infinitely long.</p>
 
-        <p>To provide a stable reference implementation that can be used for the experiments in this work, and a basis for future research,
+        <p>Our implementation focuses on the SPARQL query language,
+and does not make use of alternative LTQP-specific query languages
+such as LDQL <span class="references">[<a href="#ref-22">22</a>]</span> that incorporate link navigation paths into the query.
+As discussed in <a href="#solid">Section 3</a>, different Solid apps or user preferences may lead to the storage of similar data at different locations within vaults.
+As such, it is important that link navigation is <em>decoupled</em> from the query if we want queries to be reusable for different Solid users,
+as link paths to data may differ across different data vaults.
+Instead, our implementation makes use of LDP container traversal and the Solid type index to replace explicit navigation links.</p>
+
+        <p>To provide a stable reference implementation that can be used for the experiments in this work and future research,
 our implementation focuses on extensibility and reusability.
-We do this by implementing all logic is configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
+We do this by implementing all logic in configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
 Our implementation will be made available as open-source after the double-blind review process.</p>
 
         <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-50">50</a>]</span> including,
@@ -1073,7 +1086,7 @@ Furthermore, our implementation supports users to explicitly pass seed URIs,
 but falls back to query-based seed URIs <span class="references">[<a href="#ref-50">50</a>]</span> if no manual seed URIs have been passed.
 This fallback involves finding all URIs within the query, and adding them as seed URIs to the link queue.</p>
 
-        <p>Therefore, this implementation meet the requirements for a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
+        <p>Therefore, this implementation meets the requirements for a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
 This also includes the ability to perform authenticated requires to documents within vaults behind access control.
 To ensure that common HTTP errors that may occur during link traversal don’t terminate the query execution process,
 we run enable a default <em>lenient</em> mode, which ignores dereference responses with HTTP status code in ranges 400 and 500.</p>
