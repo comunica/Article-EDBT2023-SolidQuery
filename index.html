@@ -544,6 +544,8 @@ For more details on properties of this dataset and its schema, we refer to the S
           <li><strong>Benchmark runner</strong>: incorporation into an existing benchmarking system for execution against query engines via the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL protocol</a> <span class="references">[<a href="#ref-7">7</a>]</span>.</li>
         </ul>
 
+        <p>The benchmark is available under the MIT license at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/</a>.</p>
+
         <!--
 157210 files
 1529 pods
@@ -657,8 +659,6 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
           <li>D7: All moderators in fora a person messaged on</li>
           <li>D8: Other messages created by people that a person likes messages from</li>
         </ul>
-
-        <p class="todo">Add anon link to templates (the queries readme file in solidbench)</p>
 
         <p>The correlation of these discover queries to choke points is summarized in <a href="#chokepoints-discover">Table 1</a>.</p>
 
@@ -785,6 +785,8 @@ we introduce the following <em>discover</em> queries dedicated for covering thes
             <p><span class="label">Table 1:</span> Coverage of choke points on linking structures for discover queries.</p>
           </figcaption>
         </figure>
+
+        <p>More details on all query templates can be found at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md</a>.</p>
 
         <p><strong>Query template instantiation</strong></p>
 
@@ -1079,7 +1081,7 @@ Instead, our implementation makes use of LDP container traversal and the Solid t
         <p>To provide a stable reference implementation that can be used for the experiments in this work and future research,
 our implementation focuses on extensibility and reusability.
 We do this by implementing all logic in configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
-Our implementation will be made available as open-source after the double-blind review process.</p>
+Our implementation is available as open-source under the MIT license at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-impl/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-impl/</a>.</p>
 
         <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-50">50</a>]</span> including,
 the use of client-side caching <span class="references">[<a href="#ref-33">33</a>]</span>,
@@ -1117,18 +1119,18 @@ and a discussion of our results to answer our research question.</p>
         <p>We make use of a full factorial experiment containing the following factors and values:</p>
 
         <ul>
-          <li><strong>Source selector strategy</strong>: None, LDP, Type Index, Filtered Type Index, LDP and Type Index, LDP and Filtered Type Index</li>
+          <li><strong>Vault discovery</strong>: None, LDP, Type Index, Filtered Type Index, LDP and Type Index, LDP and Filtered Type Index</li>
           <li><strong>Reachability semantics</strong>: cNone, cMatch, cAll</li>
         </ul>
 
-        <p>Within the source selectors, the LDP strategy corresponds to the disjunction of the source selectors <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidVault</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidVault}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidVault</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>,
+        <p>Within the vault discovery methods, the LDP strategy corresponds to the disjunction of the source selectors <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidVault</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidVault}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidVault</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>,
 the Type Index corresponds to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidTypeIndex</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3d5;</mi><mo stretchy="false">(</mo><mi>B</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\phi(B, c)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">&#x3d5;</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> always returning <code>true</code>,
 and the Filtered Type Index corresponds to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidTypeIndex</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3d5;</mi><mtext>QueryClass</mtext></msub></mrow><annotation encoding="application/x-tex">\phi_{\text{QueryClass}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">&#x3d5;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">QueryClass</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>,</p>
 
         <p>Our experiments were performed on a 64-bit Ubuntu 14.04 machine with a 24-core 2.40 GHz CPU and 128 GB of RAM.
 The Solid vaults and query client were executed in isolated Docker containers on dedicated CPU cores with a simulated network.
 To foster reproducibility,
-the experimental setup, raw results, and scripts to process them will be made available after the double-blind review process.
+the experimental setup, raw results, and scripts to process them are available as open-source on <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-experiments/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-experiments/</a>.
 All queries were configured with a timeout of two minutes, and were executed three times to average metrics over.
 Each query template in the benchmark was instantiated five times, which resulted in 40 discover queries, 35 short queries, and 60 complex queries.</p>
 
@@ -1822,13 +1824,13 @@ Hence, we consider this last query category too complex for current link travers
         <h4 id="intra-vault-and-inter-vault-data-discovery">Intra-vault and inter-vault data discovery</h4>
 
         <p>The results above show that if we desire correct results,
-that the combination of cMatch semantics together at least one of the data vault discovery methods is required.
+that the combination of cMatch semantics together with at least one of the data vault discovery methods is required.
 This combination is needed because our workload contains queries that either target data within a single vault (e.g. D1),
 or data spanning multiple data vaults (e.g. D8).
 While the different data vault discovery methods are able to discover data <em>within</em> vaults,
 the reachability of cMatch is required to discover data <em>across</em> multiple vaults.</p>
 
-        <p>Due to this, cNone (follow no links) is an ineffective replacement for cMatch (follow links matching query),
+        <p>Due to this, cNone (follow no links) is an ineffective replacement for cMatch (follow links matching query) even when combined with discovery methods,
 because link traversal across multiple vaults will not take place, which will lead to too few query results.
 Concretely, for discover queries cNone can only achieve a completeness of 74.14% for discover queries and 28.57% for short queries,
 compared to respectively 99.14% and 42.86% for cMatch.
@@ -1843,9 +1845,10 @@ However, our results show that the number of links that are being followed becom
 where a completeness of only up to 12.50% or 19.38% can be achieved.
 However, when looking at the short queries category, solely using reachability semantics appears to be sufficient,
 with the number of HTTP requests and query execution time even being lower.
-This difference exists because the discover category contains queries that discover data related to a certain person or resource,
+This difference exists because the discover workload contains queries that discover data related to a certain person or resource,
 while the short queries target only details of specific resources. 
-Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.</p>
+Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.
+The remainder of this discussion only focuses on discover queries, since these achieve the highest level of correctness.</p>
 
         <h4 id="type-index-and-ldp-discovery-perform-similarly">Type index and LDP discovery perform similarly</h4>
 
@@ -1936,7 +1939,7 @@ the performance of all approaches can be considered equivalent.</p>
 
         <p>While it may seem obvious to assume that higher query execution times are caused by a higher number of links that need to be dereferenced,
 we observe no significant correlation (<em>p = 0.76</em>) of this within the cMatch-based discovery approaches discussed before.
-As such, the main bottleneck in this case appears to be not the number of links to traverse.
+As such, the main bottleneck in this case appears not to be the number of links to traverse.
 Instead, our analysis suggests that the efficiency of the query plan is the primary influencer of query execution times.</p>
 
         <p>To empirically prove this finding, we compare the execution times of our default integrated query execution approach
@@ -2030,7 +2033,8 @@ The last column indicates the number of HTTP requests per query, which are equal
           </figcaption>
         </figure>
 
-        <p>These results show that the two-phase approach is an order of magnitude faster for all queries compared to the integrated approach.
+        <p>These results show that the two-phase approach is an order of magnitude faster for all queries compared to the integrated approach,
+even when taking into account time for dereferencing.
 The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-55">55</a>]</span>,
 since it has access to an indexed triple store with planning-relevant information such as cardinality estimates.
 Since the integrated approach finds new triples <em>during</em> query execution,
@@ -2041,10 +2045,10 @@ that makes use of heuristics to plan the query before execution.</p>
         <p>Since the only difference between the implementations of the integrated and two-phase approach is in how they plan the query,
 we can derive the query plan of the integrated approach is very ineffective.
 As such, there is clear need for better query planning during integrated execution,
-and the two-phase approach shows that performance may become an order of magnitude better.</p>
+and the two-phase approach shows that performance could become up to an order of magnitude better.</p>
 
         <p>Zero-knowledge query planning <span class="references">[<a href="#ref-14">14</a>]</span> is ineffective in our experiments
-because it has been designed under the assumptions of open Linked Data,
+because it has been designed under the assumptions of Linked Open Data,
 while it does not match with the structural assumptions of specific decentralized environments such as Solid.
 For example, one of the heuristics within this planner deprioritizes triple patterns with vocabulary terms, such as <code>rdf:type</code>,
 since they are usually the least selective.
