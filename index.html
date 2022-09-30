@@ -981,9 +981,10 @@ Each query template in the benchmark was instantiated five times, which resulted
         <h3 id="experimental-results">Experimental Results</h3>
 
         <p>In this section, we present results that offer insights into the research question.
-<a href="#results-queries-discover">Fig. 2</a>, <a href="#results-queries-short">Fig. 3</a>, and <a href="#results-queries-complex">Fig. 4</a>
+<a href="#results-queries-discover">Fig. 2</a> and <a href="#results-queries-short">Fig. 3</a>.
 show the aggregated results for the different combinations of our setup
-for the discover, short, and complex queries of the benchmark, respectively.
+for the discover and short queries of the benchmark, respectively.
+Since the results for the complex queries don’t add any value to this article, they have been moved into the <a href="#appendix-evaluation">appendix</a>.
 Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average correctness (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest correctness value are marked in bold.
 The number of HTTP requests is counted across all query executions that did not time out within each combination.
 The timeout column represents the number of query templates that lead to a timeout for a given combination.
@@ -1435,229 +1436,6 @@ The correctness of each query execution is calculated as the percentage of expec
           </figcaption>
         </figure>
 
-        <figure id="results-queries-complex" class="table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>cnone-base</td>
-                <td style="text-align: right">13,128</td>
-                <td style="text-align: right">2</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">11</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">1</td>
-              </tr>
-              <tr>
-                <td><strong>cmatch-base</strong></td>
-                <td style="text-align: right"><strong>16,574</strong></td>
-                <td style="text-align: right"><strong>2</strong></td>
-                <td style="text-align: right"><strong>3</strong></td>
-                <td style="text-align: right"><strong>2</strong></td>
-                <td style="text-align: right"><strong>1,619</strong></td>
-                <td style="text-align: right"><strong>0.50</strong></td>
-                <td style="text-align: right"><strong>2.50%</strong></td>
-                <td style="text-align: right"><strong>4</strong></td>
-              </tr>
-              <tr>
-                <td>call-base</td>
-                <td style="text-align: right">39,648</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-idx</td>
-                <td style="text-align: right">19,478</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">262</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-idx</td>
-                <td style="text-align: right">37,182</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">71</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-idx</td>
-                <td style="text-align: right">39,881</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-idx-filt</td>
-                <td style="text-align: right">17,472</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">264</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-idx-filt</td>
-                <td style="text-align: right">37,179</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">71</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-idx-filt</td>
-                <td style="text-align: right">40,095</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp</td>
-                <td style="text-align: right">18,802</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">344</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp</td>
-                <td style="text-align: right">38,911</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">81</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp</td>
-                <td style="text-align: right">40,056</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp-idx</td>
-                <td style="text-align: right">19,656</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">400</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp-idx</td>
-                <td style="text-align: right">38,100</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">87</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp-idx</td>
-                <td style="text-align: right">40,067</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp-idx-filt</td>
-                <td style="text-align: right">19,528</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">389</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">5</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp-idx-filt</td>
-                <td style="text-align: right">37,676</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">110</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp-idx-filt</td>
-                <td style="text-align: right">40,044</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Fig. 4:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
-          </figcaption>
-        </figure>
-
         <p>These results show that there are combinations of approaches that achieve a very high level of correctness for discover queries,
 and an average level of correctness for short queries.
 However, for complex queries, none of the combinations achieve an acceptable level of correctness.
@@ -1699,17 +1477,17 @@ As such, the short and complex queries highlight opportunities for improvement i
 
         <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Fig. 2</a>,
 we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery on average.
-To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> shows the average query execution times of each discover query separately,
+To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 4</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-26">26</a>]</span>.
 The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-55">55</a>]</span>.
-Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 6</a> shows the average number of HTTP requests for each of those discover queries.
-Finally, <a href="#results-queries-cmatch-wins">Fig. 7</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 5</a> shows the average number of HTTP requests for each of those discover queries.
+Finally, <a href="#results-queries-cmatch-wins">Fig. 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
 <img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
 <figcaption>
-            <p><span class="label">Fig. 5:</span> Relative query execution times for all discover queries with different combinations of data vault discovery with cMatch.
+            <p><span class="label">Fig. 4:</span> Relative query execution times for all discover queries with different combinations of data vault discovery with cMatch.
 The bar indicates the average execution times, while the whiskers indicate the maximum and minimum execution times.
 The star marker indicates the average time until first result.</p>
           </figcaption>
@@ -1718,7 +1496,7 @@ The star marker indicates the average time until first result.</p>
         <figure id="figure-queries_indexvsstorage_http">
 <img src="img/experiments/queries_indexvsstorage_http.svg" alt="HTTP requests of discover queries for index versus storage" />
 <figcaption>
-            <p><span class="label">Fig. 6:</span> Average number of HTTP requests for all discover queries with different combinations of data vault discovery with cMatch.</p>
+            <p><span class="label">Fig. 5:</span> Average number of HTTP requests for all discover queries with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
 
@@ -1748,16 +1526,16 @@ The star marker indicates the average time until first result.</p>
           </table>
 
           <figcaption>
-            <p><span class="label">Fig. 7:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+            <p><span class="label">Fig. 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
 A win for a certain approach is only considered if the results are correct for this query.
 Five queries are missing due to no approaches achieving correct results.</p>
           </figcaption>
         </figure>
 
-        <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 5</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
+        <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 4</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
 using just the type index is slightly faster or comparable to just LDP-based discovery,
 this difference has no statistical significance (<em>p = 0.55</em>).
-However, <a href="#figure-queries_indexvsstorage_http">Fig. 6</a> shows that the number of HTTP requests with the type index is always slightly lower than LDP-based discovery,
+However, <a href="#figure-queries_indexvsstorage_http">Fig. 5</a> shows that the number of HTTP requests with the type index is always slightly lower than LDP-based discovery,
 but this only has a very weak statistical significance (<em>p = 0.12</em>).</p>
 
         <p>When the filter-enabled type index approach is used, three queries (D1, D3, D8) are made even faster compared to the non-filtered type index approach.
@@ -2306,6 +2084,235 @@ As such, this brings us one step closer towards a decentralized Web where users 
     <section id="appendix-evaluation" inlist="" rel="schema:hasPart" resource="#appendix-evaluation">
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Experimental Results</h2>
+
+        <h3 id="aggregated-results-complex-queries">Aggregated Results Complex Queries</h3>
+
+        <p><a href="#results-queries-complex">Fig. 7</a> shows the aggregated query results for all complex queries.</p>
+
+        <figure id="results-queries-complex" class="table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cnone-base</td>
+                <td style="text-align: right">13,128</td>
+                <td style="text-align: right">2</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">11</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td><strong>cmatch-base</strong></td>
+                <td style="text-align: right"><strong>16,574</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>3</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>1,619</strong></td>
+                <td style="text-align: right"><strong>0.50</strong></td>
+                <td style="text-align: right"><strong>2.50%</strong></td>
+                <td style="text-align: right"><strong>4</strong></td>
+              </tr>
+              <tr>
+                <td>call-base</td>
+                <td style="text-align: right">39,648</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-idx</td>
+                <td style="text-align: right">19,478</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">262</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-idx</td>
+                <td style="text-align: right">37,182</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-idx</td>
+                <td style="text-align: right">39,881</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-idx-filt</td>
+                <td style="text-align: right">17,472</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">264</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-idx-filt</td>
+                <td style="text-align: right">37,179</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-idx-filt</td>
+                <td style="text-align: right">40,095</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp</td>
+                <td style="text-align: right">18,802</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">344</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">38,911</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">81</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp</td>
+                <td style="text-align: right">40,056</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx</td>
+                <td style="text-align: right">19,656</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">400</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">38,100</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">87</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx</td>
+                <td style="text-align: right">40,067</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx-filt</td>
+                <td style="text-align: right">19,528</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">389</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">5</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">37,676</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">110</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx-filt</td>
+                <td style="text-align: right">40,044</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Fig. 7:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <h3 id="diefficiency-plots">Diefficiency Plots</h3>
 
         <p><a href="#figure-querytimes_d1-3">Fig. 8</a> and <a href="#figure-querytimes_d2-3">Fig. 9</a> show the query result arrival times for D1 and D2 respectively
 with different combinations of data vault discovery with cMatch.
