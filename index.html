@@ -41,9 +41,9 @@
       <h2 property="schema:name">Abstract</h2>
       <!-- Context      -->
       <p>To counter societal and economic problems caused by data silos on the Web,
-efforts such as Solid strive to reclaim private data by storing it in permissioned documents across a large number of personal vaults across the Web.
+efforts such as Solid strive to reclaim private data by storing it in permissioned documents over a large number of personal vaults across the Web.
 <!-- Need         -->
-Building applications on top of such a decentralized knowledge graph
+Building applications on top of such a decentralized Knowledge Graph
 involves significant technical challenges:
 centralized aggregation prior to query processing is excluded for legal reasons,
 and current federated querying techniques cannot handle this large scale of distribution
@@ -61,7 +61,7 @@ and evaluate their effectiveness.
 <!-- Findings     -->
 Our experiments indicate that these new algorithms obtain complete query results in the order of seconds,
 which existing algorithms cannot achieve.
-We discuss limitations with respect to more complex queries.
+Furthermore, we discuss limitations with respect to more complex queries.
 <!-- Conclusion   -->
 This work reveals that a traversal-based querying method using structural assumptions can be effective for large-scale decentralization,
 but that advances are needed in the area of query planning for LTQP to handle more complex queries.
@@ -71,6 +71,7 @@ in which declarative queries shield developers from the inherent complexity of a
 
       <p><span id="keywords" rel="schema:about"><span class="title">Keywords</span>
 <a href="https://en.wikipedia.org/wiki/Linked_Data" resource="http://dbpedia.org/resource/Linked_Data">Linked Data</a>,
+<a href="https://en.wikipedia.org/wiki/Decentralization" resource="http://dbpedia.org/resource/Decentralization">Decentralization</a>,
 <a href="https://en.wikipedia.org/wiki/Resource_Description_Framework" resource="http://dbpedia.org/resource/Resource_Description_Framework">RDF</a>,
 <a href="https://en.wikipedia.org/wiki/SPARQL" resource="http://dbpedia.org/resource/SPARQL">SPARQL</a>,
 Link Traversal,
@@ -132,7 +133,6 @@ These applications cannot effectively be built today
 due to the lack of query execution techniques that are capable of handling the requirements of decentralized environments such as Solid.</p>
 
         <p>The majority of research in the domain of query execution over Knowledge Graphs on the Web has been focused on centralized use cases,
-<span class="comment" data-author="RV">need consistent capitalization of KG everywhere; I don’t mind which one</span>
 where all data is captured in a single or a small number of sources, usually exposed as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL endpoints</a> <span class="references">[<a href="#ref-7">7</a>]</span>.
 Even though several federated query execution approaches exist <span class="references">[<a href="#ref-8">8</a>, <a href="#ref-9">9</a>, <a href="#ref-10">10</a>]</span>,
 they have been designed for federating over <em>a few (~10) large sources</em>,
