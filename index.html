@@ -627,161 +627,10 @@ We refer to the SNB specification <span class="references">[<a href="#ref-48">4
 on the correlation of short and complex query templates to these choke points.</p>
 
         <p>For this work, we introduce an additional category of choke points that are related to the <em>linking structures</em> within data vaults.
-These choke points within this category are the following:</p>
-
-        <ul>
-          <li><strong>CP L.1: Traversal of 1 hop (1)</strong>: Following one link to one other document.</li>
-          <li><strong>CP L.2: Traversal of 1 hop (n)</strong>: Following one link to multiple other document.</li>
-          <li><strong>CP L.3: Traversal of 2 hops (1:1)</strong>: Following one link to another document, and one link to another documents.</li>
-          <li><strong>CP L.4: Traversal of 2 hops (1:n)</strong>: Following one link to another document, and multiple links to other documents.</li>
-          <li><strong>CP L.5: Traversal of 3 hops (n:1:1)</strong>: Following multiple links to other documents, one link from the next document, and one other link.</li>
-          <li><strong>CP L.6: Traversal of 3 hops (n:1:n)</strong>: Following multiple links to other documents, one link from the next document, and multiple other link.</li>
-          <li><strong>CP L.7: Fragmentation variability in vaults</strong>: Handling the variability of data fragmentation across different data vaults.</li>
-          <li><strong>CP L.8: Index delegation</strong>: The potential of deferring subqueries to an index (such as the type index).</li>
-          <li><strong>CP L.9: Noise</strong>: The ability to filter out HTTP requests that are irrelevant to the query.</li>
-        </ul>
-
-        <p>Since the short and complex query classes only cover these choke points partially,
-we introduce the following <em>discover</em> queries dedicated for covering these choke points on linking structures:</p>
-
-        <ul>
-          <li>D1: All posts of a person</li>
-          <li>D2: All messages of a person</li>
-          <li>D3: Top tags in messages from a person</li>
-          <li>D4: Top locations in comments from a person</li>
-          <li>D5: All IPs a person has messaged from</li>
-          <li>D6: All fora a person messaged on</li>
-          <li>D7: All moderators in fora a person messaged on</li>
-          <li>D8: Other messages created by people that a person likes messages from</li>
-        </ul>
-
-        <p>The correlation of these discover queries to choke points is summarized in <a href="#chokepoints-discover">Table 1</a>.</p>
-
-        <figure id="chokepoints-discover" class="table">
-
-          <table>
-            <thead>
-              <tr>
-                <th>Choke Point</th>
-                <th>D1</th>
-                <th>D2</th>
-                <th>D3</th>
-                <th>D4</th>
-                <th>D5</th>
-                <th>D6</th>
-                <th>D7</th>
-                <th>D8</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>L.1</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.2</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.3</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.4</td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.5</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.6</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.7</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.8</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.9</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 1:</span> Coverage of choke points on linking structures for discover queries.</p>
-          </figcaption>
-        </figure>
-
-        <p>More details on all query templates can be found at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md</a>.</p>
+Since the short and complex query classes only cover these linking-related choke points partially,
+we introduce <em>discover</em> queries dedicated for covering these choke points on linking structures.
+The full list of choke points and discover queries are available in the <a href="#appendix-workload">appendix</a>.
+More details on all query templates can be found at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/templates/queries/README.md</a>.</p>
 
         <p><strong>Query template instantiation</strong></p>
 
@@ -1947,7 +1796,7 @@ This two-phase approach is based on an oracle that provides all query-relevant l
 Therefore, this two-phase approach is merely a theoretical case,
 which delays time until first results due to prior indexing,
 and which may not always be achievable in practise due to infinitely growing link queues for some queries.
-The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 2</a>.</p>
+The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 1</a>.</p>
 
         <figure id="results-planning-effectiveness" class="table">
 
@@ -2022,7 +1871,7 @@ The results of this experiment are shown in <a href="#results-planning-effective
           </table>
 
           <figcaption>
-            <p><span class="label">Table 2:</span> The query execution times of all 8 <strong>discover</strong> queries for both the standard integrated approach using cMatch and filtered type index-based discovery,
+            <p><span class="label">Table 1:</span> The query execution times of all 8 <strong>discover</strong> queries for both the standard integrated approach using cMatch and filtered type index-based discovery,
 and the two-phase approach that uses an oracle to determine query-relevant links.
 The <em>Dereferencing</em> column indicates the percentage of time the two-phase approach spent on dereferencing all HTTP requests.
 The last column indicates the number of HTTP requests per query, which are equal for the integrated and two-phase approaches.</p>
@@ -2291,6 +2140,169 @@ As such, this brings us one step closer towards a decentralized Web where users 
 
 <div id="appendix">
     <h1 id="appendix">Appendix</h1>
+    <section id="appendix-workload" inlist="" rel="schema:hasPart" resource="#appendix-workload">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Workload</h2>
+
+        <h3 id="linking-structure-choke-points">Linking Structure Choke Points</h3>
+
+        <p>The additional choke points related to <em>linking structures</em> within data vaults we introduce are the following:</p>
+
+        <ul>
+          <li><strong>CP L.1: Traversal of 1 hop (1)</strong>: Following one link to one other document.</li>
+          <li><strong>CP L.2: Traversal of 1 hop (n)</strong>: Following one link to multiple other document.</li>
+          <li><strong>CP L.3: Traversal of 2 hops (1:1)</strong>: Following one link to another document, and one link to another documents.</li>
+          <li><strong>CP L.4: Traversal of 2 hops (1:n)</strong>: Following one link to another document, and multiple links to other documents.</li>
+          <li><strong>CP L.5: Traversal of 3 hops (n:1:1)</strong>: Following multiple links to other documents, one link from the next document, and one other link.</li>
+          <li><strong>CP L.6: Traversal of 3 hops (n:1:n)</strong>: Following multiple links to other documents, one link from the next document, and multiple other link.</li>
+          <li><strong>CP L.7: Fragmentation variability in vaults</strong>: Handling the variability of data fragmentation across different data vaults.</li>
+          <li><strong>CP L.8: Index delegation</strong>: The potential of deferring subqueries to an index (such as the type index).</li>
+          <li><strong>CP L.9: Noise</strong>: The ability to filter out HTTP requests that are irrelevant to the query.</li>
+        </ul>
+
+        <p>The correlation of these choke points to the discover queries is summarized in <a href="#chokepoints-discover">Table 2</a>.</p>
+
+        <figure id="chokepoints-discover" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Choke Point</th>
+                <th>D1</th>
+                <th>D2</th>
+                <th>D3</th>
+                <th>D4</th>
+                <th>D5</th>
+                <th>D6</th>
+                <th>D7</th>
+                <th>D8</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L.1</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.2</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.3</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.4</td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.5</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.6</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.7</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.8</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.9</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 2:</span> Coverage of choke points on linking structures for discover queries.</p>
+          </figcaption>
+        </figure>
+
+        <h3 id="discover-queries">Discover queries</h3>
+
+        <p>The discover queryies we introduce are listed below:</p>
+
+        <ul>
+          <li>D1: All posts of a person</li>
+          <li>D2: All messages of a person</li>
+          <li>D3: Top tags in messages from a person</li>
+          <li>D4: Top locations in comments from a person</li>
+          <li>D5: All IPs a person has messaged from</li>
+          <li>D6: All fora a person messaged on</li>
+          <li>D7: All moderators in fora a person messaged on</li>
+          <li>D8: Other messages created by people that a person likes messages from</li>
+        </ul>
+      </div>
+</section>
+
     <section id="appendix-evaluation" inlist="" rel="schema:hasPart" resource="#appendix-evaluation">
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Experimental Results</h2>
