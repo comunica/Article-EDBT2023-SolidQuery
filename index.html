@@ -1481,8 +1481,7 @@ To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorag
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-26">26</a>]</span>.
 The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-55">55</a>]</span>.
-Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 5</a> shows the average number of HTTP requests for each of those discover queries.
-Finally, <a href="#results-queries-cmatch-wins">Fig. 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 5</a> shows the average number of HTTP requests for each of those discover queries.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
 <img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
@@ -1499,38 +1498,6 @@ The star marker indicates the average time until first result.</p>
             <p><span class="label">Fig. 5:</span> Average number of HTTP requests for all discover queries with different combinations of data vault discovery with cMatch.</p>
           </figcaption>
 </figure>
-
-        <figure id="results-queries-cmatch-wins" class="table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right">idx</th>
-                <th style="text-align: right">idx-filt</th>
-                <th style="text-align: right">ldp</th>
-                <th style="text-align: right">ldp-idx</th>
-                <th style="text-align: right">ldp-idx-filt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Wins</td>
-                <td style="text-align: right">10</td>
-                <td style="text-align: right">15</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">0</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Fig. 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
-A win for a certain approach is only considered if the results are correct for this query.
-Five queries are missing due to no approaches achieving correct results.</p>
-          </figcaption>
-        </figure>
 
         <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 4</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
 using just the type index is slightly faster or comparable to just LDP-based discovery,
@@ -2087,7 +2054,7 @@ As such, this brings us one step closer towards a decentralized Web where users 
 
         <h3 id="aggregated-results-complex-queries">Aggregated Results Complex Queries</h3>
 
-        <p><a href="#results-queries-complex">Fig. 7</a> shows the aggregated query results for all complex queries.</p>
+        <p><a href="#results-queries-complex">Fig. 6</a> shows the aggregated query results for all complex queries.</p>
 
         <figure id="results-queries-complex" class="table-smaller-font">
 
@@ -2308,7 +2275,43 @@ As such, this brings us one step closer towards a decentralized Web where users 
           </table>
 
           <figcaption>
-            <p><span class="label">Fig. 7:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
+            <p><span class="label">Fig. 6:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
+
+        <p><a href="#results-queries-cmatch-wins">Fig. 7</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+
+        <figure id="results-queries-cmatch-wins" class="table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right">idx</th>
+                <th style="text-align: right">idx-filt</th>
+                <th style="text-align: right">ldp</th>
+                <th style="text-align: right">ldp-idx</th>
+                <th style="text-align: right">ldp-idx-filt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wins</td>
+                <td style="text-align: right">10</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">0</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Fig. 7:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+A win for a certain approach is only considered if the results are correct for this query.
+Five queries are missing due to no approaches achieving correct results.</p>
           </figcaption>
         </figure>
 
