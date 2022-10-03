@@ -1,14 +1,9 @@
 @prefix ldp: <http://www.w3.org/ns/ldp#>.
-@prefix ex: <http://example.org/>.
-
-<>
-  a solid:TypeIndex ;
-  a solid:ListedDocument.
-
+<> a solid:TypeIndex ;
+   a solid:ListedDocument.
 <#ab09fd> a solid:TypeRegistration;
-  solid:forClass ex:Post;
+  solid:forClass <http://example.org/Post>;
   solid:instance </public/posts.ttl>.
-
 <#bq1r5e> a solid:TypeRegistration;
-  solid:forClass ex:Comment;
+  solid:forClass <http://example.org/Comment>;
   solid:instanceContainer </public/comments/>.

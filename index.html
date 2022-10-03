@@ -290,7 +290,7 @@ by either <a property="schema:citation http://purl.org/spar/cito/cites" href="ht
 or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-38">38</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-39">39</a>]</span>.
 Data vaults are loosely coupled to applications,
 where applications must request explicit access to the user for interacting with specific data.
-This loose coupling enables different applications to make use of the same data in an interoperable manner.</p>
+This loose coupling enables different applications to use the same data interoperably.</p>
 
         <p>Currently, data vaults are primarily file-based, and are exposed on the Web as a REST API
 using elements of the <a href="spec:ldp">Linked Data Platform (LDP) specification</a>.
@@ -305,19 +305,18 @@ If the vault supports this, resources can be modified or created using HTTP PATC
 
         <figure id="example-ldpcontainer" class="listing">
 <pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
-</code><code>
 </code><code>&lt;&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource;
 </code><code>   ldp:contains &lt;file.ttl&gt;, &lt;posts/&gt;, &lt;profile/&gt;.
 </code><code>&lt;file.ttl&gt; a ldp:Resource.
 </code><code>&lt;posts/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.
 </code><code>&lt;profile/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.</code></pre>
 <figcaption>
-            <p><span class="label">Listing 1:</span> Example in the Turtle serialization of an LDP container in a Solid data vault containing one file and two directories.</p>
+            <p><span class="label">Listing 1:</span> An LDP container in a Solid data vault containing one file and two directories in the Turtle serialization.</p>
           </figcaption>
 </figure>
 
         <p>Data vaults can contain not only public data, but also private data.
-Therefore, users can configure who can access or modify files within their vault in a fine-grained manner
+Therefore, users can configure who can access or modify files within their vault
 using techniques such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-40">40</a>]</span> and <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/authorization-panel/acp-specification/">ACP</a> <span class="references">[<a href="#ref-41">41</a>]</span>.
 This configuration is usually done by referring to the <em>WebID</em> of users,
 which will be elaborated upon in the next section.</p>
@@ -325,39 +324,28 @@ which will be elaborated upon in the next section.</p>
         <h3 id="webid-profile">WebID Profile</h3>
 
         <p>Any agent (person or organization) within the Solid ecosystem can establish their identity through a URI, called a <em>WebID</em>.
-These agents can authenticate themselves using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-42">42</a>]</span>,
-which is required for authorization during the reading and writing of resources behind access control.
-The Solid OIDC protocol is fully decentralized, which means that anyone can choose or set up their own identity provider.</p>
+These agents can authenticate themselves using the decentralized <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-42">42</a>]</span>,
+which is required for authorizing access during the reading and writing of resources.</p>
 
         <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-43">43</a>]</span>,
 each WebID URI should be dereferenceable, and return a WebID profile document.
 Next to basic information of the agent such as its name and contact details,
-this document should contain several links to</p>
-
-        <ol>
-          <li>An identity provider to authenticate the WebID,</li>
-          <li>The root LDP container of its data vault, and</li>
-          <li>public and private type indexes.</li>
-        </ol>
-
-        <p>A WebID profile is allowed to be split up into multiple document,
-which are referred to each other using the <code>rdfs:seeAlso</code> predicate.
-There are more WebID profiles elements, but we omit these due to their irrelevance in this work,
-such as the link to the preferences file and notifications inbox.
-<a href="#example-webidprofile">Listing 2</a> contains a simplified example of such a WebID profile.</p>
+this document should contain links to 1) the root LDP container of its data vault, and
+2) public and private type indexes.
+An example is shown in <a href="#example-webidprofile">Listing 2</a>.
+We omit further details on WebID profiles due to their irrelevance within this work.</p>
 
         <figure id="example-webidprofile" class="listing">
 <pre><code>@prefix pim: &lt;http://www.w3.org/ns/pim/space#&gt;.
 </code><code>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
 </code><code>@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt; .
-</code><code>
 </code><code>&lt;#me&gt; foaf:name &quot;Zulma&quot;;
 </code><code>      pim:storage &lt;/&gt;;
 </code><code>      solid:oidcIssuer &lt;https://solidcommunity.net/&gt;;
 </code><code>      solid:publicTypeIndex &lt;/publicTypeIndex.ttl&gt;.
 </code></pre>
 <figcaption>
-            <p><span class="label">Listing 2:</span> Simplified example of a WebID profile in the Turtle serialization.</p>
+            <p><span class="label">Listing 2:</span> A simplified WebID profile in Turtle.</p>
           </figcaption>
 </figure>
 
@@ -375,18 +363,13 @@ it can do so by finding this type index and following the link within the type i
 
         <figure id="example-typeindex" class="listing">
 <pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
-</code><code>@prefix ex: &lt;http://example.org/&gt;.
-</code><code>
-</code><code>&lt;&gt;
-</code><code>  a solid:TypeIndex ;
-</code><code>  a solid:ListedDocument.
-</code><code>
+</code><code>&lt;&gt; a solid:TypeIndex ;
+</code><code>   a solid:ListedDocument.
 </code><code>&lt;#ab09fd&gt; a solid:TypeRegistration;
-</code><code>  solid:forClass ex:Post;
+</code><code>  solid:forClass &lt;http://example.org/Post&gt;;
 </code><code>  solid:instance &lt;/public/posts.ttl&gt;.
-</code><code>
 </code><code>&lt;#bq1r5e&gt; a solid:TypeRegistration;
-</code><code>  solid:forClass ex:Comment;
+</code><code>  solid:forClass &lt;http://example.org/Comment&gt;;
 </code><code>  solid:instanceContainer &lt;/public/comments/&gt;.
 </code></pre>
 <figcaption>
@@ -397,39 +380,39 @@ it can do so by finding this type index and following the link within the type i
         <h3 id="requirements-for-query-engines">Requirements for query engines</h3>
 
         <p>Instead of requiring all application developers to reinvent the wheel by manually discovering application-relevant elements within data vaults,
-this can be abstracted away behind declarative queries that are to be executed by reusable query engines.
+this can be abstracted away behind declarative queries.
 This also makes applications robust against changes or additions within the Solid protocol,
 where this only requires changes within the underlying query engine,
 as the application’s declarative query can remain unchanged.
-As such, for the remainder of this article, we consider query engines taking up the task of finding data within and across data vaults.</p>
+As such, we consider query engines for finding data within and across data vaults.</p>
 
         <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-36">36</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
-Below, we list the requirements that query agents have if they want to provide query execution over one or more data vaults.</p>
+Below, we list the requirements that query agents need to have for enabling query execution over data vaults.</p>
 
         <ol>
           <li>
             <p><strong>Mapping query to a sequence of HTTP requests</strong>:
-The query engine MUST have the ability to convert a declarative query into a sequence of one or more HTTP requests within or across data vaults.</p>
+Convert a query into a sequence of HTTP requests across data vaults.</p>
           </li>
           <li>
             <p><strong>Discovery and usage of LDP storage</strong>:
-When given a link to a WebID profile, the query engine MUST be able discover and follow the <code>pim:storage</code> link to the storage root of the vault.
-Additionally, the query engine MUST be able to identify an LDP basic container, and follow (a subset of) links towards the resources within this container.</p>
+Discover and follow the <code>pim:storage</code> link in a WebID profile to the storage root of the vault,
+identify an LDP basic container, and follow (a subset of) links towards the resources within this container.</p>
           </li>
           <li>
             <p><strong>Discovery and usage of type indexes</strong>:
-The query engine MUST be able to discover and follow type index links from the WebID profile, and handle (a subset of) the type registration links.</p>
+Discover and follow type index links from the WebID profile, and handle (a subset of) the type registration links.</p>
           </li>
           <li>
             <p><strong>Variability of vault structures</strong>:
-The query engine SHOULD NOT make assumptions about the location of certain data within specific vaults
-without having an explicit and discoverable link path to it, e.g. via LDP storage or type indexes.
+Make no assumptions about the location of certain data within vaults
+without an explicit and discoverable link path to it, e.g. via LDP storage or type indexes.
 This is important for the interoperability of Solid apps because different apps or user preferences
 may lead to the storage of similar data in different locations within vaults.</p>
           </li>
           <li>
             <p><strong>Authenticated requests</strong>:
-To enable queries over private resources, the agent SHOULD be able to authenticate itself to the query engine using its WebID. The query engine can then use the authenticated session on behalf of the user to perform authorized HTTP requests over private resources.</p>
+Perform authenticated HTTP requests on behalf of the user after authentication with a WebID, to enable querying over private resources.</p>
           </li>
         </ol>
 
@@ -437,7 +420,7 @@ To enable queries over private resources, the agent SHOULD be able to authentica
 we will focus on read-only queries for the remainder of this article.
 Furthermore, given the Linked Data nature of Solid,
 we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-24">24</a>]</span> for the remainder of this article.
-Nevertheless, these concepts can also be applied to write queries and other query languages.</p>
+Nevertheless, these concepts can also be applied to write-queries and other query languages.</p>
 
       </div>
 </section>
