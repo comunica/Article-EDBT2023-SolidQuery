@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/09/30" />
+  <meta name="citation_publication_date" content="2022/10/03" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -123,29 +123,28 @@ which they fully control.
 These data vaults form personal Knowledge Graphs <span class="references">[<a href="#ref-5">5</a>]</span>, which are often represented as collections of <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html">Linked Data documents</a> <span class="references">[<a href="#ref-6">6</a>]</span>.
 The presence of such data vaults results in a large-scale distribution of data,
 where applications involving multiple individuals’ data require accessing
+thousands or even millions of documents
+across different data vaults across the Web.
+These applications cannot effectively be built today
+due to the lack of querying techniques that can hande the requirements of decentralized environments like Solid.
 <span class="placeholder printonly">
 <span style="display: block; height: 9em;"></span>
 <!-- This is a dummy placeholder for the ACM first page footnote -->
 </span>
-thousands or even millions of documents
-across different data vaults across the Web.
-These applications cannot effectively be built today
-due to the lack of query execution techniques that are capable of handling the requirements of decentralized environments such as Solid.</p>
-
-        <p>The majority of research in the domain of query execution over Knowledge Graphs on the Web has been focused on centralized use cases,
+The majority of research in the domain of query execution over Knowledge Graphs on the Web has been focused on centralized use cases,
 where all data is captured in a single or a small number of sources, usually exposed as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL endpoints</a> <span class="references">[<a href="#ref-7">7</a>]</span>.
 Even though several federated query execution approaches exist <span class="references">[<a href="#ref-8">8</a>, <a href="#ref-9">9</a>, <a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span>,
 they have been designed for federating over <em>a few (~10) large sources</em>,
 while decentralized environments such as Solid are identified by <em>a large number (~millions) of small sources</em>.
 Furthermore, many federated query execution techniques assume all sources to be known prior to query execution,
-which is not feasible in decentralized environments due to the lack of a centralized index.
-Therefore, these techniques are currently not suitable for decentralized environments.</p>
+which is not feasible in decentralized environments due to the lack of a central index.
+Hence, these techniques are unsuitable for decentralized environments.</p>
 
         <p><em>Link Traversal Query Processing (LTQP)</em> <span class="references">[<a href="#ref-12">12</a>, <a href="#ref-13">13</a>]</span>
 is an alternative query execution paradigm that is more promising for uncharted decentralized environments.
 It can query over a continuously growing range of documents that are discovered during query execution,
 by <em>following hyperlinks</em> between Linked Data documents using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html"><em>follow-your-nose</em> principle</a> <span class="references">[<a href="#ref-6">6</a>]</span>.
-While LTQP has mainly been a theoretically interesting technique, it has not seen any practical use cases so far,
+While LTQP has mainly been a theoretically interesting technique, it has not seen any practical use so far,
 in particular because of performance concerns.</p>
 
         <p>In this work, we prove that LTQP
@@ -153,14 +152,14 @@ can be an effective paradigm,
 if we exploit specific structural properties within decentralized environments
 for more effective source discovery and query optimization.
 We apply our research to the Solid ecosystem,
-but these concepts are generalize to other decentralization initiatives <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.
+but these concepts are generalizable to other decentralization initiatives <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.
 To the best of our knowledge, this is the first in-depth analysis of query execution within the Solid ecosystem.</p>
 
         <p>This article is structured as follows.
-In the <a href="#related-work">next section </a>, we discuss the related work,
+In the <a href="#related-work">next section</a>, we discuss the related work,
 after which we provide an analysis of the structural properties of Solid data vaults in <a href="#solid">Section 3</a>.
-Next, in <a href="#benchmark">Section 4</a> we provide a benchmark that simulates a decentralized Solid environments based on this analysis.
-In <a href="#approach">Section 5</a>, we introduce and explain LTQP algorithms that make use of these structural properties,
+Next, in <a href="#benchmark">Section 4</a> we provide a benchmark that simulates a decentralized Solid environment based on this analysis.
+In <a href="#approach">Section 5</a>, we introduce LTQP algorithms that make use of these structural properties,
 which are evaluated in <a href="#evaluation">Section 6</a>.
 Finally, we conclude in <a href="#conclusions">Section 7</a>.</p>
 
