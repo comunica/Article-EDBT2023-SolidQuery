@@ -277,39 +277,38 @@ is usually done via hand crafted queries <span class="references">[<a href="#re
         <h2 property="schema:name">The Solid Ecosystem</h2>
 
         <p>In this section, we provide an analysis of the structural properties within the Solid ecosystem
-that are relevant for query execution.
-We first start by explaining the concept of data vaults and its implications on applications.
+that are relevant for query processing.
+We start by explaining the concept of data vaults and its implications on applications.
 Next, we explain the WebID, which is used for identifying users.
 Then, we discuss the Solid type index that improves data discovery.
-Finally, we list requirements for enabling query execution within the Solid ecosystem.</p>
+Finally, we list requirements for query processing within the Solid ecosystem.</p>
 
         <h3 id="data-vault">Data Vault</h3>
 
-        <p>A primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-36">36</a>]</span> is
-the data vault (also known as <em>data pod</em>), which is a user-owned space in which any kind of data can be stored.
+        <p>A primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid Protocol</a> <span class="references">[<a href="#ref-36">36</a>]</span> is
+the data vault (also known as <em>data pod</em>), which is a user-controlled space in which any kind of data can be stored.
 Users can choose where and how their vault is stored on the Web,
-by either <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-37">37</a>]</span>,
-or by obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-38">38</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-39">39</a>]</span>.
-Data vaults are loosely coupled to applications,
-where applications must request explicit access to the user for interacting with specific data.
+by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-37">37</a>]</span>,
+obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-38">38</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-39">39</a>]</span>.
+Data vaults are supposed to be loosely coupled to applications,
+and applications must request explicit access to the user for interacting with specific data.
 This loose coupling enables different applications to use the same data interoperably.</p>
 
-        <p>Currently, data vaults are primarily file-based, and are exposed on the Web as a REST API
+        <p>Current data vaults are primarily document-oriented, and are exposed on the Web as a REST API
 using elements of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/ldp/">Linked Data Platform (LDP) specification</a> <span class="references">[<a href="#ref-40">40</a>]</span>.
 Directories are represented using <em>LDP Basic Containers</em>,
 which can contain any number of resources that correspond to RDF or non-RDF documents (via <code>ldp:contains</code> links),
 or other nested basic containers.
 For the remainder of this article, we will only consider the processing of RDF documents within vaults.
-Resources within vaults can be read by sending HTTP GET requests to their URLs,
+Resources within vaults can be read by sending HTTP <code>GET</code> requests to their URLs,
 with optional content negotiation to return the documents in different RDF serializations.
-If the vault supports this, resources can be modified or created using HTTP PATCH and POST requests.
+If the vault supports this, resources can be modified or created using HTTP <code>PATCH</code> and <code>POST</code> requests.
 An example of such a basic container can be found in the <a href="#appendix-listings">appendix</a>.</p>
 
-        <p>Data vaults can contain not only public data, but also private data.
-Therefore, users can configure who can access or modify files within their vault
-using techniques such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-41">41</a>]</span> and <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/authorization-panel/acp-specification/">ACP</a> <span class="references">[<a href="#ref-42">42</a>]</span>.
-This configuration is usually done by referring to the <em>WebID</em> of users,
-which will be elaborated upon in the next section.</p>
+        <p>Data vaults can contain public as well as private data.
+Users can configure who can access or modify files within their vault
+using mechanisms such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-41">41</a>]</span> and <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/authorization-panel/acp-specification/">ACP</a> <span class="references">[<a href="#ref-42">42</a>]</span>.
+This configuration is usually done by referring to the <em>WebID</em> of users.</p>
 
         <h3 id="webid-profile">WebID Profile</h3>
 
@@ -335,15 +334,15 @@ An example of such a type index can be found in the <a href="#appendix-listings"
 
         <h3 id="requirements-for-query-engines">Requirements for query engines</h3>
 
-        <p>Instead of requiring all application developers to reinvent the wheel by manually discovering application-relevant elements within data vaults,
-this can be abstracted away behind declarative queries.
-This also makes applications robust against changes or additions within the Solid protocol,
-where this only requires changes within the underlying query engine,
-as the application’s declarative query can remain unchanged.
-As such, we consider query engines for finding data within and across data vaults.</p>
+        <p>Instead of requiring application developers to reinvent the wheel by manually discovering application-relevant elements within data vaults,
+discovery can be abstracted away behind declarative queries.
+This makes applications robust against changes or additions within the Solid Protocol.
+The application’s declarative query can remain unchanged,
+whereas the underlying query engine can be updated to improve the result set.</p>
 
         <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-36">36</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
-Below, we list the requirements that query agents need to have for enabling query execution over data vaults.</p>
+Below, we list additional requirements that query agents need <span class="rephrase" data-author="RV">for enabling query execution over data vaults</span>.
+<span class="comment" data-author="RV">Well, query processing is always <em>possible</em>. Maybe just not with great results. What do you mean exactly&gt;</span></p>
 
         <ol>
           <li>
@@ -1774,7 +1773,7 @@ As such, this brings us one step closer towards a decentralized Web where users 
 </footer>
 
 <div id="appendix">
-    <h2 id="appendix">Appendix</h2>
+    <h1 id="appendices">Appendices</h1>
     <section id="appendix-listings" inlist="" rel="schema:hasPart" resource="#appendix-listings">
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Solid Ecosystem Data Examples</h2>
