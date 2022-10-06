@@ -386,7 +386,7 @@ Nevertheless, these concepts can also be applied to write-queries and other quer
 
         <p>In this section, we introduce <em>SolidBench</em>, a benchmark that enables reproducible performance measurements
 of different query execution approaches within a decentralized environment.
-For this, SolidBench simulates a decentralized Solid environment with corresponding workload representative of a social networking application.
+SolidBench simulates a decentralized Solid environment with corresponding workload representative of a social networking application.
 Hereafter, we start by explaining the design considerations of the benchmark and our use case scenario, after which we introduce an overview of SolidBench.
 Next, we zoom in on important details of the benchmark, such as fragmentation of the data and the query workload.</p>
 
@@ -423,44 +423,17 @@ Hence, chains of comments can span multiple data vaults.</p>
 
         <h3 id="solidbench-overview">SolidBench Overview</h3>
 
-        <p>To avoid reinventing the wheel, we build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>,
-which models a social network akin to Facebook, and meets most of the requirements of our desired use case scenario.</p>
-
-        <p>However, since SNB was designed to evaluate the performance of centralized query engine,
-its dataset generator outputs a dataset in a single large file, e.g. serialized as RDF Turtle.
-Since our aim is to simulate a decentralized social network,
-we introduce a fragmentation layer on top of this generator.
+        <p>We build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>,
+which models a social network akin to Facebook, and meets most of the requirements of our desired use case scenario.
+Since SNB was designed to evaluate the performance of centralized query engine,
+its dataset generator outputs a dataset in a single large RDF document.
+Given that we aim to simulate a decentralized social network,
+we introduce a <em>fragmentation layer</em> on top of this generator.
 This fragmenter is able to take in any dataset as input,
 and provide a fragmented version of this dataset that simulates an interlinked set of Linked Data documents,
-inspired by WODSim <span class="references">[<a href="#ref-33">33</a>]</span>.
-To simplify evaluation and testing,
-we also provide a built-in Web server that can serve the generated data vaults over HTTP using a single command,
-which is done using a slimmed-down version of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">Community Solid Server</a> <span class="references">[<a href="#ref-37">37</a>]</span>.
-This server disables authentication and authorization by default,
-so experiments can focus on query performance.</p>
+inspired by WODSim <span class="references">[<a href="#ref-33">33</a>]</span>.</p>
 
-        <p>For the query workload, we build upon the <em>interactive</em> workload of SNB,
-and extend it with additional queries to cover link-related choke points.
-Since the query templates that are produced by the generator of SNB assume a centralized dataset,
-we also add a layer on top of these query templates that can transform the queries to correspond to the decentralized dataset.
-Related to this, we also provide a tool that can produce validation queries and results to measure the correctness of a system.
-Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
-
-        <p>All aspects of this benchmark are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-50">50</a>]</span>,
-ranging from fragmentation strategies to properties of query templates.
-Furthermore, our benchmark is included in an existing benchmark runner (<em>name omitted due to double-blind review process</em>),
-which simplifies its execution.</p>
-
-        <p>By default, SolidBench sets the scale factor of the SNB generator to 0.1,
-which results in 157.210 RDF files over 1.529 data vaults using the default fragmentation strategy.
-In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
-Even though this scale can be increased arbitrarily high,
-we notice that this default scale can already stress existing LTQP approaches beyond their capabilities.
-Furthermore, 27 query templates are provided which can be instantiated any number of times to simulate a query workload.
-For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>.
-The benchmark is open-source at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/</a>.</p>
-
-        <p>In summary, we introduce the following tools with SolidBench:</p>
+        <p>We introduce the following tools with SolidBench:</p>
 
         <ul>
           <li><strong>Dataset generator</strong>: consisting of SNB’s existing generator, and a new dataset fragmenter.</li>
@@ -469,6 +442,32 @@ The benchmark is open-source at <a href="https://anonymous.4open.science/r/webco
           <li><strong>Dataset server</strong>: serving of fragmented datasets over HTTP.</li>
           <li><strong>Benchmark runner</strong>: incorporation into an existing benchmarking system for execution against query engines via the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL protocol</a> <span class="references">[<a href="#ref-7">7</a>]</span>.</li>
         </ul>
+
+        <p>For the query workload, we build upon the <em>interactive</em> workload of SNB,
+and extend it with additional queries to cover link-related choke points.
+Since the query templates that are produced by the generator of SNB assume a centralized dataset,
+we also add a layer on top of these query templates that can transform the queries to correspond to the decentralized dataset.
+We provide 27 query templates that can be instantiated any number of times to simulate a query workload.
+We also provide a tool that can produce validation queries and results to measure the correctness of a system.
+Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
+
+        <p>By default, SolidBench sets the scale factor of the SNB generator to 0.1,
+which results in 157.210 RDF files over 1.529 data vaults using the default fragmentation strategy.
+In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
+Even though this scale can be increased arbitrarily,
+we notice that this default scale can already stress existing LTQP approaches beyond their current capabilities.
+For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>.</p>
+
+        <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-50">50</a>]</span>,
+ranging from fragmentation strategies to properties of query templates.
+Furthermore, our benchmark is included in an existing benchmark runner (<em>name omitted due to double-blind review process</em>),
+which simplifies its execution.
+To simplify evaluation and testing,
+we also provide a built-in Web server that can serve the generated data vaults over HTTP using a single command,
+which is done using a slimmed-down version of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">Community Solid Server</a> <span class="references">[<a href="#ref-37">37</a>]</span>.
+This server disables authentication and authorization by default,
+so experiments can focus on query performance.
+The benchmark is open-source at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-benchmark/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-benchmark/</a>.</p>
 
         <!--
 157210 files
@@ -574,10 +573,11 @@ which covers the majority of choke points related to linking structures.</p>
         <p>We consider the following performance metrics in SolidBench:</p>
 
         <ul>
-          <li><strong>Query execution time</strong>: Time (milliseconds) between sending the query to the engine, and obtaining the final result.</li>
-          <li><strong>Query result arrival times</strong>: For each result, time (milliseconds) between sending the query, and obtaining that result.</li>
+          <li><strong>Query execution time</strong>: Time between sending the query to the engine, and obtaining the final result.</li>
+          <li><strong>Query result arrival times</strong>: For each result, time between sending the query, and obtaining that result.</li>
           <li><strong>HTTP requests</strong>: For a query, the number of HTTP requests the engine issued during its execution.</li>
-          <li><strong>Correctness</strong>: The percentage of query results conforming to the expected query results.</li>
+          <li><strong>Correctness</strong>: The percentage of query results conforming to the expected query results.
+<span class="comment" data-author="RV">Completeness and recall? F1 measure? Just to counter easy criticisms.</span></li>
         </ul>
 
         <p>For measuring query execution and result arrival times,
