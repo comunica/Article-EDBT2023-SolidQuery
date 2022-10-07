@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/10/06" />
+  <meta name="citation_publication_date" content="2022/10/07" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -59,7 +59,7 @@ and provide the <em>SolidBench</em> benchmark to simulate Solid environments rep
 We introduce LTQP algorithms leveraging these structural properties,
 and evaluate their effectiveness.
 <!-- Findings     -->
-Our experiments indicate that these new algorithms obtain complete results in the order of seconds for non-complex queries,
+Our experiments indicate that these new algorithms obtain accurate results in the order of seconds for non-complex queries,
 which existing algorithms cannot achieve.
 Furthermore, we discuss limitations with respect to more complex queries.
 <!-- Conclusion   -->
@@ -341,8 +341,8 @@ The application’s declarative query can remain unchanged,
 whereas the underlying query engine can be updated to improve the result set.</p>
 
         <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-36">36</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
-Below, we list additional requirements that query agents need <span class="rephrase" data-author="RV">for enabling query execution over data vaults</span>.
-<span class="comment" data-author="RV">Well, query processing is always <em>possible</em>. Maybe just not with great results. What do you mean exactly&gt;</span></p>
+Below, we list additional query agent requirements for enabling query-driven Solid applications over data vaults
+with a sufficient level of user-perceived performance <span class="references">[<a href="#ref-46">46</a>]</span>.</p>
 
         <ol>
           <li>
@@ -394,10 +394,10 @@ Next, we zoom in on important details of the benchmark, such as fragmentation of
 
         <p>The goal of our benchmark is to simulate a realistic decentralized environment based on the Solid ecosystem,
 and provide a realistic workload that simulates a Solid application that reads data from one or more vaults.
-To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-46">46</a>]</span>.</p>
+To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-47">47</a>]</span>.</p>
 
         <p>Based on our analysis of the Solid ecosystem in <a href="#solid">Section 3</a>,
-and requirements from similar benchmarks <span class="references">[<a href="#ref-46">46</a>, <a href="#ref-47">47</a>, <a href="#ref-48">48</a>]</span>,
+and requirements from similar benchmarks <span class="references">[<a href="#ref-47">47</a>, <a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>,
 we introduce the following requirements for our benchmark:</p>
 
         <ol>
@@ -407,7 +407,7 @@ we introduce the following requirements for our benchmark:</p>
           <li><strong>Variability of vaults</strong>: Data is organized differently in across vaults, to simulate different data organization preferences.</li>
           <li><strong>Scalable dataset</strong>: Dataset is configurable in the number of vaults and vault sizes.</li>
           <li><strong>Workload</strong>: Queries that evaluate different query operations and data linking structures.</li>
-          <li><strong>Metrics</strong>: Measuring metrics such as total query execution time, result arrival times, number of HTTP requests, and correctness.</li>
+          <li><strong>Metrics</strong>: Measuring metrics such as total query execution time, result arrival times, number of HTTP requests, correctness, and completeness.</li>
           <li><strong>Configuration</strong>: Configurable in terms of queries and dataset properties, with default values.</li>
         </ol>
 
@@ -423,7 +423,7 @@ Hence, chains of comments can span multiple data vaults.</p>
 
         <h3 id="solidbench-overview">SolidBench Overview</h3>
 
-        <p>We build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>,
+        <p>We build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-49">49</a>, <a href="#ref-50">50</a>]</span>,
 which models a social network akin to Facebook, and meets most of the requirements of our desired use case scenario.
 Since SNB was designed to evaluate the performance of centralized query engine,
 its dataset generator outputs a dataset in a single large RDF document.
@@ -438,7 +438,7 @@ inspired by WODSim <span class="references">[<a href="#ref-33">33</a>]</span>.<
         <ul>
           <li><strong>Dataset generator</strong>: consisting of SNB’s existing generator, and a new dataset fragmenter.</li>
           <li><strong>Query generator</strong>: consisting of SNB’s existing generator, and a new fragmentation-aware query template instantiator.</li>
-          <li><strong>Validation generator</strong>: building on top of SNB’s validator, produces fragmentation-aware correctness validation sets containing queries and expected results.</li>
+          <li><strong>Validation generator</strong>: building on top of SNB’s validator, produces fragmentation-aware validation sets containing queries and expected results.</li>
           <li><strong>Dataset server</strong>: serving of fragmented datasets over HTTP.</li>
           <li><strong>Benchmark runner</strong>: incorporation into an existing benchmarking system for execution against query engines via the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL protocol</a> <span class="references">[<a href="#ref-7">7</a>]</span>.</li>
         </ul>
@@ -448,7 +448,7 @@ and extend it with additional queries to cover link-related choke points.
 Since the query templates that are produced by the generator of SNB assume a centralized dataset,
 we also add a layer on top of these query templates that can transform the queries to correspond to the decentralized dataset.
 We provide 27 query templates that can be instantiated any number of times to simulate a query workload.
-We also provide a tool that can produce validation queries and results to measure the correctness of a system.
+We also provide a tool that can produce validation queries and results to measure the correctness and completeness of a system.
 Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
 
         <p>By default, SolidBench sets the scale factor of the SNB generator to 0.1,
@@ -456,9 +456,9 @@ which results in 157.210 RDF files over 1.529 data vaults using the default frag
 In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
 Even though this scale can be increased arbitrarily,
 we notice that this default scale can already stress existing LTQP approaches beyond their current capabilities.
-For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>]</span>.</p>
+For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-49">49</a>, <a href="#ref-50">50</a>]</span>.</p>
 
-        <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-50">50</a>]</span>,
+        <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-51">51</a>]</span>,
 ranging from fragmentation strategies to properties of query templates.
 Furthermore, our benchmark is included in an existing benchmark runner (<em>name omitted due to double-blind review process</em>),
 which simplifies its execution.
@@ -485,6 +485,11 @@ Benchmark aspects:
 - 27 query templates covering different chokepoints (19 from SNB interactive and 8 new)
 - Tools to execute experiment and measurement of metrics
 -->
+
+        <p><span class="placeholder printonly">
+<span style="display: block; height: 3em;"></span>
+<!-- This is a dummy placeholder -->
+</span></p>
 
         <h3 id="fragmentation">Fragmentation</h3>
 
@@ -548,9 +553,9 @@ we add <em>discover</em> query templates as third class.</p>
 
         <!-- https://arxiv.org/pdf/2001.02299.pdf -->
 
-        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-46">46</a>]</span>,
+        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-47">47</a>]</span>,
 the short and complex SNB interactive workloads already cover the majority of the 33 choke points introduced by SNB.
-We refer to the SNB specification <span class="references">[<a href="#ref-49">49</a>]</span> for more details
+We refer to the SNB specification <span class="references">[<a href="#ref-50">50</a>]</span> for more details
 on the correlation of short and complex query templates to these choke points.
 Since the short and complex query classes only partially cover choke points related <em>linking structures</em> within data vaults,
 we introduce <em>discover</em> queries dedicated for covering these choke points on linking structures.
@@ -576,8 +581,7 @@ which covers the majority of choke points related to linking structures.</p>
           <li><strong>Query execution time</strong>: Time between sending the query to the engine, and obtaining the final result.</li>
           <li><strong>Query result arrival times</strong>: For each result, time between sending the query, and obtaining that result.</li>
           <li><strong>HTTP requests</strong>: For a query, the number of HTTP requests the engine issued during its execution.</li>
-          <li><strong>Correctness</strong>: The percentage of query results conforming to the expected query results.
-<span class="comment" data-author="RV">Completeness and recall? F1 measure? Just to counter easy criticisms.</span></li>
+          <li><strong>Accuracy</strong>: The F1-measure as a percentage indicating the correctness (precision) and completeness (recall) of query results with respect to the expected query results.</li>
         </ul>
 
         <p>For measuring query execution and result arrival times,
@@ -604,7 +608,7 @@ Finally, we discuss their implementations.</p>
 
         <h3 id="formal-preliminaries">Formal preliminaries</h3>
 
-        <p>This section summarizes the semantics of SPARQL query execution <span class="references">[<a href="#ref-51">51</a>]</span>
+        <p>This section summarizes the semantics of SPARQL query execution <span class="references">[<a href="#ref-52">52</a>]</span>
 and LTQP <span class="references">[<a href="#ref-13">13</a>, <a href="#ref-25">25</a>]</span> that we build upon.</p>
 
         <p>The infinite set of <em>RDF triples</em> is formalized as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">T</mi><mo>=</mo><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo>&#x222a;</mo><mi mathvariant="script">B</mi><mo stretchy="false">)</mo><mo>&#xd7;</mo><mi mathvariant="script">I</mi><mo>&#xd7;</mo><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo>&#x222a;</mo><mi mathvariant="script">B</mi><mo>&#x222a;</mo><mi mathvariant="script">L</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{T} = (\mathcal{I} \cup \mathcal{B}) \times \mathcal{I} \times (\mathcal{I} \cup \mathcal{B} \cup \mathcal{L})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.25417em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.03041em;">B</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xd7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xd7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.03041em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal">L</span><span class="mclose">)</span></span></span></span>,
@@ -646,8 +650,8 @@ to construct a logical query plan ahead of query execution.
 This resulting plan produces a tree of logical query operators representing the query execution order.
 To execute this plan, the logical operators are executed by specific physical operators.
 Our physical query execution builds upon the iterator-based pipeline approach <span class="references">[<a href="#ref-14">14</a>]</span>,
-which is the most popular among LTQP implementations <span class="references">[<a href="#ref-52">52</a>, <a href="#ref-35">35</a>, <a href="#ref-53">53</a>]</span>.
-We consider the execution plan as a pipeline <span class="references">[<a href="#ref-54">54</a>]</span> of iterator-based physical operators,
+which is the most popular among LTQP implementations <span class="references">[<a href="#ref-53">53</a>, <a href="#ref-35">35</a>, <a href="#ref-54">54</a>]</span>.
+We consider the execution plan as a pipeline <span class="references">[<a href="#ref-55">55</a>]</span> of iterator-based physical operators,
 through which intermediary results flow through chained operators to produce results in a pull-based manner.</p>
 
         <figure id="figure-link-queue">
@@ -683,7 +687,7 @@ which enables context-based reachability semantics <span class="references">[<a
 Link extractors only consider URIs as links,
 and ignore matching blank nodes and literals.</p>
 
-        <p>The triple source is connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-51">51</a>]</span> in the leaves of the query plan,
+        <p>The triple source is connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-52">52</a>]</span> in the leaves of the query plan,
 such as triple patterns and property path operators,
 into which a stream of triples is sent.
 The source indexes all triples, to ensure that an operator
@@ -809,7 +813,7 @@ because the link queue and the resulting stream of triples may become infinitely
 
         <p>Our implementation focuses on the SPARQL query language,
 and does not make use of alternative LTQP-specific query languages
-such as LDQL <span class="references">[<a href="#ref-27">27</a>]</span> that incorporate link navigation paths into the query.
+such as LDQL <span class="references">[<a href="#ref-28">28</a>]</span> that incorporate link navigation paths into the query.
 As discussed in <a href="#solid">Section 3</a>, different Solid apps or user preferences may lead to the storage of similar data at different locations within vaults.
 Hence, it is important that link navigation is <em>decoupled</em> from the query to keep queries reusable for different Solid users,
 as link paths to data may differ across different data vaults.
@@ -820,13 +824,13 @@ our implementation focuses on extensibility and reusability.
 We do this by implementing all logic in configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
 Our implementation is available as open-source at <a href="https://anonymous.4open.science/r/webconf-2023-querysolid-impl/">https:/​/​anonymous.4open.science/r/webconf-2023-querysolid-impl/</a>.</p>
 
-        <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-52">52</a>]</span> including,
+        <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-53">53</a>]</span> including,
 the use of client-side caching <span class="references">[<a href="#ref-34">34</a>]</span>,
 the different reachability semantics <span class="references">[<a href="#ref-13">13</a>]</span>,
 zero-knowledge query planning <span class="references">[<a href="#ref-18">18</a>]</span> applied to arbitrary join operations instead of only triple patterns in BGPs,
 and more <span class="references">[<a href="#ref-14">14</a>]</span>.
 Furthermore, our implementation supports users to explicitly pass seed URIs,
-but falls back to query-based seed URIs <span class="references">[<a href="#ref-52">52</a>]</span> if no seeds were provided.
+but falls back to query-based seed URIs <span class="references">[<a href="#ref-53">53</a>]</span> if no seeds were provided.
 This fallback finds all URIs within the query, and adds them as seed URIs to the link queue.</p>
 
         <p>Hence, this implementation meets the requirements of a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
@@ -849,11 +853,6 @@ and evaluating different approaches based on the implementation discussed in <a 
 We first introduce the design of our experiment,
 followed by presenting our experimental results,
 and a discussion of our results to answer our research question.</p>
-
-        <p><span class="placeholder printonly">
-<span style="display: block; height: 3em;"></span>
-<!-- This is a dummy placeholder -->
-</span></p>
 
         <h3 id="experimental-design">Experimental Design</h3>
 
@@ -889,7 +888,7 @@ Each query template in the benchmark was instantiated five times, which resulted
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
               </tr>
             </thead>
@@ -1112,7 +1111,7 @@ Each query template in the benchmark was instantiated five times, which resulted
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
               </tr>
             </thead>
@@ -1328,21 +1327,21 @@ Each query template in the benchmark was instantiated five times, which resulted
 show the aggregated results for the different combinations of our setup
 for the discover and short queries of the benchmark, respectively.
 Since the results for the complex queries don’t add any value to this article, they have been moved into the <a href="#appendix-evaluation">appendix</a>.
-Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average correctness (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest correctness value are marked in bold.
+Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average accuracy (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest accuracy value are marked in bold.
 The number of HTTP requests is counted across all query executions that did not time out within each combination.
 The timeout column represents the number of query templates that lead to a timeout for a given combination.
-The correctness of each query execution is calculated as the percentage of expected results that were actually produced.</p>
+The accuracy of each query execution is calculated as a percentage indicating the precision and recall of query results with respect to the expected query results.</p>
 
-        <p>These results show that there are combinations of approaches that achieve a very high level of correctness for discover queries,
-and an average level of correctness for short queries.
-However, for complex queries, none of the combinations achieve an acceptable level of correctness.
+        <p>These results show that there are combinations of approaches that achieve a very high level of accuracy for discover queries,
+and an average level of accuracy for short queries.
+However, for complex queries, none of the combinations achieve an acceptable level of accuracy.
 Hence, we consider this last query category too complex for current link traversal approaches, and we do not consider them further in this article.</p>
 
         <h3 id="discussion">Discussion</h3>
 
         <h4 id="intra-vault-and-inter-vault-data-discovery">Intra-vault and inter-vault data discovery</h4>
 
-        <p>The results above show that if we desire correct results,
+        <p>The results above show that if we desire accurate results,
 that the combination of cMatch semantics together with at least one of the data vault discovery methods is required.
 This combination is needed because our workload contains queries that either target data within a single vault (e.g. D1),
 or data spanning multiple data vaults (e.g. D8).
@@ -1351,9 +1350,9 @@ the reachability of cMatch is required to discover data <em>across</em> multiple
 
         <p>Due to this, cNone (follow no links) is an ineffective replacement for cMatch (follow links matching query) even when combined with discovery methods,
 because link traversal across multiple vaults will not take place, which will lead to too few query results.
-Concretely, for discover queries cNone can only achieve a completeness of 74.14% for discover queries and 28.57% for short queries,
+Concretely, for discover queries cNone can only achieve a accuracy of 74.14% for discover queries and 28.57% for short queries,
 compared to respectively 99.14% and 42.86% for cMatch.
-However, for those queries that target a single vault, cNone can be used instead of cMatch without a loss of correctness,
+However, for those queries that target a single vault, cNone can be used instead of cMatch without a loss of accuracy,
 leading to a lower number of HTTP requests and lower query execution times.</p>
 
         <p>Since cAll leads to all links being followed, including those followed by cMatch,
@@ -1361,13 +1360,13 @@ it is theoretically a sufficient replacement for cMatch.
 However, our results show that too many links are being followed with cAll, which leads to timeouts for nearly all queries.</p>
 
         <p>Our results show that solely using reachability semantics (cMatch or cAll) without a data discovery method is insufficient for discover queries,
-where a completeness of only up to 12.50% or 19.38% can be achieved for discover queries.
+where a accuracy of only up to 12.50% or 19.38% can be achieved for discover queries.
 However, when looking at the short queries category, solely using reachability semantics appears to be sufficient,
 with the number of HTTP requests and query execution time even being lower.
 This difference exists because the discover workload contains queries that discover data related to a certain person or resource,
 while the short queries target only details of specific resources. 
 Discover queries therefore depend on an overview of the vault, while short queries only depend on specific links between resources within a vault.
-The remainder of this discussion only focuses on discover queries, since these achieve the highest level of correctness.
+The remainder of this discussion only focuses on discover queries, since these achieve the highest level of accuracy.
 As such, the short and complex queries highlight opportunities for improvement in future work.</p>
 
         <h4 id="type-index-and-ldp-discovery-perform-similarly">Type index and LDP discovery perform similarly</h4>
@@ -1377,7 +1376,7 @@ we can observe that using the type index leads to fewer HTTP requests and faster
 To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-26">26</a>]</span>.
-The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-55">55</a>]</span>.
+The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-56">56</a>]</span>.
 Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
@@ -1512,7 +1511,7 @@ The results of this experiment are shown in <a href="#results-planning-effective
 
         <p>These results show that the two-phase approach is an order of magnitude faster for all queries compared to the integrated approach,
 even when taking into account time for dereferencing.
-The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-56">56</a>, <a href="#ref-57">57</a>]</span>,
+The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-57">57</a>, <a href="#ref-58">58</a>]</span>,
 since it has access to an indexed triple store with planning-relevant information such as cardinality estimates.
 Since the integrated approach finds new triples <em>during</em> query execution,
 it is unable to use this information for traditional query planning.
@@ -1550,7 +1549,7 @@ Any findings by comparing different frag strategies?
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Conclusions</h2>
 
-        <p>User-oriented decentralized applications require results in the order of seconds or less to avoid losing the user’s attention <span class="references">[<a href="#ref-58">58</a>]</span>.
+        <p>User-oriented decentralized applications require results in the order of seconds or less to avoid losing the user’s attention <span class="references">[<a href="#ref-46">46</a>]</span>.
 Our work has shown that Link Traversal Query Processing is able to achieve such timings,
 especially as it is able to produce results in an iterative manner, with first results mostly being produced in less than a second.
 As such, LTQP with the algorithms introduced in this work are effective for querying over decentralized environments with specific structural properties,
@@ -1667,9 +1666,9 @@ As such, this brings us one step closer towards a decentralized Web where users 
   <dt id="ref-26">[26]</dt>
   <dd resource="#linktraversaloptimization" typeof="schema:Article">Hartig, O., Özsu, M.T.: Walking without a Map: Optimizing Response Times of Traversal-based Linked Data Queries (extended version). arXiv preprint arXiv:1607.01046. (2016).</dd>
   <dt id="ref-27">[27]</dt>
-  <dd resource="#ldql" typeof="schema:Article">Hartig, O., Pérez, J.: LDQL: A query language for the web of linked data. Journal of Web Semantics. 41, 9–29 (2016).</dd>
-  <dt id="ref-28">[28]</dt>
   <dd resource="#ldpath" typeof="schema:Article">Schaffert, S., Bauer, C., Kurz, T., Dorschel, F., Glachs, D., Fernandez, M.: The linked media framework: Integrating and interlinking enterprise media content and data. In: Proceedings of the 8th International Conference on Semantic Systems. pp. 25–32 (2012).</dd>
+  <dt id="ref-28">[28]</dt>
+  <dd resource="#ldql" typeof="schema:Article">Hartig, O., Pérez, J.: LDQL: A query language for the web of linked data. Journal of Web Semantics. 41, 9–29 (2016).</dd>
   <dt id="ref-29">[29]</dt>
   <dd resource="#nautilod" typeof="schema:Article">Fionda, V., Pirrò, G., Gutierrez, C.: NautiLOD: A formal language for the web of data graph. ACM Transactions on the Web (TWEB). 9, 1–43 (2015).</dd>
   <dt id="ref-30">[30]</dt>
@@ -1705,31 +1704,31 @@ As such, this brings us one step closer towards a decentralized Web where users 
   <dt id="ref-45">[45]</dt>
   <dd resource="https://solid.github.io/type-indexes/" typeof="schema:CreativeWork">Turdean, T.: Type Indexes. Solid, <a href="https://solid.github.io/type-indexes/">https:/​/​solid.github.io/type-indexes/</a> (2022).</dd>
   <dt id="ref-46">[46]</dt>
-  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
-  <dt id="ref-47">[47]</dt>
-  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
-  <dt id="ref-48">[48]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
-  <dt id="ref-49">[49]</dt>
-  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
-  <dt id="ref-50">[50]</dt>
-  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
-  <dt id="ref-51">[51]</dt>
-  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
-  <dt id="ref-52">[52]</dt>
-  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
-  <dt id="ref-53">[53]</dt>
-  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
-  <dt id="ref-54">[54]</dt>
-  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
-  <dt id="ref-55">[55]</dt>
-  <dd resource="#diefficiency" typeof="schema:Article">Acosta, M., Vidal, M.-E., Sure-Vetter, Y.: Diefficiency metrics: measuring the continuous efficiency of query processing approaches. In: International Semantic Web Conference. pp. 3–19. Springer (2017).</dd>
-  <dt id="ref-56">[56]</dt>
-  <dd resource="#sparqlqueryoptimization" typeof="schema:Article">Schmidt, M., Meier, M., Lausen, G.: Foundations of SPARQL query optimization. In: Proceedings of the 13th International Conference on Database Theory. pp. 4–33. ACM (2010).</dd>
-  <dt id="ref-57">[57]</dt>
-  <dd resource="#sparqlbgpoptimization" typeof="schema:Article">Stocker, M., Seaborne, A., Bernstein, A., Kiefer, C., Reynolds, D.: SPARQL Basic Graph Pattern Optimization using Selectivity Estimation. In: Proceedings of the 17th international conference on World Wide Web. pp. 595–604. ACM (2008).</dd>
-  <dt id="ref-58">[58]</dt>
   <dd resource="#uiresponsetime" typeof="schema:Article">Nielsen, J.: Response times: the three important limits. Usability Engineering. (1993).</dd>
+  <dt id="ref-47">[47]</dt>
+  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
+  <dt id="ref-48">[48]</dt>
+  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
+  <dt id="ref-49">[49]</dt>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dt id="ref-50">[50]</dt>
+  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
+  <dt id="ref-51">[51]</dt>
+  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
+  <dt id="ref-52">[52]</dt>
+  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
+  <dt id="ref-53">[53]</dt>
+  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
+  <dt id="ref-54">[54]</dt>
+  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
+  <dt id="ref-55">[55]</dt>
+  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
+  <dt id="ref-56">[56]</dt>
+  <dd resource="#diefficiency" typeof="schema:Article">Acosta, M., Vidal, M.-E., Sure-Vetter, Y.: Diefficiency metrics: measuring the continuous efficiency of query processing approaches. In: International Semantic Web Conference. pp. 3–19. Springer (2017).</dd>
+  <dt id="ref-57">[57]</dt>
+  <dd resource="#sparqlqueryoptimization" typeof="schema:Article">Schmidt, M., Meier, M., Lausen, G.: Foundations of SPARQL query optimization. In: Proceedings of the 13th International Conference on Database Theory. pp. 4–33. ACM (2010).</dd>
+  <dt id="ref-58">[58]</dt>
+  <dd resource="#sparqlbgpoptimization" typeof="schema:Article">Stocker, M., Seaborne, A., Bernstein, A., Kiefer, C., Reynolds, D.: SPARQL Basic Graph Pattern Optimization using Selectivity Estimation. In: Proceedings of the 17th international conference on World Wide Web. pp. 595–604. ACM (2008).</dd>
   <dt id="ref-59">[59]</dt>
   <dd resource="#adaptive_book" typeof="schema:Article">Deshpande, A., Ives, Z., Raman, V.: Adaptive query processing. Foundations and Trends\textregistered in Databases. 1, 1–140 (2007).</dd>
   <dt id="ref-60">[60]</dt>
@@ -2025,9 +2024,45 @@ all other documents could potentially pruned out, covering CP L.9.</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Additional Experimental Results</h2>
 
+        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
+
+        <p><a href="#results-queries-cmatch-wins">Table 5</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+
+        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right">idx</th>
+                <th style="text-align: right">idx-filt</th>
+                <th style="text-align: right">ldp</th>
+                <th style="text-align: right">ldp-idx</th>
+                <th style="text-align: right">ldp-idx-filt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wins</td>
+                <td style="text-align: right">10</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">0</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 5:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+A win for a certain approach is only considered if the results are accurate for this query.
+Five queries are missing due to no approaches achieving accurate results.</p>
+          </figcaption>
+        </figure>
+
         <h3 id="aggregated-results-complex-queries">Aggregated Results Complex Queries</h3>
 
-        <p><a href="#results-queries-complex">Table 5</a> shows the aggregated query results for all complex queries.</p>
+        <p><a href="#results-queries-complex">Table 6</a> shows the aggregated query results for all complex queries.</p>
 
         <figure id="results-queries-complex" class="table table-smaller-font">
 
@@ -2041,7 +2076,7 @@ all other documents could potentially pruned out, covering CP L.9.</p>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>c</mi><mi>o</mi><mi>r</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{cor}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
                 <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
               </tr>
             </thead>
@@ -2248,43 +2283,7 @@ all other documents could potentially pruned out, covering CP L.9.</p>
           </table>
 
           <figcaption>
-            <p><span class="label">Table 5:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
-          </figcaption>
-        </figure>
-
-        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
-
-        <p><a href="#results-queries-cmatch-wins">Table 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
-
-        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right">idx</th>
-                <th style="text-align: right">idx-filt</th>
-                <th style="text-align: right">ldp</th>
-                <th style="text-align: right">ldp-idx</th>
-                <th style="text-align: right">ldp-idx-filt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Wins</td>
-                <td style="text-align: right">10</td>
-                <td style="text-align: right">15</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">0</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
-A win for a certain approach is only considered if the results are correct for this query.
-Five queries are missing due to no approaches achieving correct results.</p>
+            <p><span class="label">Table 6:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
           </figcaption>
         </figure>
 
