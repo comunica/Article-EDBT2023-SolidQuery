@@ -2024,45 +2024,9 @@ all other documents could potentially pruned out, covering CP L.9.</p>
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Additional Experimental Results</h2>
 
-        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
-
-        <p><a href="#results-queries-cmatch-wins">Table 5</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
-
-        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right">idx</th>
-                <th style="text-align: right">idx-filt</th>
-                <th style="text-align: right">ldp</th>
-                <th style="text-align: right">ldp-idx</th>
-                <th style="text-align: right">ldp-idx-filt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Wins</td>
-                <td style="text-align: right">10</td>
-                <td style="text-align: right">15</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">0</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 5:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
-A win for a certain approach is only considered if the results are accurate for this query.
-Five queries are missing due to no approaches achieving accurate results.</p>
-          </figcaption>
-        </figure>
-
         <h3 id="aggregated-results-complex-queries">Aggregated Results Complex Queries</h3>
 
-        <p><a href="#results-queries-complex">Table 6</a> shows the aggregated query results for all complex queries.</p>
+        <p><a href="#results-queries-complex">Table 5</a> shows the aggregated query results for all complex queries.</p>
 
         <figure id="results-queries-complex" class="table table-smaller-font">
 
@@ -2283,7 +2247,43 @@ Five queries are missing due to no approaches achieving accurate results.</p>
           </table>
 
           <figcaption>
-            <p><span class="label">Table 6:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
+            <p><span class="label">Table 5:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
+
+        <p><a href="#results-queries-cmatch-wins">Table 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+
+        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right">idx</th>
+                <th style="text-align: right">idx-filt</th>
+                <th style="text-align: right">ldp</th>
+                <th style="text-align: right">ldp-idx</th>
+                <th style="text-align: right">ldp-idx-filt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wins</td>
+                <td style="text-align: right">10</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">0</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+A win for a certain approach is only considered if the results are accurate for this query.
+Five queries are missing due to no approaches achieving accurate results.</p>
           </figcaption>
         </figure>
 
