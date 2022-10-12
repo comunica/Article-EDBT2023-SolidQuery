@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2022/10/07" />
+  <meta name="citation_publication_date" content="2022/10/12" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -834,9 +834,9 @@ but falls back to query-based seed URIs <span class="references">[<a href="#ref
 This fallback finds all URIs within the query, and adds them as seed URIs to the link queue.</p>
 
         <p>Hence, this implementation meets the requirements of a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
-This also includes the ability to perform authenticated requires to documents within vaults behind access control.
+This also includes the ability to perform authenticated to documents within vaults behind access control.
 To ensure that common HTTP errors that may occur during link traversal don’t terminate the query execution process,
-we run enable a default <em>lenient</em> mode, which ignores dereference responses with HTTP status code in ranges 400 and 500.</p>
+we enable a default <em>lenient</em> mode, which ignores dereference responses with HTTP status code in ranges 400 and 500.</p>
 
       </div>
 </section>
