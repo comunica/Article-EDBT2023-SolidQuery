@@ -441,6 +441,10 @@ Nevertheless, these concepts can also be applied to write-queries and other quer
 
         <p>In this section, we introduce <em>SolidBench</em>, a benchmark that enables reproducible performance measurements
 of different query execution approaches within a decentralized environment.
+As discussed in <a href="#related-work">Section 2</a>, there is a need for this as existing benchmarks
+1) do not provide a closed and reliable Web environment,
+2) do not ship with standard datasets, and
+3) are not expressive enough to capture the structural properties in the Solid ecosystem.
 SolidBench simulates a decentralized Solid environment with corresponding workload representative of a social networking application.
 Hereafter, we start by explaining the design considerations of the benchmark and our use case scenario, after which we introduce an overview of SolidBench.
 Next, we zoom in on important details of the benchmark, such as fragmentation of the data and the query workload.</p>
@@ -2082,7 +2086,10 @@ For instance, the ability to close the world around Solid vaults,
 and the data discovery techniques that Solid vaults provide,
 create opportunities for query execution that allow us to guarantee complete results.
 While we have investigated the specific case of querying Solid vaults,
-these concepts may be generalizable to other decentralization efforts, such as Mastodon <span class="references">[<a href="#ref-3">3</a>]</span>.</p>
+these concepts may be generalizable to other decentralization efforts, such as Mastodon <span class="references">[<a href="#ref-3">3</a>]</span>.
+This is possible, because our approach solely relies on the structural properties
+provided by standards such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/ldp/">Linked Data Platform</a> <span class="references">[<a href="#ref-41">41</a>]</span> and the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/type-indexes/">Type Index</a> <span class="references">[<a href="#ref-46">46</a>]</span>,
+which can be used outside of the Solid ecosystem.</p>
 
         <p>Due to the expectation of incomplete results,
 LTQP research over Linked Open Data is moving into the direction of
