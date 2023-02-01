@@ -312,7 +312,19 @@ For the remainder of this article, we will only consider the processing of RDF d
 Resources within vaults can be read by sending HTTP <code>GET</code> requests to their URLs,
 with optional content negotiation to return the documents in different RDF serializations.
 If the vault supports this, resources can be modified or created using HTTP <code>PATCH</code> and <code>POST</code> requests.
-An example of such a basic container can be found in the <a href="#appendix-listings">appendix</a>.</p>
+An example of such a basic container can be found in the <a href="#example-ldpcontainer">Listing 1</a>.</p>
+
+        <figure id="example-ldpcontainer" class="listing">
+<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
+</code><code>&lt;&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource;
+</code><code>   ldp:contains &lt;file.ttl&gt;, &lt;posts/&gt;, &lt;profile/&gt;.
+</code><code>&lt;file.ttl&gt; a ldp:Resource.
+</code><code>&lt;posts/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.
+</code><code>&lt;profile/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.</code></pre>
+<figcaption>
+            <p><span class="label">Listing 1:</span> An LDP container in a Solid data vault containing one file and two directories in the Turtle serialization.</p>
+          </figcaption>
+</figure>
 
         <p>Data vaults can contain public as well as private data.
 Users can configure who can access or modify files within their vault
@@ -330,8 +342,22 @@ each WebID URI should be dereferenceable, and return a WebID profile document.
 Next to basic information of the agent such as its name and contact details,
 this document should contain links to 1) the root LDP container of its data vault (via <code>pim:storage</code>), and
 2) public and private type indexes.
-An example is shown in <a href="#appendix-listings">appendix</a>.
+An example is shown in <a href="#example-webidprofile">Listing 2</a>.
 We omit further WebID details due to their irrelevance within this work.</p>
+
+        <figure id="example-webidprofile" class="listing">
+<pre><code>@prefix pim: &lt;http://www.w3.org/ns/pim/space#&gt;.
+</code><code>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
+</code><code>@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt; .
+</code><code>&lt;#me&gt; foaf:name &quot;Zulma&quot;;
+</code><code>      pim:storage &lt;/&gt;;
+</code><code>      solid:oidcIssuer &lt;https://solidcommunity.net/&gt;;
+</code><code>      solid:publicTypeIndex &lt;/publicTypeIndex.ttl&gt;.
+</code></pre>
+<figcaption>
+            <p><span class="label">Listing 2:</span> A simplified WebID profile in Turtle.</p>
+          </figcaption>
+</figure>
 
         <h3 id="type-index">Type Index</h3>
 
@@ -339,7 +365,27 @@ We omit further WebID details due to their irrelevance within this work.</p>
 Users may have public or private type indexes, which respectively refer to data that are and are not publicly discoverable.
 A type index can contain type registration entries for different classes,
 where each registration has a link to resources containing instances of the corresponding class.
-An example of such a type index can be found in the <a href="#appendix-listings">appendix</a>.</p>
+<a href="#example-typeindex">Listing 3</a> shows a type index example with type registrations for posts and comments,
+where the posts entry refers to a single posts file,
+and the comments entry refers to a container with multiple comments files.
+If an application wants to obtain all posts of a user,
+it can do so by finding this type index and following the link within the type index entry that corresponds to the post class.</p>
+
+        <figure id="example-typeindex" class="listing">
+<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
+</code><code>&lt;&gt; a solid:TypeIndex ;
+</code><code>   a solid:ListedDocument.
+</code><code>&lt;#ab09fd&gt; a solid:TypeRegistration;
+</code><code>  solid:forClass &lt;http://example.org/Post&gt;;
+</code><code>  solid:instance &lt;/public/posts.ttl&gt;.
+</code><code>&lt;#bq1r5e&gt; a solid:TypeRegistration;
+</code><code>  solid:forClass &lt;http://example.org/Comment&gt;;
+</code><code>  solid:instanceContainer &lt;/public/comments/&gt;.
+</code></pre>
+<figcaption>
+            <p><span class="label">Listing 3:</span> Example of a type index with entries for posts and comments in the Turtle serialization.</p>
+          </figcaption>
+</figure>
 
         <h3 id="requirements-for-query-engines">Requirements for query engines</h3>
 
@@ -567,9 +613,162 @@ the short and complex SNB interactive workloads already cover the majority of th
 We refer to the SNB specification <span class="references">[<a href="#ref-51">51</a>]</span> for more details
 on the correlation of short and complex query templates to these choke points.
 Since the short and complex query classes only partially cover choke points related <em>linking structures</em> within data vaults,
-we introduce <em>discover</em> queries dedicated for covering these choke points on linking structures.
-The full list of linking-related choke points and discover queries are available in the <a href="#appendix-workload">appendix</a>.
-More details on all query templates can be found at <a href="https://github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md">https:/​/​github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md</a>.</p>
+we introduce <em>discover</em> queries dedicated for covering these choke points on linking structures.</p>
+
+        <p>The additional choke points related to <em>linking structures</em> within data vaults we introduce are the following:</p>
+
+        <ul>
+          <li><strong>CP L.1: Traversal of 1 hop (1)</strong>: Following one link to one other document.</li>
+          <li><strong>CP L.2: Traversal of 1 hop (n)</strong>: Following one link to multiple other document.</li>
+          <li><strong>CP L.3: Traversal of 2 hops (1:1)</strong>: Following one link to another document, and one link to another documents.</li>
+          <li><strong>CP L.4: Traversal of 2 hops (1:n)</strong>: Following one link to another document, and multiple links to other documents.</li>
+          <li><strong>CP L.5: Traversal of 3 hops (n:1:1)</strong>: Following multiple links to other documents, one link from the next document, and one other link.</li>
+          <li><strong>CP L.6: Traversal of 3 hops (n:1:n)</strong>: Following multiple links to other documents, one link from the next document, and multiple other link.</li>
+          <li><strong>CP L.7: Fragmentation variability in vaults</strong>: Handling the variability of data fragmentation across different data vaults.</li>
+          <li><strong>CP L.8: Index delegation</strong>: The potential of deferring subqueries to an index (such as the type index).</li>
+          <li><strong>CP L.9: Noise</strong>: The ability to filter out HTTP requests that are irrelevant to the query.</li>
+        </ul>
+
+        <p>The discover queries we introduce are listed below:</p>
+
+        <ul>
+          <li>D1: All posts of a person</li>
+          <li>D2: All messages of a person</li>
+          <li>D3: Top tags in messages from a person</li>
+          <li>D4: Top locations in comments from a person</li>
+          <li>D5: All IPs a person has messaged from</li>
+          <li>D6: All fora a person messaged on</li>
+          <li>D7: All moderators in fora a person messaged on</li>
+          <li>D8: Other messages created by people that a person likes messages from</li>
+        </ul>
+
+        <p>The correlation of these choke points to the discover queries is summarized in <a href="#chokepoints-discover">Table 1</a>.</p>
+
+        <figure id="chokepoints-discover" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Choke Point</th>
+                <th>D1</th>
+                <th>D2</th>
+                <th>D3</th>
+                <th>D4</th>
+                <th>D5</th>
+                <th>D6</th>
+                <th>D7</th>
+                <th>D8</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L.1</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.2</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.3</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.4</td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.5</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+              </tr>
+              <tr>
+                <td>L.6</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.7</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.8</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td> </td>
+                <td>✓</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+                <td>✓</td>
+              </tr>
+              <tr>
+                <td>L.9</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+                <td>✓</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 1:</span> Coverage of choke points on linking structures for discover queries.</p>
+          </figcaption>
+        </figure>
+
+        <p>More details on all query templates can be found at <a href="https://github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md">https:/​/​github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md</a>.</p>
 
         <p><strong>Query template instantiation</strong></p>
 
@@ -578,9 +777,31 @@ These query templates can be instantiated multiple times for different resources
 By default, each template is instantiated five times, so that metrics can be averaged to reduce the effect of outliers.
 Due to the fragmentation and URI rewriting we apply on top of the SNB dataset,
 we were unable to make use of the standard SNB query templates and its method of query instantiation.
-Therefore, we have implemented a custom query template instantiation tool that takes into account these fragmentations.
-An example of discover query 8 can be found in the <a href="#appendix-workload">appendix</a>,
-which covers the majority of choke points related to linking structures.</p>
+Therefore, we have implemented a custom query template instantiation tool that takes into account these fragmentations.</p>
+
+        <p>An example of discover query 8 can be found in <a href="#template-discover-8">Listing 4</a>,
+which covers the majority of choke points related to linking structures.
+It is instantiated with a person’s WebID URI, and finds all messages
+created by people that this person likes messages from.
+Since it starts from all liked messages of the starting person, then navigates to the creator of those messages,
+and then retrieves the contents of those messages, it covers CP L.6.
+Furthermore, since messages are fragmented in different ways across vaults, and the query spans different vaults, it covers CP L.7.
+Since messages can be captured within the user’s type index, CP L.8 is also covered.
+Finally, since only message-related documents needs to be retrieved from the vaults,
+all other documents could potentially pruned out, covering CP L.9.</p>
+
+        <figure id="template-discover-8" class="listing">
+<pre><code>PREFIX snvoc: &lt;http://localhost:3000/www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/&gt;
+</code><code>SELECT DISTINCT ?creator ?messageContent WHERE {
+</code><code>    $person snvoc:likes [ snvoc:hasPost|snvoc:hasComment ?message ].
+</code><code>    ?message snvoc:hasCreator ?creator.
+</code><code>    ?otherMessage snvoc:hasCreator ?creator;
+</code><code>                  snvoc:content ?messageContent.
+</code><code>} LIMIT 10</code></pre>
+<figcaption>
+            <p><span class="label">Listing 4:</span> SPARQL template for discover query 8.</p>
+          </figcaption>
+</figure>
 
         <p><strong>Metrics</strong></p>
 
@@ -1104,7 +1325,7 @@ Each query template in the benchmark was instantiated five times, which resulted
           </table>
 
           <figcaption>
-            <p><span class="label">Table 1:</span> Aggregated results for the different combinations across all 8 <strong>discover</strong> queries.</p>
+            <p><span class="label">Table 2:</span> Aggregated results for the different combinations across all 8 <strong>discover</strong> queries.</p>
           </figcaption>
         </figure>
 
@@ -1327,15 +1548,237 @@ Each query template in the benchmark was instantiated five times, which resulted
           </table>
 
           <figcaption>
-            <p><span class="label">Table 2:</span> Aggregated results for the different combinations across all 7 <strong>short</strong> queries.</p>
+            <p><span class="label">Table 3:</span> Aggregated results for the different combinations across all 7 <strong>short</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <figure id="results-queries-complex" class="table table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>cnone-base</td>
+                <td style="text-align: right">13,128</td>
+                <td style="text-align: right">2</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">11</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td><strong>cmatch-base</strong></td>
+                <td style="text-align: right"><strong>16,574</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>3</strong></td>
+                <td style="text-align: right"><strong>2</strong></td>
+                <td style="text-align: right"><strong>1,619</strong></td>
+                <td style="text-align: right"><strong>0.50</strong></td>
+                <td style="text-align: right"><strong>2.50%</strong></td>
+                <td style="text-align: right"><strong>4</strong></td>
+              </tr>
+              <tr>
+                <td>call-base</td>
+                <td style="text-align: right">39,648</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-idx</td>
+                <td style="text-align: right">19,478</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">262</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-idx</td>
+                <td style="text-align: right">37,182</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-idx</td>
+                <td style="text-align: right">39,881</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-idx-filt</td>
+                <td style="text-align: right">17,472</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">264</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-idx-filt</td>
+                <td style="text-align: right">37,179</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">71</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-idx-filt</td>
+                <td style="text-align: right">40,095</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp</td>
+                <td style="text-align: right">18,802</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">344</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp</td>
+                <td style="text-align: right">38,911</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">81</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp</td>
+                <td style="text-align: right">40,056</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx</td>
+                <td style="text-align: right">19,656</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">400</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">4</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx</td>
+                <td style="text-align: right">38,100</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">87</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx</td>
+                <td style="text-align: right">40,067</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>cnone-ldp-idx-filt</td>
+                <td style="text-align: right">19,528</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">389</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">5</td>
+              </tr>
+              <tr>
+                <td>cmatch-ldp-idx-filt</td>
+                <td style="text-align: right">37,676</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">110</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">11</td>
+              </tr>
+              <tr>
+                <td>call-ldp-idx-filt</td>
+                <td style="text-align: right">40,044</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">N/A</td>
+                <td style="text-align: right">0</td>
+                <td style="text-align: right">0.00</td>
+                <td style="text-align: right">0.00%</td>
+                <td style="text-align: right">12</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 4:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
           </figcaption>
         </figure>
 
         <p>In this section, we present results that offer insights into our research question.
-<a href="#results-queries-discover">Table 1</a> and <a href="#results-queries-short">Table 2</a>
+<a href="#results-queries-discover">Table 2</a>, <a href="#results-queries-short">Table 3</a>, and <a href="#results-queries-complex">Table 4</a>
 show the aggregated results for the different combinations of our setup
-for the discover and short queries of the benchmark, respectively.
-Since the results for the complex queries don’t add any value to this article, they have been moved into the <a href="#appendix-evaluation">appendix</a>.
+for the discover, short, and complex queries of the benchmark, respectively.
 Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average accuracy (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest accuracy value are marked in bold.
 The number of HTTP requests is counted across all query executions that did not time out within each combination.
 The timeout column represents the number of query templates that lead to a timeout for a given combination.
@@ -1380,13 +1823,14 @@ As such, the short and complex queries highlight opportunities for improvement i
 
         <h4 id="type-index-and-ldp-discovery-perform-similarly">Type index and LDP discovery perform similarly</h4>
 
-        <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Table 1</a>,
+        <p>When comparing the number of HTTP requests and query execution times for different data vault discovery approaches under cMatch in <a href="#results-queries-discover">Table 2</a>,
 we can observe that using the type index leads to fewer HTTP requests and faster query execution compared to LDP-based discovery on average.
 To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-27">27</a>]</span>.
-The <a href="#appendix-evaluation">appendix</a> contains more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-58">58</a>]</span>.
-Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.</p>
+Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.
+<a href="#figure-querytimes_d1-3">Fig. 4</a>, <a href="#figure-querytimes_d2-3">Fig. 5</a>, and <a href="#figure-querytimes_d5-4">Fig. 6</a> contain more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-58">58</a>]</span>.
+Finally, <a href="#results-queries-cmatch-wins">Table 5</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
 <img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
@@ -1404,6 +1848,59 @@ and stars indicate average time until first result.</p>
             <p><span class="label">Fig. 3:</span> Average number of HTTP requests for discover queries with different discovery methods under cMatch.</p>
           </figcaption>
 </figure>
+
+        <figure id="figure-querytimes_d1-3">
+<img src="img/experiments/querytimes_d1-3.svg" alt="Query result arrival times for D1" />
+<figcaption>
+            <p><span class="label">Fig. 4:</span> Query result arrival times for D1 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <figure id="figure-querytimes_d2-3">
+<img src="img/experiments/querytimes_d2-3.svg" alt="Query result arrival times for D2" />
+<figcaption>
+            <p><span class="label">Fig. 5:</span> Query result arrival times for D2 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <figure id="figure-querytimes_d5-4">
+<img src="img/experiments/querytimes_d5-4.svg" alt="Query result arrival times for D5" />
+<figcaption>
+            <p><span class="label">Fig. 6:</span> Query result arrival times for D5 with different combinations of data vault discovery with cMatch.</p>
+          </figcaption>
+</figure>
+
+        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right">TypeIndex</th>
+                <th style="text-align: right">TypeIndex-f</th>
+                <th style="text-align: right">LDP</th>
+                <th style="text-align: right">LDP + TypeIndex</th>
+                <th style="text-align: right">LDP + TypeIndex-f</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Wins</td>
+                <td style="text-align: right">10</td>
+                <td style="text-align: right">15</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">5</td>
+                <td style="text-align: right">0</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 5:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+A win for a certain approach is only considered if the results are accurate for this query.
+Five queries are missing due to no approaches achieving accurate results.</p>
+          </figcaption>
+        </figure>
 
         <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
 using just the type index is slightly faster or comparable to just LDP-based discovery,
@@ -1428,6 +1925,17 @@ Query D8 does however show that this combination deserves further investigation,
 because this query has a result limit that leads to a prioritization of links via the type index,
 leading to earlier query termination with fewer requests.</p>
 
+        <p><a href="#figure-querytimes_d1-3">Fig. 4</a> and <a href="#figure-querytimes_d2-3">Fig. 5</a> show the query result arrival times for D1 and D2 respectively
+with different combinations of data vault discovery with cMatch.
+Since D1 specifically queries for resources of the type Post, it can very selectively make use of the Post entry within the type index,
+which makes the filtered type index approach faster than the non-filtered approach.
+D2 targets both resources of type Comment and Post, which means that it has to make use of both entries within the type index,
+which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.</p>
+
+        <p><a href="#figure-querytimes_d5-4">Fig. 6</a> shows the query result arrival times for D5,
+which is a query that does not specifically target resources of certain types.
+This means that the type index leads to no significant performance benefit if no specific types are targeted in the query.</p>
+
         <p>In general, these results hint that the filtered type index approach performs better than the other approaches.
 However, due to the minimal difference in terms of execution time,
 the performance of all approaches can be considered equivalent.</p>
@@ -1448,7 +1956,7 @@ This two-phase approach is based on an oracle that provides all query-relevant l
 Therefore, this two-phase approach is merely a theoretical case,
 which delays time until first results due to prior indexing,
 and which may not always be achievable in practise due to infinitely growing link queues for some queries.
-The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 3</a>.</p>
+The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 6</a>.</p>
 
         <figure id="results-planning-effectiveness" class="table">
 
@@ -1514,7 +2022,7 @@ The results of this experiment are shown in <a href="#results-planning-effective
           </table>
 
           <figcaption>
-            <p><span class="label">Table 3:</span> Integrated and two-phase execution times (ms) of discover queries, with number of HTTP requests per query.</p>
+            <p><span class="label">Table 6:</span> Integrated and two-phase execution times (ms) of discover queries, with number of HTTP requests per query.</p>
           </figcaption>
         </figure>
 
@@ -1783,560 +2291,6 @@ As such, this brings us one step closer towards a decentralized Web where users 
 </dl>
 </section>
 </footer>
-
-<div id="appendix">
-    <h1 id="appendices">Appendices</h1>
-    <section id="appendix-listings" inlist="" rel="schema:hasPart" resource="#appendix-listings">
-<div datatype="rdf:HTML" property="schema:description">
-        <h2 property="schema:name">Solid Ecosystem Data Examples</h2>
-
-        <p><a href="#example-ldpcontainer">Listing 1</a> shows an example of such an LDP basic container in a data vault that contains one file and two directories.</p>
-
-        <figure id="example-ldpcontainer" class="listing">
-<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
-</code><code>&lt;&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource;
-</code><code>   ldp:contains &lt;file.ttl&gt;, &lt;posts/&gt;, &lt;profile/&gt;.
-</code><code>&lt;file.ttl&gt; a ldp:Resource.
-</code><code>&lt;posts/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.
-</code><code>&lt;profile/&gt; a ldp:Container, ldp:BasicContainer, ldp:Resource.</code></pre>
-<figcaption>
-            <p><span class="label">Listing 1:</span> An LDP container in a Solid data vault containing one file and two directories in the Turtle serialization.</p>
-          </figcaption>
-</figure>
-
-        <p>An example of a WebID profile is shown in <a href="#example-webidprofile">Listing 2</a>.</p>
-
-        <figure id="example-webidprofile" class="listing">
-<pre><code>@prefix pim: &lt;http://www.w3.org/ns/pim/space#&gt;.
-</code><code>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
-</code><code>@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt; .
-</code><code>&lt;#me&gt; foaf:name &quot;Zulma&quot;;
-</code><code>      pim:storage &lt;/&gt;;
-</code><code>      solid:oidcIssuer &lt;https://solidcommunity.net/&gt;;
-</code><code>      solid:publicTypeIndex &lt;/publicTypeIndex.ttl&gt;.
-</code></pre>
-<figcaption>
-            <p><span class="label">Listing 2:</span> A simplified WebID profile in Turtle.</p>
-          </figcaption>
-</figure>
-
-        <p><a href="#example-typeindex">Listing 3</a> shows a type index with type registrations for posts and comments,
-where the posts entry refers to a single posts file,
-and the comments entry refers to a container with multiple comments files.
-If an application wants to obtain all posts of a user,
-it can do so by finding this type index and following the link within the type index entry that corresponds to the post class.</p>
-
-        <figure id="example-typeindex" class="listing">
-<pre><code>@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
-</code><code>&lt;&gt; a solid:TypeIndex ;
-</code><code>   a solid:ListedDocument.
-</code><code>&lt;#ab09fd&gt; a solid:TypeRegistration;
-</code><code>  solid:forClass &lt;http://example.org/Post&gt;;
-</code><code>  solid:instance &lt;/public/posts.ttl&gt;.
-</code><code>&lt;#bq1r5e&gt; a solid:TypeRegistration;
-</code><code>  solid:forClass &lt;http://example.org/Comment&gt;;
-</code><code>  solid:instanceContainer &lt;/public/comments/&gt;.
-</code></pre>
-<figcaption>
-            <p><span class="label">Listing 3:</span> Example of a type index with entries for posts and comments in the Turtle serialization.</p>
-          </figcaption>
-</figure>
-
-      </div>
-</section>
-
-    <section id="appendix-workload" inlist="" rel="schema:hasPart" resource="#appendix-workload">
-<div datatype="rdf:HTML" property="schema:description">
-        <h2 property="schema:name">Benchmark Query Workload</h2>
-
-        <h3 id="linking-structure-choke-points">Linking Structure Choke Points</h3>
-
-        <p>The additional choke points related to <em>linking structures</em> within data vaults we introduce are the following:</p>
-
-        <ul>
-          <li><strong>CP L.1: Traversal of 1 hop (1)</strong>: Following one link to one other document.</li>
-          <li><strong>CP L.2: Traversal of 1 hop (n)</strong>: Following one link to multiple other document.</li>
-          <li><strong>CP L.3: Traversal of 2 hops (1:1)</strong>: Following one link to another document, and one link to another documents.</li>
-          <li><strong>CP L.4: Traversal of 2 hops (1:n)</strong>: Following one link to another document, and multiple links to other documents.</li>
-          <li><strong>CP L.5: Traversal of 3 hops (n:1:1)</strong>: Following multiple links to other documents, one link from the next document, and one other link.</li>
-          <li><strong>CP L.6: Traversal of 3 hops (n:1:n)</strong>: Following multiple links to other documents, one link from the next document, and multiple other link.</li>
-          <li><strong>CP L.7: Fragmentation variability in vaults</strong>: Handling the variability of data fragmentation across different data vaults.</li>
-          <li><strong>CP L.8: Index delegation</strong>: The potential of deferring subqueries to an index (such as the type index).</li>
-          <li><strong>CP L.9: Noise</strong>: The ability to filter out HTTP requests that are irrelevant to the query.</li>
-        </ul>
-
-        <p>The correlation of these choke points to the discover queries is summarized in <a href="#chokepoints-discover">Table 4</a>.</p>
-
-        <figure id="chokepoints-discover" class="table">
-
-          <table>
-            <thead>
-              <tr>
-                <th>Choke Point</th>
-                <th>D1</th>
-                <th>D2</th>
-                <th>D3</th>
-                <th>D4</th>
-                <th>D5</th>
-                <th>D6</th>
-                <th>D7</th>
-                <th>D8</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>L.1</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.2</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.3</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.4</td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.5</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-              </tr>
-              <tr>
-                <td>L.6</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.7</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.8</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td> </td>
-                <td>✓</td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td>✓</td>
-              </tr>
-              <tr>
-                <td>L.9</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-                <td>✓</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 4:</span> Coverage of choke points on linking structures for discover queries.</p>
-          </figcaption>
-        </figure>
-
-        <h3 id="discover-queries">Discover queries</h3>
-
-        <p>The discover queryies we introduce are listed below:</p>
-
-        <ul>
-          <li>D1: All posts of a person</li>
-          <li>D2: All messages of a person</li>
-          <li>D3: Top tags in messages from a person</li>
-          <li>D4: Top locations in comments from a person</li>
-          <li>D5: All IPs a person has messaged from</li>
-          <li>D6: All fora a person messaged on</li>
-          <li>D7: All moderators in fora a person messaged on</li>
-          <li>D8: Other messages created by people that a person likes messages from</li>
-        </ul>
-
-        <h3 id="discovery-query-8">Discovery Query 8</h3>
-
-        <p><a href="#template-discover-8">Listing 4</a> shows an example of the template for discover query 8.
-It is instantiated with a person’s WebID URI, and finds all messages
-created by people that this person likes messages from.
-Since it starts from all liked messages of the starting person, then navigates to the creator of those messages,
-and then retrieves the contents of those messages, it covers CP L.6.
-Furthermore, since messages are fragmented in different ways across vaults, and the query spans different vaults, it covers CP L.7.
-Since messages can be captured within the user’s type index, CP L.8 is also covered.
-Finally, since only message-related documents needs to be retrieved from the vaults,
-all other documents could potentially pruned out, covering CP L.9.</p>
-
-        <figure id="template-discover-8" class="listing">
-<pre><code>PREFIX snvoc: &lt;http://localhost:3000/www.ldbc.eu/ldbc_socialnet/1.0/vocabulary/&gt;
-</code><code>SELECT DISTINCT ?creator ?messageContent WHERE {
-</code><code>    $person snvoc:likes [ snvoc:hasPost|snvoc:hasComment ?message ].
-</code><code>    ?message snvoc:hasCreator ?creator.
-</code><code>    ?otherMessage snvoc:hasCreator ?creator;
-</code><code>                  snvoc:content ?messageContent.
-</code><code>} LIMIT 10</code></pre>
-<figcaption>
-            <p><span class="label">Listing 4:</span> SPARQL template for discover query 8.</p>
-          </figcaption>
-</figure>
-      </div>
-</section>
-
-    <section id="appendix-evaluation" inlist="" rel="schema:hasPart" resource="#appendix-evaluation">
-<div datatype="rdf:HTML" property="schema:description">
-        <h2 property="schema:name">Additional Experimental Results</h2>
-
-        <h3 id="aggregated-results-complex-queries">Aggregated Results Complex Queries</h3>
-
-        <p><a href="#results-queries-complex">Table 5</a> shows the aggregated query results for all complex queries.</p>
-
-        <figure id="results-queries-complex" class="table table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
-                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>cnone-base</td>
-                <td style="text-align: right">13,128</td>
-                <td style="text-align: right">2</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">11</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">1</td>
-              </tr>
-              <tr>
-                <td><strong>cmatch-base</strong></td>
-                <td style="text-align: right"><strong>16,574</strong></td>
-                <td style="text-align: right"><strong>2</strong></td>
-                <td style="text-align: right"><strong>3</strong></td>
-                <td style="text-align: right"><strong>2</strong></td>
-                <td style="text-align: right"><strong>1,619</strong></td>
-                <td style="text-align: right"><strong>0.50</strong></td>
-                <td style="text-align: right"><strong>2.50%</strong></td>
-                <td style="text-align: right"><strong>4</strong></td>
-              </tr>
-              <tr>
-                <td>call-base</td>
-                <td style="text-align: right">39,648</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-idx</td>
-                <td style="text-align: right">19,478</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">262</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-idx</td>
-                <td style="text-align: right">37,182</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">71</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-idx</td>
-                <td style="text-align: right">39,881</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-idx-filt</td>
-                <td style="text-align: right">17,472</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">264</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-idx-filt</td>
-                <td style="text-align: right">37,179</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">71</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-idx-filt</td>
-                <td style="text-align: right">40,095</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp</td>
-                <td style="text-align: right">18,802</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">344</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp</td>
-                <td style="text-align: right">38,911</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">81</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp</td>
-                <td style="text-align: right">40,056</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp-idx</td>
-                <td style="text-align: right">19,656</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">400</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">4</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp-idx</td>
-                <td style="text-align: right">38,100</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">87</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp-idx</td>
-                <td style="text-align: right">40,067</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-              <tr>
-                <td>cnone-ldp-idx-filt</td>
-                <td style="text-align: right">19,528</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">389</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">5</td>
-              </tr>
-              <tr>
-                <td>cmatch-ldp-idx-filt</td>
-                <td style="text-align: right">37,676</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">110</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">11</td>
-              </tr>
-              <tr>
-                <td>call-ldp-idx-filt</td>
-                <td style="text-align: right">40,044</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">N/A</td>
-                <td style="text-align: right">0</td>
-                <td style="text-align: right">0.00</td>
-                <td style="text-align: right">0.00%</td>
-                <td style="text-align: right">12</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 5:</span> Aggregated results for the different combinations across all 12 <strong>complex</strong> queries.</p>
-          </figcaption>
-        </figure>
-
-        <h3 id="winning-combinations-for-discover-queries">Winning Combinations for Discover Queries</h3>
-
-        <p><a href="#results-queries-cmatch-wins">Table 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
-
-        <figure id="results-queries-cmatch-wins" class="table table-smaller-font">
-
-          <table>
-            <thead>
-              <tr>
-                <th> </th>
-                <th style="text-align: right">idx</th>
-                <th style="text-align: right">idx-filt</th>
-                <th style="text-align: right">ldp</th>
-                <th style="text-align: right">ldp-idx</th>
-                <th style="text-align: right">ldp-idx-filt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Wins</td>
-                <td style="text-align: right">10</td>
-                <td style="text-align: right">15</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">5</td>
-                <td style="text-align: right">0</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <figcaption>
-            <p><span class="label">Table 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
-A win for a certain approach is only considered if the results are accurate for this query.
-Five queries are missing due to no approaches achieving accurate results.</p>
-          </figcaption>
-        </figure>
-
-        <h3 id="diefficiency-plots">Diefficiency Plots</h3>
-
-        <p><a href="#figure-querytimes_d1-3">Fig. 4</a> and <a href="#figure-querytimes_d2-3">Fig. 5</a> show the query result arrival times for D1 and D2 respectively
-with different combinations of data vault discovery with cMatch.
-Since D1 specifically queries for resources of the type Post, it can very selectively make use of the Post entry within the type index,
-which makes the filtered type index approach faster than the non-filtered approach.
-D2 targets both resources of type Comment and Post, which means that it has to make use of both entries within the type index,
-which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.</p>
-
-        <p><a href="#figure-querytimes_d5-4">Fig. 6</a> shows the query result arrival times for D5,
-which is a query that does not specifically target resources of certain types.
-This means that the type index leads to no significant performance benefit.</p>
-
-        <figure id="figure-querytimes_d1-3">
-<img src="img/experiments/querytimes_d1-3.svg" alt="Query result arrival times for D1" />
-<figcaption>
-            <p><span class="label">Fig. 4:</span> Query result arrival times for D1 with different combinations of data vault discovery with cMatch.</p>
-          </figcaption>
-</figure>
-
-        <figure id="figure-querytimes_d2-3">
-<img src="img/experiments/querytimes_d2-3.svg" alt="Query result arrival times for D2" />
-<figcaption>
-            <p><span class="label">Fig. 5:</span> Query result arrival times for D2 with different combinations of data vault discovery with cMatch.</p>
-          </figcaption>
-</figure>
-
-        <figure id="figure-querytimes_d5-4">
-<img src="img/experiments/querytimes_d5-4.svg" alt="Query result arrival times for D5" />
-<figcaption>
-            <p><span class="label">Fig. 6:</span> Query result arrival times for D5 with different combinations of data vault discovery with cMatch.</p>
-          </figcaption>
-</figure>
-      </div>
-</section>
-
-  </div>
 
 </div>
 
