@@ -283,6 +283,13 @@ Unfortunately, these also lead to inconsistent results,
 which makes them unsuitable for reliable benchmarking.
 In contrast, our benchmark provides a closed environment in full control of the experimenter.</p>
 
+        <p>SPLODGE <span class="references">[<a href="#ref-37">37</a>]</span> is similar to QWalk, and makes use of crawled Linked Open Data.
+It therefore also suffers from the issues arising from uncontrolled execution environments like QWalk.
+Additionally, since it relies on crawled public data,
+it is not able to capture the structural properties specific to decentralized environments such as Solid,
+as these may be hidden behind an authentication layer.
+Our benchmark does not rely on crawled data, and instead simulates these structural properties.</p>
+
         <p>WODSim <span class="references">[<a href="#ref-29">29</a>]</span> is a tool that accepts an RDF dataset as input,
 and is able to simulate a Web of Linked Data documents.
 For each triple in the dataset, it can either place the triple inside the Linked Data document(s)
@@ -293,7 +300,7 @@ Our benchmark builds on top of the WODSim approach for fragmenting triples into 
 but also provides a standard dataset.</p>
 
         <p>Aside from these approaches, evaluation of link traversal engines
-is usually done via hand crafted queries <span class="references">[<a href="#ref-16">16</a>, <a href="#ref-37">37</a>, <a href="#ref-21">21</a>, <a href="#ref-38">38</a>]</span>.</p>
+is usually done via hand crafted queries <span class="references">[<a href="#ref-16">16</a>, <a href="#ref-38">38</a>, <a href="#ref-21">21</a>, <a href="#ref-39">39</a>]</span>.</p>
 
       </div>
 </section>
@@ -311,11 +318,11 @@ Finally, we list requirements for query processing within the Solid ecosystem.</
 
         <h3 id="data-vault">Data Vault</h3>
 
-        <p>A primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid Protocol</a> <span class="references">[<a href="#ref-39">39</a>]</span> is
+        <p>A primary element within the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid Protocol</a> <span class="references">[<a href="#ref-40">40</a>]</span> is
 the data vault (also known as <em>data pod</em>), which is a user-controlled space in which any kind of data can be stored.
 Users can choose where and how their vault is stored on the Web,
-by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-40">40</a>]</span>,
-obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-41">41</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-42">42</a>]</span>.
+by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">hosting it themselves</a> <span class="references">[<a href="#ref-41">41</a>]</span>,
+obtaining service-provided space by <a property="schema:citation http://purl.org/spar/cito/cites" href="https://docs.inrupt.com/pod-spaces/">a company</a> <span class="references">[<a href="#ref-42">42</a>]</span> or <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">government</a> <span class="references">[<a href="#ref-43">43</a>]</span>.
 Data vaults are supposed to be loosely coupled to applications,
 and applications must request explicit access to the user for interacting with specific data.
 This loose coupling enables different applications to use the same data interoperably.</p>
@@ -345,16 +352,16 @@ An example of such a basic container can be found in the <a href="#example-ldpco
 
         <p>Data vaults can contain public as well as private data.
 Users can configure who can access or modify files within their vault
-using mechanisms such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-43">43</a>]</span> and <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/authorization-panel/acp-specification/">ACP</a> <span class="references">[<a href="#ref-44">44</a>]</span>.
+using mechanisms such as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/web-access-control-spec/">ACL</a> <span class="references">[<a href="#ref-44">44</a>]</span> and <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/authorization-panel/acp-specification/">ACP</a> <span class="references">[<a href="#ref-45">45</a>]</span>.
 This configuration is usually done by referring to the <em>WebID</em> of users.</p>
 
         <h3 id="webid-profile">WebID Profile</h3>
 
         <p>Any agent (person or organization) within the Solid ecosystem can establish their identity through a URI, called a <em>WebID</em>.
-These agents can authenticate themselves using the decentralized <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-45">45</a>]</span>,
+These agents can authenticate themselves using the decentralized <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/solid-oidc/">Solid OIDC protocol</a> <span class="references">[<a href="#ref-46">46</a>]</span>,
 which is required for authorizing access during the reading and writing of resources.</p>
 
-        <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-46">46</a>]</span>,
+        <p>According to the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solid.github.io/webid-profile/">WebID profile specification</a> <span class="references">[<a href="#ref-47">47</a>]</span>,
 each WebID URI should be dereferenceable, and return a WebID profile document.
 Next to basic information of the agent such as its name and contact details,
 this document should contain links to 1) the root LDP container of its data vault (via <code>pim:storage</code>), and
@@ -412,9 +419,9 @@ This makes applications robust against changes or additions within the Solid Pro
 The application’s declarative query can remain unchanged,
 whereas the underlying query engine can be updated to improve the result set.</p>
 
-        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-39">39</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
+        <p>The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://solidproject.org/TR/protocol">Solid protocol</a> <span class="references">[<a href="#ref-40">40</a>]</span> only establishes a minimal set of ground-rules to make data vaults and applications interoperable.
 Below, we list additional query agent requirements for enabling query-driven Solid applications over data vaults
-with a sufficient level of user-perceived performance <span class="references">[<a href="#ref-47">47</a>]</span>.</p>
+with a sufficient level of user-perceived performance <span class="references">[<a href="#ref-48">48</a>]</span>.</p>
 
         <ol>
           <li>
@@ -470,10 +477,10 @@ Next, we zoom in on important details of the benchmark, such as fragmentation of
 
         <p>The goal of our benchmark is to simulate a realistic decentralized environment based on the Solid ecosystem,
 and provide a realistic workload that simulates a Solid application that reads data from one or more vaults.
-To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-48">48</a>]</span>.</p>
+To develop this benchmark, we built upon the choke point-based design methodology from the Linked Data Benchmark Council <span class="references">[<a href="#ref-49">49</a>]</span>.</p>
 
         <p>Based on our analysis of the Solid ecosystem in <a href="#solid">Section 3</a>,
-and requirements from similar benchmarks <span class="references">[<a href="#ref-48">48</a>, <a href="#ref-49">49</a>, <a href="#ref-50">50</a>]</span>,
+and requirements from similar benchmarks <span class="references">[<a href="#ref-49">49</a>, <a href="#ref-50">50</a>, <a href="#ref-51">51</a>]</span>,
 we introduce the following requirements for our benchmark:</p>
 
         <ol>
@@ -499,7 +506,7 @@ Hence, chains of comments can span multiple data vaults.</p>
 
         <h3 id="solidbench-overview">SolidBench Overview</h3>
 
-        <p>We build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-50">50</a>, <a href="#ref-51">51</a>]</span>,
+        <p>We build upon the well-established Social Network Benchmark (SNB) <span class="references">[<a href="#ref-51">51</a>, <a href="#ref-52">52</a>]</span>,
 which models a social network akin to Facebook, and meets most of the requirements of our desired use case scenario.
 Since SNB was designed to evaluate the performance of centralized query engine,
 its dataset generator outputs a dataset in a single large RDF document.
@@ -532,15 +539,15 @@ which results in 157.210 RDF files over 1.529 data vaults using the default frag
 In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
 Even though this scale can be increased arbitrarily,
 we notice that this default scale can already stress existing LTQP approaches beyond their current capabilities.
-For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-50">50</a>, <a href="#ref-51">51</a>]</span>.</p>
+For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-51">51</a>, <a href="#ref-52">52</a>]</span>.</p>
 
-        <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-52">52</a>]</span>,
+        <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-53">53</a>]</span>,
 ranging from fragmentation strategies to properties of query templates.
 Furthermore, our benchmark is included in the benchmark runner <em>jbr</em> (<a href="https://github.com/rubensworks/jbr.js">https:/​/​github.com/rubensworks/jbr.js</a>),
 which simplifies its execution.
 To simplify evaluation and testing,
 we also provide a built-in Web server that can serve the generated data vaults over HTTP using a single command,
-which is done using a slimmed-down version of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">Community Solid Server</a> <span class="references">[<a href="#ref-40">40</a>]</span>.
+which is done using a slimmed-down version of the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://github.com/CommunitySolidServer/CommunitySolidServer">Community Solid Server</a> <span class="references">[<a href="#ref-41">41</a>]</span>.
 This server disables authentication and authorization by default,
 so experiments can focus on query performance.
 The benchmark is open-source at <a href="https://github.com/SolidBench/SolidBench.js">https:/​/​github.com/SolidBench/SolidBench.js</a>.</p>
@@ -629,9 +636,9 @@ we add <em>discover</em> query templates as third class.</p>
 
         <!-- https://arxiv.org/pdf/2001.02299.pdf -->
 
-        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-48">48</a>]</span>,
+        <p>Following the choke point-based design methodology <span class="references">[<a href="#ref-49">49</a>]</span>,
 the short and complex SNB interactive workloads already cover the majority of the 33 choke points introduced by SNB.
-We refer to the SNB specification <span class="references">[<a href="#ref-51">51</a>]</span> for more details
+We refer to the SNB specification <span class="references">[<a href="#ref-52">52</a>]</span> for more details
 on the correlation of short and complex query templates to these choke points.
 Since the short and complex query classes only partially cover choke points related <em>linking structures</em> within data vaults,
 we introduce <em>discover</em> queries dedicated for covering these choke points on linking structures.</p>
@@ -859,7 +866,7 @@ Finally, we discuss their implementations.</p>
 
         <h3 id="formal-preliminaries">Formal preliminaries</h3>
 
-        <p>This section summarizes the semantics of SPARQL query execution <span class="references">[<a href="#ref-53">53</a>]</span>
+        <p>This section summarizes the semantics of SPARQL query execution <span class="references">[<a href="#ref-54">54</a>]</span>
 and LTQP <span class="references">[<a href="#ref-13">13</a>, <a href="#ref-28">28</a>]</span> that we build upon.</p>
 
         <p>The infinite set of <em>RDF triples</em> is formalized as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">T</mi><mo>=</mo><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo>&#x222a;</mo><mi mathvariant="script">B</mi><mo stretchy="false">)</mo><mo>&#xd7;</mo><mi mathvariant="script">I</mi><mo>&#xd7;</mo><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo>&#x222a;</mo><mi mathvariant="script">B</mi><mo>&#x222a;</mo><mi mathvariant="script">L</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{T} = (\mathcal{I} \cup \mathcal{B}) \times \mathcal{I} \times (\mathcal{I} \cup \mathcal{B} \cup \mathcal{L})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.25417em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.03041em;">B</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xd7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#xd7;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathcal" style="margin-right:0.07382em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.03041em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">&#x222a;</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal">L</span><span class="mclose">)</span></span></span></span>,
@@ -901,8 +908,8 @@ to construct a logical query plan ahead of query execution.
 This resulting plan produces a tree of logical query operators representing the query execution order.
 To execute this plan, the logical operators are executed by specific physical operators.
 Our physical query execution builds upon the iterator-based pipeline approach <span class="references">[<a href="#ref-16">16</a>]</span>,
-which is the most popular among LTQP implementations <span class="references">[<a href="#ref-54">54</a>, <a href="#ref-38">38</a>, <a href="#ref-55">55</a>]</span>.
-We consider the execution plan as a pipeline <span class="references">[<a href="#ref-56">56</a>]</span> of iterator-based physical operators,
+which is the most popular among LTQP implementations <span class="references">[<a href="#ref-55">55</a>, <a href="#ref-39">39</a>, <a href="#ref-56">56</a>]</span>.
+We consider the execution plan as a pipeline <span class="references">[<a href="#ref-57">57</a>]</span> of iterator-based physical operators,
 through which intermediary results flow through chained operators to produce results in a pull-based manner.</p>
 
         <figure id="figure-link-queue">
@@ -938,7 +945,7 @@ which enables context-based reachability semantics <span class="references">[<a
 Link extractors only consider URIs as links,
 and ignore matching blank nodes and literals.</p>
 
-        <p>The triple source is connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-53">53</a>]</span> in the leaves of the query plan,
+        <p>The triple source is connected to all tuple-producing SPARQL operators <span class="references">[<a href="#ref-54">54</a>]</span> in the leaves of the query plan,
 such as triple patterns and property path operators,
 into which a stream of triples is sent.
 The source indexes all triples, to ensure that an operator
@@ -1055,7 +1062,7 @@ $$
 
         <h3 id="implementation">Implementation</h3>
 
-        <p>We have implemented our system using <a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-57">57</a>]</span>, which is an open-source SPARQL query engine framework.
+        <p>We have implemented our system using <a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-58">58</a>]</span>, which is an open-source SPARQL query engine framework.
 Concretely, we have implemented the pipeline-based link queue as a separate module,
 and we provide link extractors corresponding to the source selectors introduced in previous sections.
 Our implementation has full SPARQL 1.1 support, and consists of pipelined implementations of all monotonic SPARQL operators.
@@ -1064,7 +1071,7 @@ because the link queue and the resulting stream of triples may become infinitely
 
         <p>Our implementation focuses on the SPARQL query language,
 and does not make use of alternative LTQP-specific query languages or non-standard SPARQL language extensions
-such as LDQL <span class="references">[<a href="#ref-31">31</a>]</span> and SPARQL-LD <span class="references">[<a href="#ref-58">58</a>]</span> that incorporate link navigation paths into the query.
+such as LDQL <span class="references">[<a href="#ref-31">31</a>]</span> and SPARQL-LD <span class="references">[<a href="#ref-59">59</a>]</span> that incorporate link navigation paths into the query.
 As discussed in <a href="#solid">Section 3</a>, different Solid apps or user preferences may lead to the storage of similar data at different locations within vaults.
 Hence, it is important that link navigation is <em>decoupled</em> from the query to keep queries reusable for different Solid users,
 as link paths to data may differ across different data vaults.
@@ -1075,13 +1082,13 @@ our implementation focuses on extensibility and reusability.
 We do this by implementing all logic in configurable modules that are extensively tested through integration and unit tests with 100% code coverage.
 Our implementation is available as open-source at <a href="https://github.com/comunica/comunica-feature-link-traversal">https:/​/​github.com/comunica/comunica-feature-link-traversal</a>.</p>
 
-        <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-54">54</a>]</span> including,
-the use of client-side caching <span class="references">[<a href="#ref-37">37</a>]</span>,
+        <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-55">55</a>]</span> including,
+the use of client-side caching <span class="references">[<a href="#ref-38">38</a>]</span>,
 the different reachability semantics <span class="references">[<a href="#ref-13">13</a>]</span>,
 zero-knowledge query planning <span class="references">[<a href="#ref-21">21</a>]</span> applied to arbitrary join operations instead of only triple patterns in BGPs,
 and more <span class="references">[<a href="#ref-16">16</a>]</span>.
 Furthermore, our implementation supports users to explicitly pass seed URIs,
-but falls back to query-based seed URIs <span class="references">[<a href="#ref-54">54</a>]</span> if no seeds were provided.
+but falls back to query-based seed URIs <span class="references">[<a href="#ref-55">55</a>]</span> if no seeds were provided.
 This fallback finds all URIs within the query, and adds them as seed URIs to the link queue.</p>
 
         <p>Hence, this implementation meets the requirements of a query engine that can query over one or more Solid data vaults, as discussed in <a href="#solid">Section 3</a>.
@@ -1127,8 +1134,8 @@ Each query template in the benchmark was instantiated five times, which resulted
 
         <p>We were unable to compare our implementation to existing LTQP engines,
 because those systems (e.g. Lidaq <span class="references">[<a href="#ref-20">20</a>]</span>) would either require significant changes to work over Solid vaults,
-they depend on a non-standard usage of the SPARQL syntax (e.g. SPARQL-LD <span class="references">[<a href="#ref-58">58</a>]</span>),
-or insufficient documentation was present to make them work (e.g. SQUIN <span class="references">[<a href="#ref-54">54</a>]</span>), even after contacting the authors.
+they depend on a non-standard usage of the SPARQL syntax (e.g. SPARQL-LD <span class="references">[<a href="#ref-59">59</a>]</span>),
+or insufficient documentation was present to make them work (e.g. SQUIN <span class="references">[<a href="#ref-55">55</a>]</span>), even after contacting the authors.
 Nevertheless, in order to ensure a fair and complete comparison,
 we have re-implemented the foundational LTQP algorithms (cNone, cMatch, cAll),
 and compare them against, and in combination with, our algorithms.</p>
@@ -1858,7 +1865,7 @@ To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorag
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-29">29</a>]</span>.
 Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.
-<a href="#figure-querytimes_d1-3">Fig. 4</a>, <a href="#figure-querytimes_d2-3">Fig. 5</a>, and <a href="#figure-querytimes_d5-4">Fig. 6</a> contain more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-59">59</a>]</span>.
+<a href="#figure-querytimes_d1-3">Fig. 4</a>, <a href="#figure-querytimes_d2-3">Fig. 5</a>, and <a href="#figure-querytimes_d5-4">Fig. 6</a> contain more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-60">60</a>]</span>.
 Finally, <a href="#results-queries-cmatch-wins">Table 5</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
@@ -2057,7 +2064,7 @@ The results of this experiment are shown in <a href="#results-planning-effective
 
         <p>These results show that the two-phase approach is an order of magnitude faster for all queries compared to the integrated approach,
 even when taking into account time for dereferencing.
-The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-60">60</a>, <a href="#ref-61">61</a>]</span>,
+The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-61">61</a>, <a href="#ref-62">62</a>]</span>,
 since it has access to an indexed triple store with planning-relevant information such as cardinality estimates.
 Since the integrated approach finds new triples <em>during</em> query execution,
 it is unable to use this information for traditional query planning.
@@ -2095,7 +2102,7 @@ Any findings by comparing different frag strategies?
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Conclusions</h2>
 
-        <p>User-oriented decentralized applications require results in the order of seconds or less to avoid losing the user’s attention <span class="references">[<a href="#ref-47">47</a>]</span>.
+        <p>User-oriented decentralized applications require results in the order of seconds or less to avoid losing the user’s attention <span class="references">[<a href="#ref-48">48</a>]</span>.
 Our work has shown that Link Traversal Query Processing is able to achieve such timings,
 especially as it is able to produce results in an iterative manner, with first results mostly being produced in less than a second.
 As such, LTQP with the algorithms introduced in this work are effective for querying over decentralized environments with specific structural properties,
@@ -2124,9 +2131,9 @@ Instead, the <em>effectiveness of the query plan</em> is has become the new bott
 While finding query-relevant documents is still relevant for specific decentralized environments,
 we show the need for more research towards better query planning techniques.
 Since LTQP leads to data being discovered during query execution,
-adaptive query planning <span class="references">[<a href="#ref-62">62</a>]</span> techniques are highly promising.
+adaptive query planning <span class="references">[<a href="#ref-63">63</a>]</span> techniques are highly promising.
 So far, these techniques have only seem limited adoption within LTQP <span class="references">[<a href="#ref-29">29</a>]</span>
-and SPARQL query processing <span class="references">[<a href="#ref-63">63</a>, <a href="#ref-64">64</a>, <a href="#ref-65">65</a>]</span>.
+and SPARQL query processing <span class="references">[<a href="#ref-64">64</a>, <a href="#ref-65">65</a>, <a href="#ref-66">66</a>]</span>.
 For example, we see many opportunities in decomposing parts of the query plan over Solid type index entries upon index discovery,
 which requires a type index-aware adaptive query plan optimizer.</p>
 
@@ -2134,19 +2141,19 @@ which requires a type index-aware adaptive query plan optimizer.</p>
 However, we have only scratched the surface of what is possible in this work.
 On the one hand, usage of this type index can be further improved.
 While we only made us of this index for explicit <code>rdf:type</code> occurrences in the query,
-this could be extended to also consider implicit type knowledge via inferencing <span class="references">[<a href="#ref-66">66</a>]</span>.
-Furthermore, query containment techniques <span class="references">[<a href="#ref-67">67</a>]</span> could be investigated for determining which parts of the query match with index entries,
+this could be extended to also consider implicit type knowledge via inferencing <span class="references">[<a href="#ref-67">67</a>]</span>.
+Furthermore, query containment techniques <span class="references">[<a href="#ref-68">68</a>]</span> could be investigated for determining which parts of the query match with index entries,
 which could also lead to better a combination of type index and LDP-based discovery.
 On the other hand, alternatives to the type index could offer more expressivity,
-such as characteristics sets <span class="references">[<a href="#ref-68">68</a>]</span> and other summarization techniques <span class="references">[<a href="#ref-20">20</a>]</span>.
-For example, the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shapetrees.org/TR/specification/">Shape Trees</a> <span class="references">[<a href="#ref-69">69</a>]</span> specification offers a similar index for Solid vaults,
-but instead makes use of nested <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shex.io/shex-semantics/">ShEx</a> <span class="references">[<a href="#ref-70">70</a>]</span> shape definitions for expressing data locations,
-which could be used for both data discovery and query optimization <span class="references">[<a href="#ref-71">71</a>]</span>.
-Next to that, the incorporation of more expressive Linked Data Fragments interfaces <span class="references">[<a href="#ref-72">72</a>, <a href="#ref-73">73</a>, <a href="#ref-74">74</a>, <a href="#ref-75">75</a>, <a href="#ref-76">76</a>, <a href="#ref-77">77</a>]</span> in certain Solid vaults
+such as characteristics sets <span class="references">[<a href="#ref-69">69</a>]</span> and other summarization techniques <span class="references">[<a href="#ref-20">20</a>]</span>.
+For example, the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shapetrees.org/TR/specification/">Shape Trees</a> <span class="references">[<a href="#ref-70">70</a>]</span> specification offers a similar index for Solid vaults,
+but instead makes use of nested <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shex.io/shex-semantics/">ShEx</a> <span class="references">[<a href="#ref-71">71</a>]</span> shape definitions for expressing data locations,
+which could be used for both data discovery and query optimization <span class="references">[<a href="#ref-72">72</a>]</span>.
+Next to that, the incorporation of more expressive Linked Data Fragments interfaces <span class="references">[<a href="#ref-73">73</a>, <a href="#ref-74">74</a>, <a href="#ref-75">75</a>, <a href="#ref-76">76</a>, <a href="#ref-77">77</a>, <a href="#ref-78">78</a>]</span> in certain Solid vaults
 could introduce interesting trade-offs in terms of server and client query execution effort.
 However, since different vaults could expose different types of interfaces,
 which are only discovered on the fly during query execution,
-novel adaptive query execution algorithms for heterogeneous interfaces <span class="references">[<a href="#ref-78">78</a>, <a href="#ref-79">79</a>, <a href="#ref-80">80</a>]</span> will be required.
+novel adaptive query execution algorithms for heterogeneous interfaces <span class="references">[<a href="#ref-79">79</a>, <a href="#ref-80">80</a>, <a href="#ref-81">81</a>]</span> will be required.
 Finally, our work only considers read queries,
 while similar open questions remain for write-queries when updating data within decentralized environments.</p>
 
@@ -2235,92 +2242,94 @@ As such, this brings us one step closer towards a decentralized Web where users 
   <dt id="ref-36">[36]</dt>
   <dd resource="#dbpediasparqlbenchmark" typeof="schema:Article">Morsey, M., Lehmann, J., Auer, S., Ngonga Ngomo, A.-C.: DBpedia SPARQL benchmark–performance assessment with real queries on real data. In: International semantic web conference. pp. 454–469. Springer (2011).</dd>
   <dt id="ref-37">[37]</dt>
-  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
+  <dd resource="#splodge" typeof="schema:Article">Görlitz, O., Thimm, M., Staab, S.: SPLODGE: Systematic Generation of SPARQL Benchmark Queries for Linked Open Data. In: ISWC (1). pp. 116–132 (2012).</dd>
   <dt id="ref-38">[38]</dt>
-  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
+  <dd resource="#linktraversalcaching" typeof="schema:Article">Hartig, O.: How caching improves efficiency and result completeness for querying linked data. In: LDOW (2011).</dd>
   <dt id="ref-39">[39]</dt>
-  <dd resource="https://solidproject.org/TR/protocol" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T., Verborgh, R., Kjernsmo, K.: Solid Protocol. Solid, <a href="https://solidproject.org/TR/protocol">https:/​/​solidproject.org/TR/protocol</a> (2020).</dd>
+  <dd resource="#sihjoin" typeof="schema:Article">Ladwig, G., Tran, T.: SIHJoin: Querying remote and local linked data. In: Extended Semantic Web Conference. pp. 139–153. Springer (2011).</dd>
   <dt id="ref-40">[40]</dt>
-  <dd resource="https://github.com/CommunitySolidServer/CommunitySolidServer" typeof="schema:CreativeWork">Van Herwegen, J., Verborgh, R., Taelman, R., Bosquet, M.: Community Solid Server. <a href="https://github.com/CommunitySolidServer/CommunitySolidServer">https:/​/​github.com/CommunitySolidServer/CommunitySolidServer</a> (2022).</dd>
+  <dd resource="https://solidproject.org/TR/protocol" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T., Verborgh, R., Kjernsmo, K.: Solid Protocol. Solid, <a href="https://solidproject.org/TR/protocol">https:/​/​solidproject.org/TR/protocol</a> (2020).</dd>
   <dt id="ref-41">[41]</dt>
-  <dd resource="https://docs.inrupt.com/pod-spaces/" typeof="schema:CreativeWork">Inrupt: PodSpaces. <a href="https://docs.inrupt.com/pod-spaces/">https:/​/​docs.inrupt.com/pod-spaces/</a> (2022).</dd>
+  <dd resource="https://github.com/CommunitySolidServer/CommunitySolidServer" typeof="schema:CreativeWork">Van Herwegen, J., Verborgh, R., Taelman, R., Bosquet, M.: Community Solid Server. <a href="https://github.com/CommunitySolidServer/CommunitySolidServer">https:/​/​github.com/CommunitySolidServer/CommunitySolidServer</a> (2022).</dd>
   <dt id="ref-42">[42]</dt>
-  <dd resource="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company" typeof="schema:CreativeWork">Flanders, D.: The Flemish Data Utility Company. <a href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">https:/​/​www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company</a> (2022).</dd>
+  <dd resource="https://docs.inrupt.com/pod-spaces/" typeof="schema:CreativeWork">Inrupt: PodSpaces. <a href="https://docs.inrupt.com/pod-spaces/">https:/​/​docs.inrupt.com/pod-spaces/</a> (2022).</dd>
   <dt id="ref-43">[43]</dt>
-  <dd resource="https://solid.github.io/web-access-control-spec/" typeof="schema:CreativeWork">Capadisli, S.: Web Access Control. Solid, <a href="https://solid.github.io/web-access-control-spec/">https:/​/​solid.github.io/web-access-control-spec/</a> (2022).</dd>
+  <dd resource="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company" typeof="schema:CreativeWork">Flanders, D.: The Flemish Data Utility Company. <a href="https://www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company">https:/​/​www.vlaanderen.be/digitaal-vlaanderen/het-vlaams-datanutsbedrijf/the-flemish-data-utility-company</a> (2022).</dd>
   <dt id="ref-44">[44]</dt>
-  <dd resource="https://solid.github.io/authorization-panel/acp-specification/" typeof="schema:CreativeWork">Bosquet, M.: Access Control Policy (ACP). Solid, <a href="https://solid.github.io/authorization-panel/acp-specification/">https:/​/​solid.github.io/authorization-panel/acp-specification/</a> (2022).</dd>
+  <dd resource="https://solid.github.io/web-access-control-spec/" typeof="schema:CreativeWork">Capadisli, S.: Web Access Control. Solid, <a href="https://solid.github.io/web-access-control-spec/">https:/​/​solid.github.io/web-access-control-spec/</a> (2022).</dd>
   <dt id="ref-45">[45]</dt>
-  <dd resource="https://solid.github.io/solid-oidc/" typeof="schema:CreativeWork">Coburn, A., Pavlik, elf, Zagidulin, D.: Solid-OIDC. Solid, <a href="https://solid.github.io/solid-oidc/">https:/​/​solid.github.io/solid-oidc/</a> (2022).</dd>
+  <dd resource="https://solid.github.io/authorization-panel/acp-specification/" typeof="schema:CreativeWork">Bosquet, M.: Access Control Policy (ACP). Solid, <a href="https://solid.github.io/authorization-panel/acp-specification/">https:/​/​solid.github.io/authorization-panel/acp-specification/</a> (2022).</dd>
   <dt id="ref-46">[46]</dt>
-  <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
+  <dd resource="https://solid.github.io/solid-oidc/" typeof="schema:CreativeWork">Coburn, A., Pavlik, elf, Zagidulin, D.: Solid-OIDC. Solid, <a href="https://solid.github.io/solid-oidc/">https:/​/​solid.github.io/solid-oidc/</a> (2022).</dd>
   <dt id="ref-47">[47]</dt>
-  <dd resource="#uiresponsetime" typeof="schema:Article">Nielsen, J.: Response times: the three important limits. Usability Engineering. (1993).</dd>
+  <dd resource="https://solid.github.io/webid-profile/" typeof="schema:CreativeWork">Capadisli, S., Berners-Lee, T.: Solid WebID Profile. Solid, <a href="https://solid.github.io/webid-profile/">https:/​/​solid.github.io/webid-profile/</a> (2022).</dd>
   <dt id="ref-48">[48]</dt>
-  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
+  <dd resource="#uiresponsetime" typeof="schema:Article">Nielsen, J.: Response times: the three important limits. Usability Engineering. (1993).</dd>
   <dt id="ref-49">[49]</dt>
-  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
+  <dd resource="#ldbc" typeof="schema:Article">Angles, R., Boncz, P., Larriba-Pey, J., Fundulaki, I., Neumann, T., Erling, O., Neubauer, P., Martinez-Bazan, N., Kotsev, V., Toma, I.: The linked data benchmark council: a graph and RDF industry benchmarking effort. ACM SIGMOD Record. 43, 27–31 (2014).</dd>
   <dt id="ref-50">[50]</dt>
-  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
+  <dd resource="#lingbm" typeof="schema:Article">Cheng, S., Hartig, O.: LinGBM: A Performance Benchmark for Approaches to Build GraphQL Servers. In: Proceedings of the 23rd International Conference on Web Information Systems Engineering (WISE 2022)</dd>
   <dt id="ref-51">[51]</dt>
-  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
+  <dd resource="#ldbc_snb_interactive" typeof="schema:Article">Erling, O., Averbuch, A., Larriba-Pey, J., Chafi, H., Gubichev, A., Prat, A., Pham, M.-D., Boncz, P.: The LDBC social network benchmark: Interactive workload. In: Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. pp. 619–630 (2015).</dd>
   <dt id="ref-52">[52]</dt>
-  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
+  <dd resource="#ldbc_snb_details" typeof="schema:Article">Angles, R., Antal, J.B., Averbuch, A., Boncz, P., Erling, O., Gubichev, A., Haprian, V., Kaufmann, M., Pey Josep Lluı́s Larriba, Martı́nez Norbert, others: The LDBC social network benchmark. arXiv preprint arXiv:2001.02299. (2020).</dd>
   <dt id="ref-53">[53]</dt>
-  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
+  <dd resource="https://linkedsoftwaredependencies.github.io/Article-System-Components/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Components.js: Semantic Dependency Injection. Semantic Web Journal. (2022).</dd>
   <dt id="ref-54">[54]</dt>
-  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
+  <dd resource="#sparqlsemantics" typeof="schema:Article">Pérez, J., Arenas, M., Gutierrez, C.: Semantics and complexity of SPARQL. ACM Transactions on Database Systems (TODS). 34, 1–45 (2009).</dd>
   <dt id="ref-55">[55]</dt>
-  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
+  <dd resource="#squin" typeof="schema:Article">Hartig, O.: SQUIN: a traversal based query execution system for the web of linked data. In: Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data. pp. 1081–1084 (2013).</dd>
   <dt id="ref-56">[56]</dt>
-  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
+  <dd resource="#diamondrete" typeof="schema:Article">Miranker, D.P., Depena, R.K., Jung, H., Sequeda, J.F., Reyna, C.: Diamond: A SPARQL query engine, for linked data based on the Rete match. In: Proc. of the Workshop on Artificial Intelligence meets the Web of Data (AImWD) (2012).</dd>
   <dt id="ref-57">[57]</dt>
-  <dd resource="https://comunica.github.io/Article-ISWC2018-Resource/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a Modular SPARQL Query Engine for the Web. In: Proceedings of the 17th International Semantic Web Conference (2018).</dd>
+  <dd resource="#pipelining" typeof="schema:Article">Wilschut, A.N., Apers, P.M.G.: Pipelining in query execution. In: Proceedings. PARBASE-90: International Conference on Databases, Parallel Architectures, and Their Applications. p. 562. IEEE (1990).</dd>
   <dt id="ref-58">[58]</dt>
-  <dd resource="#sparqlld" typeof="schema:Article">Fafalios, P., Yannakis, T., Tzitzikas, Y.: Querying the Web of Data with SPARQL-LD. In: Research and Advanced Technology for Digital Libraries: 20th International Conference on Theory and Practice of Digital Libraries, TPDL 2016, Hannover, Germany, September 5–9, 2016, Proceedings 20. pp. 175–187. Springer (2016).</dd>
+  <dd resource="https://comunica.github.io/Article-ISWC2018-Resource/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a Modular SPARQL Query Engine for the Web. In: Proceedings of the 17th International Semantic Web Conference (2018).</dd>
   <dt id="ref-59">[59]</dt>
-  <dd resource="#diefficiency" typeof="schema:Article">Acosta, M., Vidal, M.-E., Sure-Vetter, Y.: Diefficiency metrics: measuring the continuous efficiency of query processing approaches. In: International Semantic Web Conference. pp. 3–19. Springer (2017).</dd>
+  <dd resource="#sparqlld" typeof="schema:Article">Fafalios, P., Yannakis, T., Tzitzikas, Y.: Querying the Web of Data with SPARQL-LD. In: Research and Advanced Technology for Digital Libraries: 20th International Conference on Theory and Practice of Digital Libraries, TPDL 2016, Hannover, Germany, September 5–9, 2016, Proceedings 20. pp. 175–187. Springer (2016).</dd>
   <dt id="ref-60">[60]</dt>
-  <dd resource="#sparqlqueryoptimization" typeof="schema:Article">Schmidt, M., Meier, M., Lausen, G.: Foundations of SPARQL query optimization. In: Proceedings of the 13th International Conference on Database Theory. pp. 4–33. ACM (2010).</dd>
+  <dd resource="#diefficiency" typeof="schema:Article">Acosta, M., Vidal, M.-E., Sure-Vetter, Y.: Diefficiency metrics: measuring the continuous efficiency of query processing approaches. In: International Semantic Web Conference. pp. 3–19. Springer (2017).</dd>
   <dt id="ref-61">[61]</dt>
-  <dd resource="#sparqlbgpoptimization" typeof="schema:Article">Stocker, M., Seaborne, A., Bernstein, A., Kiefer, C., Reynolds, D.: SPARQL Basic Graph Pattern Optimization using Selectivity Estimation. In: Proceedings of the 17th international conference on World Wide Web. pp. 595–604. ACM (2008).</dd>
+  <dd resource="#sparqlqueryoptimization" typeof="schema:Article">Schmidt, M., Meier, M., Lausen, G.: Foundations of SPARQL query optimization. In: Proceedings of the 13th International Conference on Database Theory. pp. 4–33. ACM (2010).</dd>
   <dt id="ref-62">[62]</dt>
-  <dd resource="#adaptive_book" typeof="schema:Article">Deshpande, A., Ives, Z., Raman, V.: Adaptive query processing. Foundations and Trends\textregistered in Databases. 1, 1–140 (2007).</dd>
+  <dd resource="#sparqlbgpoptimization" typeof="schema:Article">Stocker, M., Seaborne, A., Bernstein, A., Kiefer, C., Reynolds, D.: SPARQL Basic Graph Pattern Optimization using Selectivity Estimation. In: Proceedings of the 17th international conference on World Wide Web. pp. 595–604. ACM (2008).</dd>
   <dt id="ref-63">[63]</dt>
-  <dd resource="#sparql_adaptive_anapsid" typeof="schema:Article">Acosta, M., Vidal, M.-E., Lampo, T., Castillo, J., Ruckhaus, E.: ANAPSID: an adaptive query processing engine for SPARQL endpoints. In: International Semantic Web Conference. pp. 18–34. Springer (2011).</dd>
+  <dd resource="#adaptive_book" typeof="schema:Article">Deshpande, A., Ives, Z., Raman, V.: Adaptive query processing. Foundations and Trends\textregistered in Databases. 1, 1–140 (2007).</dd>
   <dt id="ref-64">[64]</dt>
-  <dd resource="#sparql_adaptive_ldeddies" typeof="schema:Article">Acosta, M., Vidal, M.-E.: Networks of linked data eddies: An adaptive web query processing engine for RDF data. In: International Semantic Web Conference. pp. 111–127. Springer (2015).</dd>
+  <dd resource="#sparql_adaptive_anapsid" typeof="schema:Article">Acosta, M., Vidal, M.-E., Lampo, T., Castillo, J., Ruckhaus, E.: ANAPSID: an adaptive query processing engine for SPARQL endpoints. In: International Semantic Web Conference. pp. 18–34. Springer (2011).</dd>
   <dt id="ref-65">[65]</dt>
-  <dd resource="#sparql_adaptive_robust" typeof="schema:Article">Heling, L., Acosta, M.: Robust query processing for linked data fragments. Semantic Web. 1–35 (2022).</dd>
+  <dd resource="#sparql_adaptive_ldeddies" typeof="schema:Article">Acosta, M., Vidal, M.-E.: Networks of linked data eddies: An adaptive web query processing engine for RDF data. In: International Semantic Web Conference. pp. 111–127. Springer (2015).</dd>
   <dt id="ref-66">[66]</dt>
-  <dd resource="#rif" typeof="schema:Article">Kifer, M.: Rule interchange format: The framework. In: International Conference on Web Reasoning and Rule Systems. pp. 1–11. Springer (2008).</dd>
+  <dd resource="#sparql_adaptive_robust" typeof="schema:Article">Heling, L., Acosta, M.: Robust query processing for linked data fragments. Semantic Web. 1–35 (2022).</dd>
   <dt id="ref-67">[67]</dt>
-  <dd resource="#sparqlquerycontainment" typeof="schema:Article">Wudage Chekol, M., Euzenat, J., Genevès, P., Layaı̈da Nabil: Evaluating and benchmarking SPARQL query containment solvers. In: International Semantic Web Conference. pp. 408–423. Springer (2013).</dd>
+  <dd resource="#rif" typeof="schema:Article">Kifer, M.: Rule interchange format: The framework. In: International Conference on Web Reasoning and Rule Systems. pp. 1–11. Springer (2008).</dd>
   <dt id="ref-68">[68]</dt>
-  <dd resource="#characteristicssets" typeof="schema:Article">Neumann, T., Moerkotte, G.: Characteristic sets: Accurate cardinality estimation for RDF queries with multiple joins. In: 2011 IEEE 27th International Conference on Data Engineering. pp. 984–994. IEEE (2011).</dd>
+  <dd resource="#sparqlquerycontainment" typeof="schema:Article">Wudage Chekol, M., Euzenat, J., Genevès, P., Layaı̈da Nabil: Evaluating and benchmarking SPARQL query containment solvers. In: International Semantic Web Conference. pp. 408–423. Springer (2013).</dd>
   <dt id="ref-69">[69]</dt>
-  <dd resource="https://shapetrees.org/TR/specification/" typeof="schema:CreativeWork">Prud’hommeaux, E., Bingham, J.: Shape Trees Specification. W3C, <a href="https://shapetrees.org/TR/specification/">https:/​/​shapetrees.org/TR/specification/</a> (2021).</dd>
+  <dd resource="#characteristicssets" typeof="schema:Article">Neumann, T., Moerkotte, G.: Characteristic sets: Accurate cardinality estimation for RDF queries with multiple joins. In: 2011 IEEE 27th International Conference on Data Engineering. pp. 984–994. IEEE (2011).</dd>
   <dt id="ref-70">[70]</dt>
-  <dd resource="https://shex.io/shex-semantics/" typeof="schema:CreativeWork">Prud’hommeaux, E., Boneva, I., Emilio Labra Gayo, J., Kellogg, G.: Shape Expressions Language 2.1. W3C, <a href="https://shex.io/shex-semantics/">https:/​/​shex.io/shex-semantics/</a> (2019).</dd>
+  <dd resource="https://shapetrees.org/TR/specification/" typeof="schema:CreativeWork">Prud’hommeaux, E., Bingham, J.: Shape Trees Specification. W3C, <a href="https://shapetrees.org/TR/specification/">https:/​/​shapetrees.org/TR/specification/</a> (2021).</dd>
   <dt id="ref-71">[71]</dt>
-  <dd resource="#shapestats" typeof="schema:Article">Rabbani, K., Lissandrini, M., Hose, K.: Optimizing SPARQL queries using Shape Statistics. EDBT. (2021).</dd>
+  <dd resource="https://shex.io/shex-semantics/" typeof="schema:CreativeWork">Prud’hommeaux, E., Boneva, I., Emilio Labra Gayo, J., Kellogg, G.: Shape Expressions Language 2.1. W3C, <a href="https://shex.io/shex-semantics/">https:/​/​shex.io/shex-semantics/</a> (2019).</dd>
   <dt id="ref-72">[72]</dt>
-  <dd resource="#ldf" typeof="schema:Article">Verborgh, R., Vander Sande, M., Hartig, O., Van Herwegen, J., De Vocht, L., De Meester, B., Haesendonck, G., Colpaert, P.: Triple Pattern Fragments: a low-cost Knowledge Graph Interface for the Web. Journal of Web Semantics. 37, 184–206 (2016).</dd>
+  <dd resource="#shapestats" typeof="schema:Article">Rabbani, K., Lissandrini, M., Hose, K.: Optimizing SPARQL queries using Shape Statistics. EDBT. (2021).</dd>
   <dt id="ref-73">[73]</dt>
-  <dd resource="#smartkg" typeof="schema:Article">Azzam, A., Fernández, J.D., Acosta, M., Beno, M., Polleres, A.: SMART-KG: hybrid shipping for SPARQL querying on the web. In: Proceedings of The Web Conference 2020. pp. 984–994 (2020).</dd>
+  <dd resource="#ldf" typeof="schema:Article">Verborgh, R., Vander Sande, M., Hartig, O., Van Herwegen, J., De Vocht, L., De Meester, B., Haesendonck, G., Colpaert, P.: Triple Pattern Fragments: a low-cost Knowledge Graph Interface for the Web. Journal of Web Semantics. 37, 184–206 (2016).</dd>
   <dt id="ref-74">[74]</dt>
-  <dd resource="#sage" typeof="schema:Article">Minier, T., Skaf-Molli, H., Molli, P.: SaGe: Web preemption for public SPARQL query services. In: The World Wide Web Conference. pp. 1268–1278 (2019).</dd>
+  <dd resource="#smartkg" typeof="schema:Article">Azzam, A., Fernández, J.D., Acosta, M., Beno, M., Polleres, A.: SMART-KG: hybrid shipping for SPARQL querying on the web. In: Proceedings of The Web Conference 2020. pp. 984–994 (2020).</dd>
   <dt id="ref-75">[75]</dt>
-  <dd resource="#wisekg" typeof="schema:Article">Azzam, A., Aebeloe, C., Montoya, G., Keles, I., Polleres, A., Hose, K.: WiseKG: Balanced access to web knowledge graphs. In: Proceedings of the Web Conference 2021. pp. 1422–1434 (2021).</dd>
+  <dd resource="#sage" typeof="schema:Article">Minier, T., Skaf-Molli, H., Molli, P.: SaGe: Web preemption for public SPARQL query services. In: The World Wide Web Conference. pp. 1268–1278 (2019).</dd>
   <dt id="ref-76">[76]</dt>
-  <dd resource="#spf" typeof="schema:Article">Aebeloe, C., Keles, I., Montoya, G., Hose, K.: Star Pattern Fragments: Accessing Knowledge Graphs through Star Patterns. arXiv preprint arXiv:2002.09172. (2020).</dd>
+  <dd resource="#wisekg" typeof="schema:Article">Azzam, A., Aebeloe, C., Montoya, G., Keles, I., Polleres, A., Hose, K.: WiseKG: Balanced access to web knowledge graphs. In: Proceedings of the Web Conference 2021. pp. 1422–1434 (2021).</dd>
   <dt id="ref-77">[77]</dt>
-  <dd resource="#brtpf" typeof="schema:Article">Hartig, O., Buil-Aranda, C.: Bindings-restricted triple pattern fragments. In: OTM Confederated International Conferences&#8221; On the Move to Meaningful Internet Systems&#8221;. pp. 762–779. Springer (2016).</dd>
+  <dd resource="#spf" typeof="schema:Article">Aebeloe, C., Keles, I., Montoya, G., Hose, K.: Star Pattern Fragments: Accessing Knowledge Graphs through Star Patterns. arXiv preprint arXiv:2002.09172. (2020).</dd>
   <dt id="ref-78">[78]</dt>
-  <dd resource="#heterogeneous_lars" typeof="schema:Article">Heling, L., Acosta, M.: Federated SPARQL Query Processing over Heterogeneous Linked Data Fragments. In: Proceedings of the ACM Web Conference 2022. pp. 1047–1057 (2022).</dd>
+  <dd resource="#brtpf" typeof="schema:Article">Hartig, O., Buil-Aranda, C.: Bindings-restricted triple pattern fragments. In: OTM Confederated International Conferences&#8221; On the Move to Meaningful Internet Systems&#8221;. pp. 762–779. Springer (2016).</dd>
   <dt id="ref-79">[79]</dt>
-  <dd resource="#heterogeneous_fedqpl" typeof="schema:Article">Cheng, S., Hartig, O.: FedQPL: A Language for Logical Query Plans over Heterogeneous Federations of RDF Data Sources. In: Proceedings of the 22nd International Conference on Information Integration and Web-based Applications &amp; Services. pp. 436–445 (2020).</dd>
+  <dd resource="#heterogeneous_lars" typeof="schema:Article">Heling, L., Acosta, M.: Federated SPARQL Query Processing over Heterogeneous Linked Data Fragments. In: Proceedings of the ACM Web Conference 2022. pp. 1047–1057 (2022).</dd>
   <dt id="ref-80">[80]</dt>
+  <dd resource="#heterogeneous_fedqpl" typeof="schema:Article">Cheng, S., Hartig, O.: FedQPL: A Language for Logical Query Plans over Heterogeneous Federations of RDF Data Sources. In: Proceedings of the 22nd International Conference on Information Integration and Web-based Applications &amp; Services. pp. 436–445 (2020).</dd>
+  <dt id="ref-81">[81]</dt>
   <dd resource="#heterogeneous_replicas" typeof="schema:Article">Montoya, G., Aebeloe, C., Hose, K.: Towards efficient query processing over heterogeneous RDF interfaces. In: 2nd Workshop on Decentralizing the Semantic Web, DeSemWeb 2018. CEUR Workshop Proceedings (2018).</dd>
 </dl>
 </section>
