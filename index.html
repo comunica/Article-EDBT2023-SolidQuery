@@ -10,7 +10,7 @@
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
   <meta name="citation_author" content="John Doe" />
   
-  <meta name="citation_publication_date" content="2023/02/02" />
+  <meta name="citation_publication_date" content="2023/02/09" />
 </head>
 
 <body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
@@ -534,12 +534,21 @@ We provide 27 query templates that can be instantiated any number of times to si
 We also provide a tool that can produce validation queries and results to measure the correctness and completeness of a system.
 Since we focus on read-only queries in this work, we do not consider the write queries of SNB.</p>
 
-        <p>By default, SolidBench sets the scale factor of the SNB generator to 0.1,
+        <p>By default, SolidBench sets the <em>scale factor</em> of the SNB generator to 0.1,
 which results in 157.210 RDF files over 1.529 data vaults using the default fragmentation strategy.
 In total, there are 3.556.159 triples across all files, with an average of 22,62 triples per file.
+This scale primarily determines the number of persons in the dataset,
+which directly corresponds to the number of data vaults that will be simulated.
 Even though this scale can be increased arbitrarily,
 we notice that this default scale can already stress existing LTQP approaches beyond their current capabilities.
+Next to this vault scale factor, we also provide a <em>multiplication factor</em> for the amount of posts inside a vault,
+which allows increasing vault sizes to arbitrary amounts.
+By default this post multiplication factor is set at 1.
+When setting this to 10, the total number of triples is TODO (average of TODO triples per file, over TODO files).
+When setting this to 100, the total number of triples is TODO (average of TODO triples per file, over TODO files).
 For more details on properties of this dataset and its schema, we refer to the SNB papers <span class="references">[<a href="#ref-51">51</a>, <a href="#ref-52">52</a>]</span>.</p>
+
+        <p class="todo">Update numbers above</p>
 
         <p>All aspects of SolidBench are <a property="schema:citation http://purl.org/spar/cito/cites" href="https://linkedsoftwaredependencies.github.io/Article-System-Components/">fully configurable using JSON-LD configuration files</a> <span class="references">[<a href="#ref-53">53</a>]</span>,
 ranging from fragmentation strategies to properties of query templates.
@@ -1115,16 +1124,26 @@ and a discussion of our results to answer our research question.</p>
 
         <h3 id="experimental-design">Experimental Design</h3>
 
-        <p>We make use of a full factorial experiment containing the following factors and values:</p>
+        <p>We make use of a factorial experiment containing the following factors and values:</p>
 
         <ul>
           <li><strong>Vault discovery</strong>: None, LDP, Type Index, Filtered Type Index, LDP and Type Index, LDP and Filtered Type Index</li>
           <li><strong>Reachability semantics</strong>: cNone, cMatch, cAll</li>
+          <li><strong>Fragmentation strategy</strong>: Composite</li>
         </ul>
 
         <p>The LDP strategy corresponds to the disjunction of the source selectors <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidVault</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidVault}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidVault</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>,
 the Type Index to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidTypeIndex</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>&#x3d5;</mi><mo stretchy="false">(</mo><mi>B</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\phi(B, c)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">&#x3d5;</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> always returning <code>true</code>,
-and the Filtered Type Index to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidTypeIndex</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3d5;</mi><mtext>QueryClass</mtext></msub></mrow><annotation encoding="application/x-tex">\phi_{\text{QueryClass}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">&#x3d5;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">QueryClass</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>,</p>
+and the Filtered Type Index to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>LdpContainer</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{LdpContainer}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">LdpContainer</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3c3;</mi><mtext>SolidTypeIndex</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_{\text{SolidTypeIndex}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">&#x3c3;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">SolidTypeIndex</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>&#x3d5;</mi><mtext>QueryClass</mtext></msub></mrow><annotation encoding="application/x-tex">\phi_{\text{QueryClass}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">&#x3d5;</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">QueryClass</span></span></span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+
+        <p>Furthermore, to measure the impact of the different fragmentation strategies that were discussed in <a href="#benchmark">Section 4</a>,
+we compare them using the optimal method of vault discovery and reachability semantics (as determined later in the experiments):</p>
+
+        <ul>
+          <li><strong>Vault discovery</strong>: LDP and Filtered Type Index</li>
+          <li><strong>Reachability semantics</strong>: cMatch</li>
+          <li><strong>Fragmentation strategy</strong>: Separate, Single, Location, Time, Composite</li>
+        </ul>
 
         <p>Our experiments were performed on a 64-bit Ubuntu 14.04 machine with a 24-core 2.40 GHz CPU and 128 GB of RAM.
 The Solid vaults and query client were executed in isolated Docker containers on dedicated CPU cores with a simulated network.
@@ -1812,10 +1831,93 @@ and compare them against, and in combination with, our algorithms.</p>
           </figcaption>
         </figure>
 
+        <figure id="results-queries-fragmentation" class="table table-smaller-font">
+
+          <table>
+            <thead>
+              <tr>
+                <th> </th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span></th>
+                <th style="text-align: right"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Separate</td>
+                <td style="text-align: right">2,662</td>
+                <td style="text-align: right">1,244</td>
+                <td style="text-align: right">1,139</td>
+                <td style="text-align: right">379</td>
+                <td style="text-align: right">2,149</td>
+                <td style="text-align: right">20.50</td>
+                <td style="text-align: right">74.14%</td>
+                <td style="text-align: right">2</td>
+              </tr>
+              <tr>
+                <td>Single</td>
+                <td style="text-align: right">14,997</td>
+                <td style="text-align: right">1,300</td>
+                <td style="text-align: right">2,610</td>
+                <td style="text-align: right">728</td>
+                <td style="text-align: right">487</td>
+                <td style="text-align: right">38.25</td>
+                <td style="text-align: right">86.64%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td style="text-align: right">15,051</td>
+                <td style="text-align: right">1,645</td>
+                <td style="text-align: right">2,737</td>
+                <td style="text-align: right">796</td>
+                <td style="text-align: right">553</td>
+                <td style="text-align: right">38.25</td>
+                <td style="text-align: right">86.64%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td>Time</td>
+                <td style="text-align: right">4,758</td>
+                <td style="text-align: right">1,163</td>
+                <td style="text-align: right">897</td>
+                <td style="text-align: right">149</td>
+                <td style="text-align: right">4,425</td>
+                <td style="text-align: right">38.25</td>
+                <td style="text-align: right">86.64%</td>
+                <td style="text-align: right">1</td>
+              </tr>
+              <tr>
+                <td>Composite</td>
+                <td style="text-align: right">11,453</td>
+                <td style="text-align: right">910</td>
+                <td style="text-align: right">1,430</td>
+                <td style="text-align: right">745</td>
+                <td style="text-align: right">2,655</td>
+                <td style="text-align: right">37.00</td>
+                <td style="text-align: right">74.14%</td>
+                <td style="text-align: right">2</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 5:</span> Aggregated results for the different <strong>fragmentation strategies</strong> over different <strong>post multiplication factors</strong> across all 8 <strong>discover</strong> queries.</p>
+          </figcaption>
+        </figure>
+
+        <p class="todo">Update with increasing scales</p>
+
         <p>In this section, we present results that offer insights into our research question.
 <a href="#results-queries-discover">Table 2</a>, <a href="#results-queries-short">Table 3</a>, and <a href="#results-queries-complex">Table 4</a>
 show the aggregated results for the different combinations of our setup
 for the discover, short, and complex queries of the benchmark, respectively.
+Furthermore, <a href="#results-queries-fragmentation">Table 5</a> shows the aggregated results of all discover queries over different fragmentation strategies with increasing post multiplication factors.
 Concretely, each table shows the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8151em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>t</mi><mo>~</mo></mover></mrow><annotation encoding="application/x-tex">\tilde{t}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8519em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span></span></span></span>) execution times (ms), the average (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo stretchy="true">&#x203e;</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\overline{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8151em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">t</span></span></span><span style="top:-3.7351em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and median (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>t</mi><mo>~</mo></mover><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\tilde{t}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8519em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">t</span></span><span style="top:-3.5341em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) time until first result (ms), average number of HTTP requests per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>r</mi><mi>e</mi><mi>q</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{req}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.825em;vertical-align:-0.1944em;"></span><span class="mord overline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span><span class="vlist-s">&#x200b;</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>), total number of results on average per query (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>a</mi><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\sum ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">s</span></span></span></span>), average accuracy (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mrow><mi>a</mi><mi>c</mi><mi>c</mi></mrow><mo stretchy="true">&#x203e;</mo></mover></mrow><annotation encoding="application/x-tex">\overline{acc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6306em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>), and number of timeouts (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2211;</mo><mi>t</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">\sum to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">&#x2211;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span></span></span></span>) across all queries. The combinations with the highest accuracy value are marked in bold.
 The number of HTTP requests is counted across all query executions that did not time out within each combination.
 The timeout column represents the number of query templates that lead to a timeout for a given combination.
@@ -1865,9 +1967,10 @@ we can observe that using the type index leads to fewer HTTP requests and faster
 To explain this behaviour in more detail, <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows the average query execution times of each discover query separately,
 for the different combinations of data vault discovery approaches.
 To simplify comparability, the execution times within this figure are relative to the maximum query execution time per query <span class="references">[<a href="#ref-29">29</a>]</span>.
-Furthermore, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries.
+Furthermore, <a href="#figure-queries_indexvsstorage_http_relative">Fig. 3</a> shows the average number of HTTP requests for each of those discover queries,
+which are also made relative to the maximum number of requests per query for better comparability.
 <a href="#figure-querytimes_d1-3">Fig. 4</a>, <a href="#figure-querytimes_d2-3">Fig. 5</a>, and <a href="#figure-querytimes_d5-4">Fig. 6</a> contain more detailed query result arrival times for several of these queries using diefficiency plots <span class="references">[<a href="#ref-60">60</a>]</span>.
-Finally, <a href="#results-queries-cmatch-wins">Table 5</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
+Finally, <a href="#results-queries-cmatch-wins">Table 6</a> shows an overview of the number of queries where each approach achieves the lowest execution time per query.</p>
 
         <figure id="figure-queries_indexvsstorage_time_relative">
 <img src="img/experiments/queries_indexvsstorage_time_relative.svg" alt="Relative execution times of discover queries for index versus storage" />
@@ -1879,10 +1982,12 @@ and stars indicate average time until first result.</p>
           </figcaption>
 </figure>
 
-        <figure id="figure-queries_indexvsstorage_http">
-<img src="img/experiments/queries_indexvsstorage_http.svg" alt="HTTP requests of discover queries for index versus storage" />
+        <figure id="figure-queries_indexvsstorage_http_relative">
+<img src="img/experiments/queries_indexvsstorage_http_relative.svg" alt="Relative HTTP requests of discover queries for index versus storage" />
 <figcaption>
-            <p><span class="label">Fig. 3:</span> Average number of HTTP requests for discover queries with different discovery methods under cMatch.</p>
+            <p><span class="label">Fig. 3:</span> Relative number of HTTP requests for discover queries with different discovery methods under cMatch.
+Bars indicate average execution time,
+whiskers indicate the maxima and minima.</p>
           </figcaption>
 </figure>
 
@@ -1933,16 +2038,16 @@ and stars indicate average time until first result.</p>
           </table>
 
           <figcaption>
-            <p><span class="label">Table 5:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
+            <p><span class="label">Table 6:</span> The number of queries each approach achieves the lowest query execution time for across all <strong>cMatch-based</strong> approaches over all 8 <strong>discover</strong> queries with 5 instantiations.
 A win for a certain approach is only considered if the results are accurate for this query.
 Five queries are missing due to no approaches achieving accurate results.</p>
           </figcaption>
         </figure>
 
-        <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows that for six queries (D1, D2, D5, D6, D7, D8)
+        <p>While <a href="#figure-queries_indexvsstorage_time_relative">Fig. 2</a> shows that for six queries (D1, D2, D3, D5, D6, D8)
 using just the type index is slightly faster or comparable to just LDP-based discovery,
 this difference has no statistical significance (<em>p = 0.55</em>).
-However, <a href="#figure-queries_indexvsstorage_http">Fig. 3</a> shows that the number of HTTP requests with the type index is always slightly lower than via LDP,
+However, <a href="#figure-queries_indexvsstorage_http_relative">Fig. 3</a> shows that the number of HTTP requests with the type index is always slightly lower than via LDP,
 but this only has a very weak statistical significance (<em>p = 0.12</em>).</p>
 
         <p>When the filter-enabled type index approach is used, three queries (D1, D3, D8) are made even faster compared to the non-filtered type index approach.
@@ -1962,15 +2067,14 @@ Query D8 does however show that this combination deserves further investigation,
 because this query has a result limit that leads to a prioritization of links via the type index,
 leading to earlier query termination with fewer requests.</p>
 
-        <p><a href="#figure-querytimes_d1-3">Fig. 4</a> and <a href="#figure-querytimes_d2-3">Fig. 5</a> show the query result arrival times for D1 and D2 respectively
+        <p><a href="#figure-querytimes_d1-3">Fig. 4</a>, <a href="#figure-querytimes_d2-3">Fig. 5</a>, and <a href="#figure-querytimes_d5-4">Fig. 6</a>
+show the query result arrival times for D1, D2, and D5 respectively
 with different combinations of data vault discovery with cMatch.
 Since D1 specifically queries for resources of the type Post, it can very selectively make use of the Post entry within the type index,
 which makes the filtered type index approach faster than the non-filtered approach.
 D2 targets both resources of type Comment and Post, which means that it has to make use of both entries within the type index,
-which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.</p>
-
-        <p><a href="#figure-querytimes_d5-4">Fig. 6</a> shows the query result arrival times for D5,
-which is a query that does not specifically target resources of certain types.
+which causes the performance difference between the filtered and non-filtered type index approach to be negligeable.
+D5 is a query that does not specifically target resources of certain types.
 This means that the type index leads to no significant performance benefit if no specific types are targeted in the query.</p>
 
         <p>In general, these results hint that the filtered type index approach performs better than the other approaches.
@@ -1993,7 +2097,7 @@ This two-phase approach is based on an oracle that provides all query-relevant l
 Therefore, this two-phase approach is merely a theoretical case,
 which delays time until first results due to prior indexing,
 and which may not always be achievable in practise due to infinitely growing link queues for some queries.
-The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 6</a>.</p>
+The results of this experiment are shown in <a href="#results-planning-effectiveness">Table 7</a>.</p>
 
         <figure id="results-planning-effectiveness" class="table">
 
@@ -2009,61 +2113,61 @@ The results of this experiment are shown in <a href="#results-planning-effective
             <tbody>
               <tr>
                 <td>D1</td>
-                <td style="text-align: right">5,826.83</td>
-                <td style="text-align: right">451.42</td>
+                <td style="text-align: right">1,077.58</td>
+                <td style="text-align: right">403.54</td>
                 <td style="text-align: right">222</td>
               </tr>
               <tr>
                 <td>D2</td>
-                <td style="text-align: right">6,043.50</td>
-                <td style="text-align: right">646.77</td>
+                <td style="text-align: right">1,020.67</td>
+                <td style="text-align: right">567.57</td>
                 <td style="text-align: right">223</td>
               </tr>
               <tr>
                 <td>D3</td>
-                <td style="text-align: right">7,490.17</td>
-                <td style="text-align: right">1,118.69</td>
-                <td style="text-align: right">428</td>
+                <td style="text-align: right">1,193.01</td>
+                <td style="text-align: right">821.23</td>
+                <td style="text-align: right">429</td>
               </tr>
               <tr>
                 <td>D4</td>
-                <td style="text-align: right">5,734.25</td>
-                <td style="text-align: right">509.56</td>
+                <td style="text-align: right">3,266.62</td>
+                <td style="text-align: right">505.00</td>
                 <td style="text-align: right">228</td>
               </tr>
               <tr>
                 <td>D5</td>
-                <td style="text-align: right">1,499.62</td>
-                <td style="text-align: right">365.76</td>
-                <td style="text-align: right">222</td>
+                <td style="text-align: right">522.23</td>
+                <td style="text-align: right">387.24</td>
+                <td style="text-align: right">223</td>
               </tr>
               <tr>
                 <td>D6</td>
-                <td style="text-align: right">2,360.60</td>
-                <td style="text-align: right">310.79</td>
-                <td style="text-align: right">121</td>
+                <td style="text-align: right">710.16</td>
+                <td style="text-align: right">289.72</td>
+                <td style="text-align: right">122</td>
               </tr>
               <tr>
                 <td>D7</td>
-                <td style="text-align: right">3,226.30</td>
-                <td style="text-align: right">316.05</td>
-                <td style="text-align: right">121</td>
+                <td style="text-align: right">626.96</td>
+                <td style="text-align: right">340.54</td>
+                <td style="text-align: right">122</td>
               </tr>
               <tr>
                 <td>D8</td>
-                <td style="text-align: right">4,739.88</td>
-                <td style="text-align: right">2,292.81</td>
-                <td style="text-align: right">217</td>
+                <td style="text-align: right">2,037.85</td>
+                <td style="text-align: right">1,654.02</td>
+                <td style="text-align: right">420</td>
               </tr>
             </tbody>
           </table>
 
           <figcaption>
-            <p><span class="label">Table 6:</span> Integrated and two-phase execution times (ms) of discover queries, with number of HTTP requests per query.</p>
+            <p><span class="label">Table 7:</span> Integrated and two-phase execution times (ms) of discover queries, with number of HTTP requests per query.</p>
           </figcaption>
         </figure>
 
-        <p>These results show that the two-phase approach is an order of magnitude faster for all queries compared to the integrated approach,
+        <p>These results show that the two-phase approach is on average two times faster for all queries compared to the integrated approach,
 even when taking into account time for dereferencing.
 The reason for this is that the two-phase approach is able to perform traditional query planning <span class="references">[<a href="#ref-61">61</a>, <a href="#ref-62">62</a>]</span>,
 since it has access to an indexed triple store with planning-relevant information such as cardinality estimates.
@@ -2085,6 +2189,14 @@ since they are usually the least selective.
 However, when a Solid type index is present, such vocabulary terms may instead become <em>very selective</em>,
 which means that those would benefit from prioritization.
 As such, there is a need for alternative query planners that consider the structural assumptions within specific decentralized environments.</p>
+
+        <h4 id="different-fragmentation-strategies-have-a-small-impact-on-execution-time">Different fragmentation strategies have a small impact on execution time</h4>
+
+        <p>Our results in <a href="#results-queries-fragmentation">Table 5</a> on comparing the impact of different fragmentation strategies
+show that while the number of HTTP requests required to answer a query can vary significantly (p: TODO),
+this does not translate into a significant difference in query execution times (p: TODO).</p>
+
+        <p class="todo">TODO: increasing size impact…</p>
 
         <!--
 
