@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" media="all"    href="styles/katex.css" />
   <meta name="citation_title" content="Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions">
-  <meta name="citation_author" content="John Doe" />
+  <meta name="citation_author" content="Ruben Taelman" />
+  <meta name="citation_author" content="Ruben Verborgh" />
   
   <meta name="citation_publication_date" content="2023/02/09" />
 </head>
@@ -17,14 +18,18 @@
   <header>
   <h1 id="evaluation-of-link-traversal-query-execution-over-decentralized-environments-with-structural-assumptions">Evaluation of Link Traversal Query Execution over Decentralized Environments with Structural Assumptions</h1>
 
-  <!--
-{:#authors}
-- <a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="http://www.example.org/" typeof="foaf:Person schema:Person" resource="http://www.example.org/#me">John Doe</a>
+  <ul id="authors">
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="https://www.rubensworks.net/" typeof="foaf:Person schema:Person" resource="https://www.rubensworks.net/#me">Ruben Taelman</a></li>
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="https://ruben.verborgh.org/" typeof="foaf:Person schema:Person" resource="https://ruben.verborgh.org/profile/#me">Ruben Verborgh</a></li>
+  </ul>
 
-{:#affiliations}
-- {:#myaffiliation} Awesome Inc.
--->
-
+  <ul id="affiliations">
+    <li id="idlab">IDLab,
+          Department of Electronics and Information Systems,
+          Ghent University – imec
+          <br />Ghent, Belgium
+          <br />E-mail: ruben.taelman@ugent.be</li>
+  </ul>
 </header>
 
 <!-- Hack to make our custom fonts load in print-mode -->
@@ -125,15 +130,16 @@ The presence of such data vaults results in a large-scale distribution of data,
 where applications involving multiple individuals’ data require accessing
 thousands or even millions of documents
 across different data vaults across the Web.
-These applications cannot effectively be built today
-due to the lack of querying techniques that can hande the requirements of decentralized environments like Solid.</p>
-
-        <p>The majority of research in the domain of query execution over Knowledge Graphs on the Web has been focused on centralized use cases,
-where all data is captured in a single or a small number
+These applications cannot effectively
 <span class="placeholder printonly">
 <span style="display: block; height: 9em;"></span>
 <!-- This is a dummy placeholder for the ACM first page footnote -->
 </span>
+be built today
+due to the lack of querying techniques that can hande the requirements of decentralized environments like Solid.</p>
+
+        <p>The majority of research in the domain of query execution over Knowledge Graphs on the Web has been focused on centralized use cases,
+where all data is captured in a single or a small number
 of sources, usually exposed as <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL endpoints</a> <span class="references">[<a href="#ref-7">7</a>]</span>.
 Even though several federated query execution approaches exist <span class="references">[<a href="#ref-8">8</a>, <a href="#ref-9">9</a>, <a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span>,
 they have been designed for federating over <em>a few (~10) large sources</em>,
@@ -805,8 +811,8 @@ we introduce <em>discover</em> queries dedicated for covering these choke points
           </figcaption>
         </figure>
 
-        <p>More details on all query templates can be found at&lt;br &gt;
-<a href="https://github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md">https:/​/​github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md</a>.</p>
+        <p>More details on all query templates can be found at
+<a href="https://github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md">https:/​/​github.com/SolidBench/SolidBench.js/blob/master/templates/</a><br /><a href="https://github.com/SolidBench/SolidBench.js/blob/master/templates/queries/README.md">queries/README.md</a>.</p>
 
         <p><strong>Query template instantiation</strong></p>
 
