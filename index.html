@@ -205,34 +205,49 @@ Contributions:
 <div datatype="rdf:HTML" property="schema:description">
         <h2 property="schema:name">Related Work</h2>
 
-        <p>Below, we discuss related work on Link Traversal Query Processing
-for Linked Data in the RDF model,
+        <p>Below, we discuss related work on Knowledge Graphs,
+Link Traversal Query Processing,
 and related benchmarks.</p>
+
+        <h3 id="knowledge-graphs-on-the-web">Knowledge Graphs on the Web</h3>
+
+        <p>The standard for modeling knowledge graphs is the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">Resource Description Framework (RDF)</a> <span class="references">[<a href="#ref-7">7</a>]</span>.
+Fundamentally, it is based around the concept of <em>triples</em> that are used to make statements about <em>things</em>.
+A triple is made up of a <em>subject</em>, <em>predicate</em> and <em>object</em>,
+where the <em>subject</em> and <em>object</em> are resources (or <em>things</em>), and the <em>predicate</em> denotes their relationship.
+Resources can either be identified by <em>Uniform Resource Identifiers (URIs)</em>, or by blank nodes.
+Multiple resources can be combined with each other through multiple triples, which forms a <em>Knowledge Graph</em>.
+The <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html">Linked Data principles</a> <span class="references">[<a href="#ref-6">6</a>]</span> is a set of best-practises for publishing RDF on the Web,
+such as using URIs to identify resources, and returning RDF when looking up those URIs.
+In order to look up information within Knowledge Graphs, the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-17">17</a>]</span>
+was introduced as a standard.
+Essentially, SPARQL allows RDF data to be looked up through combinations of <em>triple patterns</em>,
+which can make up arbitrarily complex queries.</p>
 
         <h3 id="link-traversal-query-processing">Link Traversal Query Processing</h3>
 
-        <p>The Link Traversal Query Processing (LTQP) paradigm was introduced more than a decade ago <span class="references">[<a href="#ref-17">17</a>]</span>
+        <p>The Link Traversal Query Processing (LTQP) paradigm was introduced more than a decade ago <span class="references">[<a href="#ref-18">18</a>]</span>
 as a way to query over the Web of Linked Data as if it was a globally distributed dataspace,
 without having to first index it in a single location.
 LTQP does this by employing the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/DesignIssues/LinkedData.html"><em>follow-your-nose</em> principle of Linked Data</a> <span class="references">[<a href="#ref-6">6</a>]</span> during query execution,
-where new <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">RDF triples</a> <span class="references">[<a href="#ref-7">7</a>]</span> are continuously added to a local dataset while discovering new sources by following links between documents.
-An iterator-based pipeline <span class="references">[<a href="#ref-17">17</a>]</span>
+where new RDF are continuously added to a local dataset while discovering new sources by following links between documents.
+An iterator-based pipeline <span class="references">[<a href="#ref-18">18</a>]</span>
 allows query execution to take place without having to wait until all links have been followed.
 As LTQP engines may traverse over documents from untrusted publishers,
-specific <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rubensworks.github.io/article-ldtraversal-security-short/">security vulnerabilities</a> <span class="references">[<a href="#ref-18">18</a>]</span> arise
+specific <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rubensworks.github.io/article-ldtraversal-security-short/">security vulnerabilities</a> <span class="references">[<a href="#ref-19">19</a>]</span> arise
 that do not apply when querying in a controlled environment.</p>
 
-        <p>LTQP is thus an <em>integrated</em> approach <span class="references">[<a href="#ref-19">19</a>]</span>
+        <p>LTQP is thus an <em>integrated</em> approach <span class="references">[<a href="#ref-20">20</a>]</span>
 with parallel source discovery and query execution,
-in contrast to <em>two-phase</em> approaches <span class="references">[<a href="#ref-20">20</a>, <a href="#ref-21">21</a>]</span>
+in contrast to <em>two-phase</em> approaches <span class="references">[<a href="#ref-21">21</a>, <a href="#ref-22">22</a>]</span>
 that perform data retrieval and indexing <em>before</em> query execution.
 As a one-phase approach,
 LTQP cannot rely on traditional pre-execution optimization algorithms
 that require prior dataset statistics.
-A zero-knowledge query planning technique <span class="references">[<a href="#ref-22">22</a>]</span>
+A zero-knowledge query planning technique <span class="references">[<a href="#ref-23">23</a>]</span>
 instead orders triple patterns in a query based on link traversal-specific heuristics.
-LTQP is related to the idea of <em>SQL-based query execution over the Web</em> <span class="references">[<a href="#ref-23">23</a>, <a href="#ref-24">24</a>]</span>
-and to the concept of <em>focused crawling</em> <span class="references">[<a href="#ref-25">25</a>, <a href="#ref-26">26</a>]</span>.
+LTQP is related to the idea of <em>SQL-based query execution over the Web</em> <span class="references">[<a href="#ref-24">24</a>, <a href="#ref-25">25</a>]</span>
+and to the concept of <em>focused crawling</em> <span class="references">[<a href="#ref-26">26</a>, <a href="#ref-27">27</a>]</span>.
 While LTQP considers the Web of Linked Data a large database using the RDF data model,
 SQL-based approaches focus on querying attributes or content within Web pages.
 Focused crawlers search for Web pages of specific topics to populate a local database or index,
@@ -249,8 +264,8 @@ which embody strategies for deciding what links to follow, each leading to diffe
 <em>cAll</em> follows all URLs in all encountered triple components,
 and <em>cMatch</em> only follows URLs in triple components for those triples that match a triple pattern within the query.</p>
 
-        <p><em>Context-based semantics</em> <span class="references">[<a href="#ref-27">27</a>]</span> is an extension of these reachability semantics
-to cope with property path expressions in the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL 1.1 language</a> <span class="references">[<a href="#ref-28">28</a>]</span>.
+        <p><em>Context-based semantics</em> <span class="references">[<a href="#ref-28">28</a>]</span> is an extension of these reachability semantics
+to cope with property path expressions in the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL 1.1 language</a> <span class="references">[<a href="#ref-17">17</a>]</span>.
 Next to query-driven reachability, <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.bartbogaerts.eu/articles/2021/005-RuleML-GuidedLink-SubwebSpec/SubwebSpecifications.pdf">another extension</a> <span class="references">[<a href="#ref-29">29</a>]</span> introduces
 the ability for data publishers to express which links should be followed using <em>subweb specifications</em>.</p>
 
@@ -259,7 +274,7 @@ a second methodology for improving query result arrival times is through <em>lin
 However, existing techniques only sometimes result in faster query results compared to no prioritization.</p>
 
         <p>Even though multiple query languages <span class="references">[<a href="#ref-31">31</a>, <a href="#ref-32">32</a>, <a href="#ref-33">33</a>]</span> have been introduced specifically for LTQP,
-its SPARQL-based execution model <span class="references">[<a href="#ref-17">17</a>]</span> is still the most widely used.
+its SPARQL-based execution model <span class="references">[<a href="#ref-18">18</a>]</span> is still the most widely used.
 Since SPARQL is the only language among these that is a standard, and the fact that it is more widely known and supported by different tools,
 we make use of it within this work.
 Nevertheless, the concepts within this work can be applied to other languages as well.</p>
@@ -274,7 +289,7 @@ are considered out of scope for this work.</p>
 
         <p>Aside from the lack of reusable link traversal query engines,
 there is also a lack of easily reusable benchmarks for evaluation the performance of link traversal query engines.
-According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-19">19</a>]</span>,
+According to a recent survey of Linked Data querying approaches <span class="references">[<a href="#ref-20">20</a>]</span>,
 <em>“there are no well-defined and well-understood benchmarks to test Linked Data query processing systems”</em>.
 Nevertheless, there has been work that provide a foundation onto which benchmarks may be built.</p>
 
@@ -306,7 +321,7 @@ Our benchmark builds on top of the WODSim approach for fragmenting triples into 
 but also provides a standard dataset.</p>
 
         <p>Aside from these approaches, evaluation of link traversal engines
-is usually done via hand crafted queries <span class="references">[<a href="#ref-17">17</a>, <a href="#ref-39">39</a>, <a href="#ref-22">22</a>, <a href="#ref-40">40</a>]</span>.</p>
+is usually done via hand crafted queries <span class="references">[<a href="#ref-18">18</a>, <a href="#ref-39">39</a>, <a href="#ref-23">23</a>, <a href="#ref-40">40</a>]</span>.</p>
 
       </div>
 </section>
@@ -459,7 +474,7 @@ Perform authenticated HTTP requests on behalf of the user after authentication w
         <p>While these requirements apply to both read and write queries,
 we will focus on read-only queries for the remainder of this article.
 Furthermore, given the Linked Data nature of Solid,
-we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-28">28</a>]</span> for the remainder of this article.
+we will focus on queries using the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">SPARQL query language</a> <span class="references">[<a href="#ref-17">17</a>]</span> for the remainder of this article.
 Nevertheless, these concepts can also be applied to write-queries and other query languages.</p>
 
       </div>
@@ -923,11 +938,11 @@ Hereby, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w
         <h3 id="pipeline-based-link-queue">Pipeline-based link queue</h3>
 
         <p>To execute a query,
-our approach builds upon the zero-knowledge query planning technique <span class="references">[<a href="#ref-22">22</a>]</span>
+our approach builds upon the zero-knowledge query planning technique <span class="references">[<a href="#ref-23">23</a>]</span>
 to construct a logical query plan ahead of query execution.
 This resulting plan produces a tree of logical query operators representing the query execution order.
 To execute this plan, the logical operators are executed by specific physical operators.
-Our physical query execution builds upon the iterator-based pipeline approach <span class="references">[<a href="#ref-17">17</a>]</span>,
+Our physical query execution builds upon the iterator-based pipeline approach <span class="references">[<a href="#ref-18">18</a>]</span>,
 which is the most popular among LTQP implementations <span class="references">[<a href="#ref-56">56</a>, <a href="#ref-40">40</a>, <a href="#ref-57">57</a>]</span>.
 We consider the execution plan as a pipeline <span class="references">[<a href="#ref-58">58</a>]</span> of iterator-based physical operators,
 through which intermediary results flow through chained operators to produce results in a pull-based manner.</p>
@@ -941,7 +956,7 @@ in a pipelined query execution.</p>
           </figcaption>
 </figure>
 
-        <p>Instead of letting operators trigger the dereferencing of URIs <span class="references">[<a href="#ref-17">17</a>]</span>,
+        <p>Instead of letting operators trigger the dereferencing of URIs <span class="references">[<a href="#ref-18">18</a>]</span>,
 we follow a link queue-based approach <span class="references">[<a href="#ref-30">30</a>]</span>.
 The architecture of this approach is visualized in <a href="#figure-link-queue">Fig. 1</a>.
 Concretely, we consider a continuously growing <em>triple source</em> as the basis of the pipeline tree,
@@ -956,12 +971,12 @@ Since the link extractors are invoked after every dereference operation,
 this queue may virtually become infinitely long.</p>
 
         <p>This link queue and link extractor approach is generic enough to implement
-other LTQP methods <span class="references">[<a href="#ref-17">17</a>, <a href="#ref-14">14</a>, <a href="#ref-27">27</a>, <a href="#ref-29">29</a>, <a href="#ref-30">30</a>]</span>
+other LTQP methods <span class="references">[<a href="#ref-18">18</a>, <a href="#ref-14">14</a>, <a href="#ref-28">28</a>, <a href="#ref-29">29</a>, <a href="#ref-30">30</a>]</span>
 for determining and prioritizing links that need to be followed.
 For example, one extractor may consider <code>rdfs:seeAlso</code> links,
 while another extractor may consider URIs of a triple that matches with a triple pattern from the query.
 Optionally, operators in the query pipeline may push links into the link queue,
-which enables context-based reachability semantics <span class="references">[<a href="#ref-27">27</a>]</span>.
+which enables context-based reachability semantics <span class="references">[<a href="#ref-28">28</a>]</span>.
 Link extractors only consider URIs as links,
 and ignore matching blank nodes and literals.</p>
 
@@ -1105,8 +1120,8 @@ Our implementation is available as open-source at <a href="https://github.com/co
         <p>Our implementation builds upon best practises in LTQP and lessons learned from other implementations <span class="references">[<a href="#ref-56">56</a>]</span> including,
 the use of client-side caching <span class="references">[<a href="#ref-39">39</a>]</span>,
 the different reachability semantics <span class="references">[<a href="#ref-14">14</a>]</span>,
-zero-knowledge query planning <span class="references">[<a href="#ref-22">22</a>]</span> applied to arbitrary join operations instead of only triple patterns in BGPs,
-and more <span class="references">[<a href="#ref-17">17</a>]</span>.
+zero-knowledge query planning <span class="references">[<a href="#ref-23">23</a>]</span> applied to arbitrary join operations instead of only triple patterns in BGPs,
+and more <span class="references">[<a href="#ref-18">18</a>]</span>.
 Furthermore, our implementation allows users to explicitly pass seed URIs,
 but falls back to query-based seed URIs <span class="references">[<a href="#ref-56">56</a>]</span> if no seeds were provided.
 This fallback finds all URIs within the query, and adds them as seed URIs to the link queue.</p>
@@ -1165,7 +1180,7 @@ All queries were configured with a timeout of two minutes, and were executed thr
 Each query template in the benchmark was instantiated five times, which resulted in 40 discover queries, 35 short queries, and 60 complex queries.</p>
 
         <p>We were unable to compare our implementation to existing LTQP engines,
-because those systems (e.g. Lidaq <span class="references">[<a href="#ref-21">21</a>]</span>) would either require significant changes to work over Solid vaults,
+because those systems (e.g. Lidaq <span class="references">[<a href="#ref-22">22</a>]</span>) would either require significant changes to work over Solid vaults,
 they depend on a non-standard usage of the SPARQL syntax (e.g. SPARQL-LD <span class="references">[<a href="#ref-60">60</a>]</span>),
 or insufficient documentation was present to make them work (e.g. SQUIN <span class="references">[<a href="#ref-56">56</a>]</span>), even after contacting the authors.
 Nevertheless, in order to ensure a fair and complete comparison,
@@ -2230,7 +2245,7 @@ The reason for this is that the two-phase approach is able to perform traditiona
 since it has access to an indexed triple store with planning-relevant information such as cardinality estimates.
 Since the integrated approach finds new triples <em>during</em> query execution,
 it is unable to use this information for traditional query planning.
-Instead, our integrated approach makes use of the zero-knowledge query planning technique <span class="references">[<a href="#ref-22">22</a>]</span>
+Instead, our integrated approach makes use of the zero-knowledge query planning technique <span class="references">[<a href="#ref-23">23</a>]</span>
 that makes use of heuristics to plan the query before execution.</p>
 
         <p>Since the only difference between the implementations of the integrated and two-phase approach is in how they plan the query,
@@ -2238,7 +2253,7 @@ we can derive the query plan of the integrated approach is very ineffective.
 As such, there is clear need for better query planning during integrated execution,
 and the two-phase approach shows that performance could become more than two times better.</p>
 
-        <p>Zero-knowledge query planning <span class="references">[<a href="#ref-22">22</a>]</span> is ineffective in our experiments
+        <p>Zero-knowledge query planning <span class="references">[<a href="#ref-23">23</a>]</span> is ineffective in our experiments
 because it has been designed under the assumptions of Linked Open Data,
 while it does not match with the structural assumptions of specific decentralized environments such as Solid.
 For example, one of the heuristics within this planner deprioritizes triple patterns with vocabulary terms, such as <code>rdf:type</code>,
@@ -2248,8 +2263,6 @@ which means that those would benefit from prioritization.
 As such, there is a need for alternative query planners that consider the structural assumptions within specific decentralized environments.</p>
 
         <h4 id="vault-size-and-fragmentation-impact-performance">Vault size and fragmentation impact performance</h4>
-
-        <p class="todo">find better title for this section</p>
 
         <p>The results in <a href="#results-queries-fragmentation">Table 5</a> show that
 different fragmentation strategies with different multiplication factors for vault sizes
@@ -2334,7 +2347,7 @@ but there are open research opportunities for optimizing more complex queries as
 We have shown this by applying LTQP to simulated Solid environments, for which we have introduced specific algorithms for capturing these structural properties.</p>
 
         <p>Up until now, LTQP has always been applied to querying Linked Open Data on the Web.
-In that context, it was assumed that <em>“we should never expect complete results”</em> <span class="references">[<a href="#ref-17">17</a>]</span>, because of the openness and distributed nature of the Web.
+In that context, it was assumed that <em>“we should never expect complete results”</em> <span class="references">[<a href="#ref-18">18</a>]</span>, because of the openness and distributed nature of the Web.
 However, when applying LTQP to specific decentralized environments such as Solid,
 this limitation does not hold anymore,
 since there are additional assumptions that we can make use of during query execution.
@@ -2369,7 +2382,7 @@ this could be extended to also consider implicit type knowledge via inferencing�
 Furthermore, query containment techniques <span class="references">[<a href="#ref-69">69</a>]</span> could be investigated for determining which parts of the query match with index entries,
 which could also lead to better a combination of type index and LDP-based discovery.
 On the other hand, alternative structural properties could offer more expressivity,
-such as characteristics sets <span class="references">[<a href="#ref-70">70</a>]</span> and other summarization techniques <span class="references">[<a href="#ref-21">21</a>]</span>.
+such as characteristics sets <span class="references">[<a href="#ref-70">70</a>]</span> and other summarization techniques <span class="references">[<a href="#ref-22">22</a>]</span>.
 For example, the <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shapetrees.org/TR/specification/">Shape Trees</a> <span class="references">[<a href="#ref-71">71</a>]</span> specification offers a similar index for Solid vaults,
 but instead makes use of nested <a property="schema:citation http://purl.org/spar/cito/cites" href="https://shex.io/shex-semantics/">ShEx</a> <span class="references">[<a href="#ref-72">72</a>]</span> shape definitions for expressing data locations,
 which could be used for both data discovery and query optimization <span class="references">[<a href="#ref-73">73</a>]</span>.
@@ -2437,29 +2450,29 @@ Ruben Taelman is a postdoctoral fellow of the Research Foundation – Flanders (
   <dt id="ref-16">[16]</dt>
   <dd resource="https://solid.github.io/type-indexes/" typeof="schema:CreativeWork">Turdean, T.: Type Indexes. Solid, <a href="https://solid.github.io/type-indexes/">https:/​/​solid.github.io/type-indexes/</a> (2022).</dd>
   <dt id="ref-17">[17]</dt>
-  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O.: SPARQL for a Web of Linked Data: Semantics and computability. In: Extended Semantic Web Conference. pp. 8–23. Springer (2012).</dd>
-  <dt id="ref-18">[18]</dt>
-  <dd resource="https://rubensworks.github.io/article-ldtraversal-security-short/" typeof="schema:Article">Taelman, R., Verborgh, R.: A Prospective Analysis of Security Vulnerabilities within Link Traversal-Based Query Processing. In: Proceedings of the 6th International Workshop on Storing, Querying and Benchmarking Knowledge Graphs (2022).</dd>
-  <dt id="ref-19">[19]</dt>
-  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
-  <dt id="ref-20">[20]</dt>
-  <dd resource="#summaries" typeof="schema:Article">Harth, A., Hose, K., Karnstedt, M., Polleres, A., Sattler, K.-U., Umbrich, J.: Data summaries for on-demand queries over linked data. In: Proceedings of the 19th international conference on World wide web. pp. 411–420 (2010).</dd>
-  <dt id="ref-21">[21]</dt>
-  <dd resource="#comparingsummaries" typeof="schema:Article">Umbrich, J., Hose, K., Karnstedt, M., Harth, A., Polleres, A.: Comparing data summaries for processing live queries over linked data. World Wide Web. 14, 495–544 (2011).</dd>
-  <dt id="ref-22">[22]</dt>
-  <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
-  <dt id="ref-23">[23]</dt>
-  <dd resource="#queryingwwwsql" typeof="schema:Article">Mendelzon, A.O., Mihaila, G.A., Milo, T.: Querying the world wide web. In: Fourth International Conference on Parallel and Distributed Information Systems. pp. 80–91. IEEE (1996).</dd>
-  <dt id="ref-24">[24]</dt>
-  <dd resource="#infogatheringwwww3ql" typeof="schema:Article">Konopnicki, D., Shmueli, O.: Information gathering in the World-Wide Web: the W3QL query language and the W3QS system. ACM Transactions on Database Systems (TODS). 23, 369–410 (1998).</dd>
-  <dt id="ref-25">[25]</dt>
-  <dd resource="#focusedcrawling" typeof="schema:Article">Chakrabarti, S., Van den Berg, M., Dom, B.: Focused crawling: a new approach to topic-specific Web resource discovery. Computer networks. 31, 1623–1640 (1999).</dd>
-  <dt id="ref-26">[26]</dt>
-  <dd resource="#focusedcrawlingimproving" typeof="schema:Article">Batsakis, S., Petrakis, E.G.M., Milios, E.: Improving the performance of focused web crawlers. Data &amp; Knowledge Engineering. 68, 1001–1013 (2009).</dd>
-  <dt id="ref-27">[27]</dt>
-  <dd resource="#linktraversalpropertypaths" typeof="schema:Article">Hartig, O., Pirrò, G.: SPARQL with Property Paths on the Web. Semantic Web. 8, 773–795 (2017).</dd>
-  <dt id="ref-28">[28]</dt>
   <dd resource="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: SPARQL 1.1 Query Language. W3C, <a href="https://www.w3.org/TR/2013/REC-sparql11-query-20130321/">https:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
+  <dt id="ref-18">[18]</dt>
+  <dd resource="#linktraversalsparql" typeof="schema:Article">Hartig, O.: SPARQL for a Web of Linked Data: Semantics and computability. In: Extended Semantic Web Conference. pp. 8–23. Springer (2012).</dd>
+  <dt id="ref-19">[19]</dt>
+  <dd resource="https://rubensworks.github.io/article-ldtraversal-security-short/" typeof="schema:Article">Taelman, R., Verborgh, R.: A Prospective Analysis of Security Vulnerabilities within Link Traversal-Based Query Processing. In: Proceedings of the 6th International Workshop on Storing, Querying and Benchmarking Knowledge Graphs (2022).</dd>
+  <dt id="ref-20">[20]</dt>
+  <dd resource="https://dx.doi.org/10.1007/978-3-319-63962-8_76-1" typeof="schema:CreativeWork">Hartig, O., Hose, K., Sequeda, J.: Linked Data Management. In: Sakr, S. and Zomaya, A. (eds.) Encyclopedia of Big Data Technologies. Springer, Germany (2019). doi:10.1007/978-3-319-63962-8_76-1</dd>
+  <dt id="ref-21">[21]</dt>
+  <dd resource="#summaries" typeof="schema:Article">Harth, A., Hose, K., Karnstedt, M., Polleres, A., Sattler, K.-U., Umbrich, J.: Data summaries for on-demand queries over linked data. In: Proceedings of the 19th international conference on World wide web. pp. 411–420 (2010).</dd>
+  <dt id="ref-22">[22]</dt>
+  <dd resource="#comparingsummaries" typeof="schema:Article">Umbrich, J., Hose, K., Karnstedt, M., Harth, A., Polleres, A.: Comparing data summaries for processing live queries over linked data. World Wide Web. 14, 495–544 (2011).</dd>
+  <dt id="ref-23">[23]</dt>
+  <dd resource="#zeroknowldgequeryplanning" typeof="schema:Article">Hartig, O.: Zero-knowledge query planning for an iterator implementation of link traversal based query execution. In: Extended Semantic Web Conference. pp. 154–169. Springer (2011).</dd>
+  <dt id="ref-24">[24]</dt>
+  <dd resource="#queryingwwwsql" typeof="schema:Article">Mendelzon, A.O., Mihaila, G.A., Milo, T.: Querying the world wide web. In: Fourth International Conference on Parallel and Distributed Information Systems. pp. 80–91. IEEE (1996).</dd>
+  <dt id="ref-25">[25]</dt>
+  <dd resource="#infogatheringwwww3ql" typeof="schema:Article">Konopnicki, D., Shmueli, O.: Information gathering in the World-Wide Web: the W3QL query language and the W3QS system. ACM Transactions on Database Systems (TODS). 23, 369–410 (1998).</dd>
+  <dt id="ref-26">[26]</dt>
+  <dd resource="#focusedcrawling" typeof="schema:Article">Chakrabarti, S., Van den Berg, M., Dom, B.: Focused crawling: a new approach to topic-specific Web resource discovery. Computer networks. 31, 1623–1640 (1999).</dd>
+  <dt id="ref-27">[27]</dt>
+  <dd resource="#focusedcrawlingimproving" typeof="schema:Article">Batsakis, S., Petrakis, E.G.M., Milios, E.: Improving the performance of focused web crawlers. Data &amp; Knowledge Engineering. 68, 1001–1013 (2009).</dd>
+  <dt id="ref-28">[28]</dt>
+  <dd resource="#linktraversalpropertypaths" typeof="schema:Article">Hartig, O., Pirrò, G.: SPARQL with Property Paths on the Web. Semantic Web. 8, 773–795 (2017).</dd>
   <dt id="ref-29">[29]</dt>
   <dd resource="https://www.bartbogaerts.eu/articles/2021/005-RuleML-GuidedLink-SubwebSpec/SubwebSpecifications.pdf" typeof="schema:Article">Bogaerts, B., Ketsman, B., Zeboudj, Y., Aamer, H., Taelman, R., Verborgh, R.: Link Traversal with Distributed Subweb Specifications. In: Rules and Reasoning: 5th International Joint Conference, RuleML+RR 2021, Leuven, Belgium, September 8 – September 15, 2021, Proceedings (2021).</dd>
   <dt id="ref-30">[30]</dt>
